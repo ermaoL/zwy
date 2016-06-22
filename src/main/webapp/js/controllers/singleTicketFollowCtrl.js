@@ -6,7 +6,35 @@ myApp.controller('singleTicketFollowCtrl', function ($scope, $http) {
     var height = $(window).height()-260;
     $('#single-map').css("height", height);
 
+    var where = sessionStorage.getItem("isImOrEx");
+    if (where == "1") {
+        changeMenuType('#import-detail-menu');
+        sessionStorage.setItem("menuStatus", 2);
+    } else {
+        changeMenuType('#export-detail-menu');
+        sessionStorage.setItem("menuStatus", 4);
+    }
+
     var marker, lineArr = [];
+    var map = new AMap.Map("single-map", {
+        resizeEnable: true,
+        center: [117.9903373563, 24.4715940141],
+        zoom: 17
+    });
+
+    AMap.service(["AMap.Driving"], function() {
+        var driving = new AMap.Driving({
+            map: map
+        }); //构造路线导航类
+        // 根据起终点坐标规划步行路线
+        driving.search([
+            {keyword: '福建省厦门市裕雄堆场'},
+            {keyword: '福建省南安大霞美滨江机械制造基地宏盛兴机械'},
+            {keyword: '福建省厦门市海天码头'}
+        ]);
+    });   
+
+/*    var marker, lineArr = [];
     var map = new AMap.Map("single-map", {
         resizeEnable: true,
         center: [116.397428, 39.90923],
@@ -39,7 +67,7 @@ myApp.controller('singleTicketFollowCtrl', function ($scope, $http) {
         lineArr.push([lngX3, latY3]);
         var lngX4 = 118.0944717371, latY4 = 24.5280179992;
         lineArr.push([lngX4, latY4]);
-        /*for (var i = 1; i < 3; i++) {
+        /!*for (var i = 1; i < 3; i++) {
             lngX = lngX + Math.random() * 0.05;
             if (i % 2) {
                 latY = latY + Math.random() * 0.0001;
@@ -47,7 +75,7 @@ myApp.controller('singleTicketFollowCtrl', function ($scope, $http) {
                 latY = latY + Math.random() * 0.06;
             }
             lineArr.push([lngX, latY]);
-        }*/
+        }*!/
         // 绘制轨迹
         var polyline = new AMap.Polyline({
             map: map,
@@ -58,5 +86,12 @@ myApp.controller('singleTicketFollowCtrl', function ($scope, $http) {
             strokeStyle: "solid"  //线样式
         });
         map.setFitView();
-    }
+    }*/
 });
+
+function changeMenuType(item) {
+    $(item).addClass('menu-active');
+    $(item).find('.home-arrow').css("display", "block");
+    $(item).siblings().removeClass('menu-active');
+    $(item).siblings().find('.home-arrow').css("display", "none");
+}

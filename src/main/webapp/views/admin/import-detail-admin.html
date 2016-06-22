@@ -1,10 +1,10 @@
 <div ng-controller="importDetailAdminCtrl" class="import-list-content">
-    <div style="margin-top: 20px; position: relative;">
+    <div style="margin-top: 10px; position: relative;">
         <div class="detail-back-list"><a id="import-back" ui-sref="import/list" style="color: #ffffff;"><  返回列表</a></div>
         <span class="detail-back">进口订单列表 > 进口订单维护</span>
     </div>
     <div class="import-table-title" style="background: #ffffff; color: #333;">
-        <div style="margin-left: 20px; font-weight: bold;">单据主信息</div>
+        <div style="margin-left: 20px; font-weight: bold;">单据主信息（<span>{{importDetailOrderStateDec}}</span>）</div>
         <button class="red-btn" style="position: absolute; right: 150px;" ng-click="examImportOrder()" ng-show="isAdmin">审核</button>
         <!--<div class="list-title-divider" style="right: 160px;"></div>-->
         <button class="red-btn" style="position: absolute; right: 62px;">整票跟踪</button>

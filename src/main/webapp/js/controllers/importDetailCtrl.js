@@ -661,6 +661,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     // 跳转到整票跟踪
     $scope.toTicketFollow = function () {
         $state.go('ticket/follow');
+        sessionStorage.setItem("menuStatus", 2);
+        sessionStorage.setItem("isImOrEx", 1);
     }
 
     /******************** 进口订单维护表格操作 ************************/

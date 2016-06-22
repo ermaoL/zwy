@@ -1,22 +1,85 @@
 /**
  * Created by Administrator on 2016/5/26.
  */
-myApp.controller('ticketFollowCtrl',['$scope', '$http', 'TicketFollowService', function ($scope, $http, TicketFollowService) {
+myApp.controller('ticketFollowCtrl',['$scope', '$state', '$http', 'TicketFollowService', function ($scope, $state, $http, TicketFollowService) {
     var width = $('.follow-info-container').width();
-    $('.follow-msg-container').css("width", width-400);
+    $('.follow-msg-container').css("width", width-360);
 
     $(window).resize(function() {
         var width = $('.follow-info-container').width();
-        $('.follow-msg-container').css("width", width-400);
+        $('.follow-msg-container').css("width", width-360);
     });
+    
+    $scope.conStatus = true;
+
+    var where = sessionStorage.getItem("isImOrEx");
+    if (where == "1") {
+        $scope.isImportOrExport = true;
+    } else {
+        $scope.isImportOrExport = false;
+    }
+
+    $scope.listData = [{"index": "1", "type": "GP40", "containerNo": "APZU3674567", "sealNo": "AH60119916", "status": "2"},
+        {"index": "2", "type": "HQ53", "containerNo": "APZU3822690", "sealNo": "AH60119917", "status": "3"}];
+
+    $scope.backList = function () {
+        if (where == "1") {
+            $state.go('import/list');
+            changeMenuType('#import-list-menu');
+            sessionStorage.setItem("menuStatus", 1);
+        } else {
+            $state.go('export/list');
+            changeMenuType('#export-list-menu');
+            sessionStorage.setItem("menuStatus", 3);
+        }
+    }
+
+    $scope.backDetail = function () {
+        if (where == "1") {
+            $state.go('import/detail');
+            sessionStorage.setItem("menuStatus", 2);
+        } else {
+            $state.go('export/detail');
+            sessionStorage.setItem("menuStatus", 4);
+        }
+    }
+
+    $scope.toSingleTicket = function () {
+        $state.go('single/ticket/follow');
+    }
+
+    $scope.getContainerMsg = function ($event, id) {
+        var item = $event.target;
+        $(item).parents('tr').css("background", "#d7f1f2");
+        $(item).parents('tr').siblings('tr').css("background", "#ffffff");
+        if (id == "1") {
+            $scope.conStatus = true;
+        } else {
+            $scope.conStatus = false;
+        }
+
+    }
 
     var marker, lineArr = [];
     var map = new AMap.Map("ticket-follow-info", {
         resizeEnable: true,
-        center: [116.397428, 39.90923],
+        center: [117.9903373563, 24.4715940141],
         zoom: 17
     });
-    map.on("complete", completeEventHandler);
+
+    AMap.service(["AMap.Driving"], function() {
+        var driving = new AMap.Driving({
+            map: map
+        }); //构造路线导航类
+        // 根据起终点坐标规划步行路线
+        driving.search([
+            {keyword: '福建省厦门市裕雄堆场'},
+            {keyword: '福建省南安大霞美滨江机械制造基地宏盛兴机械'},
+            {keyword: '福建省厦门市海天码头'}
+        ]);
+    });
+
+    /*map.on("complete", completeEventHandler);
     AMap.event.addDomListener(document.getElementById('start'), 'click', function() {
         marker.moveAlong(lineArr, 500);
     }, false);
@@ -28,22 +91,18 @@ myApp.controller('ticketFollowCtrl',['$scope', '$http', 'TicketFollowService', f
     function completeEventHandler() {
         marker = new AMap.Marker({
             map: map,
-            position: [118.0894534342, 24.4795595205],
+            position: [117.9903373563, 24.4715940141],
             icon: "http://webapi.amap.com/images/car.png",
             offset: new AMap.Pixel(-26, -13),
             autoRotation: true
         });
-        var lngX = 118.0894534342, latY = 24.4795595205;
+        var lngX = 117.9903373563, latY = 24.4715940141;
         lineArr.push([lngX, latY]);
-        var lngX1 = 118.1285341528, latY1 = 24.4888381022;
+        var lngX1 = 118.4932443229, latY1 = 24.9512853238;
         lineArr.push([lngX1, latY1]);
-        var lngX2 = 118.1140638886, latY2 = 24.5208065057;
+        var lngX2 = 118.0846359228, latY2 = 24.5040938985;
         lineArr.push([lngX2, latY2]);
-        var lngX3 = 118.1019603587, latY3 = 24.5292338776;
-        lineArr.push([lngX3, latY3]);
-        var lngX4 = 118.0944717371, latY4 = 24.5280179992;
-        lineArr.push([lngX4, latY4]);
-        /*for (var i = 1; i < 3; i++) {
+        /!*for (var i = 1; i < 3; i++) {
          lngX = lngX + Math.random() * 0.05;
          if (i % 2) {
          latY = latY + Math.random() * 0.0001;
@@ -51,7 +110,7 @@ myApp.controller('ticketFollowCtrl',['$scope', '$http', 'TicketFollowService', f
          latY = latY + Math.random() * 0.06;
          }
          lineArr.push([lngX, latY]);
-         }*/
+         }*!/
         // 绘制轨迹
         var polyline = new AMap.Polyline({
             map: map,
@@ -62,7 +121,7 @@ myApp.controller('ticketFollowCtrl',['$scope', '$http', 'TicketFollowService', f
             strokeStyle: "solid"  //线样式
         });
         map.setFitView();
-    }
+    }*/
 
     /** 查询 */
     $scope.billSearch = function () {
@@ -95,7 +154,7 @@ myApp.controller('ticketFollowCtrl',['$scope', '$http', 'TicketFollowService', f
         TicketFollowService.list(ticketFollowData).success(function (data) {
             if (data.success) {
                 $scope.paginationConf.totalItems = data.pagingInfo.totalRows;
-                $scope.listData = data.data;
+                // $scope.listData = data.data;
             } else {
                 errorMsgHint(data.errorCode, data.errorMsg);
             }
@@ -136,3 +195,10 @@ myApp.factory('TicketFollowService', ['$http', function ($http) {
         }
     }
 }]);
+
+function changeMenuType(item) {
+    $(item).addClass('menu-active');
+    $(item).find('.home-arrow').css("display", "block");
+    $(item).siblings().removeClass('menu-active');
+    $(item).siblings().find('.home-arrow').css("display", "none");
+}

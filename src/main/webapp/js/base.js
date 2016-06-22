@@ -30,8 +30,14 @@
         changeMenuType('#export-detail-menu');
         sessionStorage.setItem("menuStatus", 4);
     } else if (url == "#/ticket/follow" || url == "#/single/ticket/follow") {
-        changeMenuType('#ticket-follow-menu');
-        sessionStorage.setItem("menuStatus", 5);
+        var state = sessionStorage.getItem("isImOrEx");
+        if (state == "1") {
+            changeMenuType('#import-detail-menu');
+            sessionStorage.setItem("menuStatus", 2);
+        } else {
+            changeMenuType('#export-detail-menu');
+            sessionStorage.setItem("menuStatus", 4);
+        }
     } else if (url == "#/transit/order") {
         changeMenuType('#transit-order-menu');
         sessionStorage.setItem("menuStatus", 6);
@@ -59,8 +65,14 @@
             changeMenuType('#export-detail-menu');
             sessionStorage.setItem("menuStatus", 4);
         } else if (url1 == "#/ticket/follow" || url1 == "#/single/ticket/follow") {
-            changeMenuType('#ticket-follow-menu');
-            sessionStorage.setItem("menuStatus", 5);
+            var state = sessionStorage.getItem("isImOrEx");
+            if (state == "1") {
+                changeMenuType('#import-detail-menu');
+                sessionStorage.setItem("menuStatus", 2);
+            } else {
+                changeMenuType('#export-detail-menu');
+                sessionStorage.setItem("menuStatus", 4);
+            }
         } else if (url1 == "#/transit/order") {
             changeMenuType('#transit-order-menu');
             sessionStorage.setItem("menuStatus", 6);

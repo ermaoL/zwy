@@ -1,5 +1,5 @@
 <div class="import-list-content" ng-controller="exportDetailCtrl">
-    <div style="margin-top: 20px; position: relative;">
+    <div style="margin-top: 10px; position: relative;">
         <div class="detail-back-list"><a id="export-detail-back" ui-sref="export/list" style="color: #ffffff;"><  返回中心</a></div>
         <span class="detail-back">出口订单中心 > 出口订单维护</span>
     </div>
@@ -12,7 +12,7 @@
         <!--<div class="list-title-divider" style="right: 80px;"></div>-->
         <!--<div class="i-detail-top" style="position: absolute; right: 79px;">剩余寄柜</div>-->
         <!--<div class="list-title-divider" style="right: 0;"></div>-->
-        <button class="red-btn" style="position: absolute; right: 0;">整票跟踪</button>
+        <button class="red-btn" style="position: absolute; right: 0;" ng-click="toTicketFollow()">整票跟踪</button>
     </div>
     <div class="import-detail-content">
         <form class="form-horizontal" style="padding: 20px; min-width: 1040px;">
