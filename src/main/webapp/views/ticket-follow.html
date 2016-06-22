@@ -10,12 +10,93 @@
         <span ng-show="!isImportOrExport" class="detail-back">出口订单中心 > 整票跟踪</span>
     </div>
     <div class="detail-second-table-top" style="border: 1px solid #ddd; margin-top: 30px; color: #333; min-width: 1040px;">
-        <span class="ticket-follow-title">提单号：APL20150620 / 船名：XING HE / 航次：235N</span>
+        <span class="ticket-follow-title">提单号：APLU077620902 / 船名：APL OAKLAND / 航次：050</span>
         <a href="http://app.sinoagentxm.com:8088/appserver/cargotracking.vc?blno=APLU077599348" class="red-btn" style="position: absolute; right: 88px;">全程跟踪</a>
         <button class="blue-btn" style="position: absolute; right: 0;" ng-click="backDetail()">订单详情</button>
     </div>
     <div id="import-detail-first-table">
-        <table class="table table-bordered table-hover unEditContainerTable" style="min-width: 1040px; margin-bottom: 0;">
+        <table ng-show="isImportOrExport" class="table table-bordered table-hover unEditContainerTable" style="min-width: 1040px; margin-bottom: 0;">
+            <thead style="background: #e5e5e5;">
+            <tr>
+                <th class="id-display">
+                    <span>id</span>
+                </th>
+                <th>
+                    <span>箱型尺寸</span>
+                </th>
+                <th>
+                    <span>箱号</span>
+                </th>
+                <th>
+                    <span>铅封号</span>
+                </th>
+                <th>
+                    <span>状态跟踪</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in listData" ng-dblclick="getContainerMsg($event, item.index)">
+                <td class="id-display">
+                    <span class="billOrderId">{{item.index}}</span>
+                </td>
+                <td>
+                    {{item.type}}
+                </td>
+                <td>
+                    {{item.containerNo}}
+                </td>
+                <td>
+                    {{item.sealNo}}
+                </td>
+                <td style="width: 725px; padding-left: 25px; height: 108px; position: relative;">
+                    <div class="follow-status-item">
+                        <img src="../images/blue-done.png">
+                        <div>下单完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 165px;">
+                        <img src="../images/blue-done.png">
+                        <div>出闸时间</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 305px;">
+                        <img src="../images/blue-done.png">
+                        <div>到达工厂</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 445px;">
+                        <img src="../images/blue-done.png">
+                        <div>卸货完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 585px;">
+                        <img src="../images/blue-check.png">
+                        <div>还空完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-line" style="left: 108px;">
+                        <span ng-show="false">等待提重</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+                    <div class="follow-status-line" style="left: 248px;">
+                        <span ng-show="false">等待上柜</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+                    <div class="follow-status-line" style="left: 388px;">
+                        <span ng-show="false">等待卸货</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+                    <div class="follow-status-line" style="left: 528px;">
+                        <span ng-show="false">等待还空</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table ng-show="!isImportOrExport" class="table table-bordered table-hover unEditContainerTable" style="min-width: 1040px; margin-bottom: 0;">
             <thead style="background: #e5e5e5;">
             <tr>
                 <th class="id-display">
@@ -96,7 +177,6 @@
             </tr>
             </tbody>
         </table>
-
         <div style="display: none;">
             <tm-pagination conf="paginationConf"></tm-pagination>
         </div>

@@ -825,3 +825,28 @@ input[type="password"]:focus {
 .unEditContainerTable>tbody>tr:first-child {
     background: #d7f1f2;
 }
+
+
+/* 地图样式 */
+.circle{
+    border-radius: 10px;
+    border: solid 1px silver;
+    width: 25px;
+    height: 25px;
+    padding: 3px;
+    text-align: center;
+    line-height: 18px;
+    max-width: 50px;
+    color:white;
+}
+.circle-red{
+    border-radius: 10px;
+    border: solid 1px silver;
+    width: 25px;
+    height: 25px;
+    padding: 3px;
+    text-align: center;
+    line-height: 18px;
+    max-width: 50px;
+    color:white;
+}

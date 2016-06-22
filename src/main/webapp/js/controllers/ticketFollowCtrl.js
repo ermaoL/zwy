@@ -19,8 +19,8 @@ myApp.controller('ticketFollowCtrl',['$scope', '$state', '$http', 'TicketFollowS
         $scope.isImportOrExport = false;
     }
 
-    $scope.listData = [{"index": "1", "type": "GP40", "containerNo": "APZU3674567", "sealNo": "AH60119916", "status": "2"},
-        {"index": "2", "type": "HQ53", "containerNo": "APZU3822690", "sealNo": "AH60119917", "status": "3"}];
+    $scope.listData = [{"index": "1", "type": "20GP", "containerNo": "APZU3674567", "sealNo": "AH60119916", "status": "2"},
+        {"index": "2", "type": "20GP", "containerNo": "APZU3822690", "sealNo": "AH60119917", "status": "3"}];
 
     $scope.backList = function () {
         if (where == "1") {

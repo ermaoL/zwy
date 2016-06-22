@@ -13,11 +13,12 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <label class="list-label" style="height: 35px; line-height: 35px; margin-bottom: 0;">单据类型：</label>
-                            <div class="detail-bill-status">
-                                <select ng-model="billImExport" id="billImExport">
-                                    <option value="1">进口</option>
-                                    <option value="2">出口</option>
-                                </select>
+                            <div class="detail-bill-status nice-select" name="nice-select">
+                                <input type="text" ng-model="importDetailOrderCompany" readonly>
+                                <ul class="order-ul">
+                                    <li data-value="1">进口</li>
+                                    <li data-value="2">出口</li>
+                                </ul>
                                 <img src="../images/down-arrow.png" class="detail-down-arrow">
                             </div>
                         </div>
@@ -29,11 +30,11 @@
 
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3" style="position: relative;">
-                <button class="btn-search" style="height: 35px; margin-top: 0;" ng-click="userListSearch()">查询</button>
+                <button class="btn-search" style="height: 35px; margin-top: 0; position: absolute; right: 30px;" ng-click="userListSearch()">查询</button>
             </div>
         </div>
     </div>
-    <div style="min-width: 1040px; padding: 5px; border: 1px solid #bfbfbf; margin-top: 10px;">
+    <div style="min-width: 1040px; padding: 5px; border: 1px solid #bfbfbf; margin-top: 10px; position: relative;">
         <div id="order-map">
             <div id="order-panel" class="map-style">
             </div>
