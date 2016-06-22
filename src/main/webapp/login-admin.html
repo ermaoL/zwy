@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="loginAdminApp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>福建外运无车承运平台</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/user.info.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="reg-content">
+    <div class="reg-top-bar">
+        <div style="padding-top: 10px; margin-left: 20px;">OMS</div>
+        <div style="margin-left: 20px;">order management system</div>
+    </div>
+    <div class="reg-input-container">
+        <div class="reg-logo">
+            <img src="images/user-logo.png" style="width: 150px; height: 80px;">
+        </div>
+        <div class="reg-info" ng-controller="loginAdminCtrl">
+            <form role="form" name="loginAdminForm"  novalidate="novalidate" ng-submit="sendAdminLogin()">
+                <div class="reg-input-content">
+                    <label for="_logAdminAccount" class="reg-label">账&nbsp;&nbsp;号：</label>
+                    <input id="_logAdminAccount" type="text" name="loginAdminAccount" ng-model="loginAdminAccount" class="reg-input" style="height: 36px;" placeholder="请输入账号">
+                </div>
+
+                <div class="reg-input-content">
+                    <label for="_logAdminPwd" class="reg-label">密&nbsp;&nbsp;码：</label>
+                    <input id="_logAdminPwd" type="password" name="loginAdminPwd" ng-model="loginAdminPwd" class="reg-input" style="height: 36px;" placeholder="请输入密码">
+                </div>
+
+                <div class="reg-input-content nice-select" name="nice-select">
+                    <label for="_logAdminMember" class="reg-label">管理员：</label>
+                    <input id="_logAdminMember" type="text" name="loginAdminMember" admin-type="" ng-model="loginAdminMember" style="position: absolute; top: 0; left: 65px; height: 40px;" placeholder="请选择管理员类型" readonly>
+                    <ul style="top: 40px;">
+                        <li data-value="1">裕雄（XMZZ）</li>
+                        <li data-value="2">裕国（FZZZ）</li>
+                        <li data-value="3">管理员</li>
+                    </ul>
+                </div>
+
+                <button class="reg-btn" type="submit">登录</button>
+            </form>
+
+        </div>
+
+        <div class="login-browser" style="width: 100%; margin-left: 0;">
+            <span>为了能够更好的使用系统，建议使用Google</span>
+            <a href="http://rj.baidu.com/soft/detail/14744.html?ald" target="_blank" style="color: #ff0000;">【下载】</a>
+            <span>、IE8以上</span>
+            <a href="http://rj.baidu.com/soft/detail/23360.html?ald" target="_blank" style="color: #ff0000;">【下载】</a>
+            <span>、火狐</span>
+            <a href="http://rj.baidu.com/soft/detail/11843.html?ald" target="_blank" style="color: #ff0000;">【下载】</a>
+            <span>浏览器</span>
+        </div>
+    </div>
+    <div class="reg-bottom">
+        <span>版权所有@Cloud Top Information Technologies Co., Ltd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright©福建中外运</span>
+    </div>
+</div>
+<script src="js/vendor/jquery-1.12.2.min.js"></script>
+<script src="js/vendor/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/vendor/angular.js"></script>
+<script type="text/javascript" src="js/vendor/angular-ui-router.js"></script>
+<script src="js/vendor/bootstrap.js"></script>
+<script src="js/controllers/admin/loginAdminCtrl.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>福建外运无车承运平台</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/jquery.dialogbox.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/bootstrapValidator.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main.css?v=1.0"/>
+    <!--[if lte IE 8]>
+    <script>
+        document.createElement('ng-include');
+        document.createElement('ng-pluralize');
+        document.createElement('ui-view');
+
+        // Optionally these for CSS
+        document.createElement('ng:include');
+        document.createElement('ng:pluralize');
+        document.createElement('ng:view');
+    </script>
+    <![endif]-->
+</head>
+<body ng-controller="mainCtrl">
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <div style="font-size: 16px; padding-left: 8px; padding-top: 5px;">
+                OMS
+            </div>
+            <div style="padding-left: 8px;">
+                order management system
+            </div>
+        </div>
+        <div class="top-bar-right">
+            <img src="images/home-logo.png" width="87px" height="44px">
+            <span style="font-size: 14px; margin-left: 20px;">福建外运无车承运平台</span>
+            <div class="top-operate-bg" style="right: 291px;" onmouseover="showChange()" onmouseout="hideChange()" ng-click="toChangePwd()" data-toggle="modal" data-target="#pwdModal">
+                <img src="images/change-pwd.png" style="width: 60px; height: 60px;"/>
+            </div>
+            <img src="images/divider.png" class="top-divider">
+            <div class="top-operate-bg" style="right: 230px;" onmouseover="showQuit()" onmouseout="hideQuit()">
+                <img src="images/quit.png" class="quit-login">
+            </div>
+
+        </div>
+
+        <div class="top-bar-hint show-quit">退出登录</div>
+        <div class="top-bar-hint show-change" style="right: 60px;">修改密码</div>
+    </header>
+    <div id="type-dialogBox"></div>
+    <div id="pwd-dialogBox"></div>
+    <div id="home-content" style="position: relative;">
+        <div class="aside">
+            <aside>
+                <div style="width: 100%; height: 180px; text-align: center;">
+                    <img src="images/default_pic.png" class="default-pic">
+                    <div style="color: #ffffff;font-size: 14px;">
+                        <div>{{homeUserName}}</div>
+                        <div class="main-user-company">{{userCompanyName}}</div>
+                    </div>
+                </div>
+                <a id="import-list-menu" ui-sref="import/list" class="menu-item menu-active">
+                    <span>进口订单中心</span>
+                    <div class="home-arrow" style="display: block;"></div>
+                </a>
+                <a id="import-detail-menu" ui-sref="import/detail" class="menu-item" style="margin-top: 2px">
+                    <span>进口订单维护</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a id="export-list-menu" ui-sref="export/list" class="menu-item" style="margin-top: 2px">
+                    <span>出口订单中心</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a id="export-detail-menu" ui-sref="export/detail" class="menu-item" style="margin-top: 2px">
+                    <span>出口订单维护</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a id="ticket-follow-menu" ui-sref="ticket/follow" class="menu-item" style="margin-top: 20px; display: none;">
+                    <span>整票跟踪</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a ui-sref="single/ticket/follow">
+
+                </a>
+                <a id="transit-order-menu" ui-sref="transit/order" class="menu-item" style="margin-top: 20px">
+                    <span>在途订单跟踪</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a id="bill-inquiry-menu" ui-sref="bill/inquiry" class="menu-item" style="margin-top: 2px">
+                    <span>账单查询</span>
+                    <div class="home-arrow"></div>
+                </a>
+
+            </aside>
+        </div>
+        <div class="section" style="position: absolute; left: 230px; top: 0; bottom: 0; right: 0;">
+            <section>
+                <div ui-view>
+
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="modal fade" id="pwdModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改密码
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="changePwdForm"  novalidate="novalidate" ng-submit="sendChangePwd()" class="form-horizontal">
+                        <div class="form-group" style="margin-bottom: 5px;">
+                            <label for="_regUserName" class="col-lg-3 col-md-3 control-label">原密码：</label>
+                            <div class="col-lg-9 col-md-9">
+                                <input id="_regUserName" type="password" name="oldPwd" ng-model="oldPwd" class="form-control" placeholder="请输入原密码"  required>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-offset-3 col-md-offset-3" style="color: #ff0000;font-size: 12px; padding-left: 10px; padding-bottom: 5px;">
+                                    <span ng-show="changePwdForm.oldPwd.$dirty &amp;&amp; changePwdForm.oldPwd.$error.required">*原密码不能为空</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 5px;">
+                            <label for="_regUserPhone" class="col-lg-3 col-md-3 control-label">新密码：</label>
+                            <div class="col-lg-9 col-md-9">
+                                <input id="_regUserPhone" type="password" name="newPwd" ng-model="newPwd" class="form-control" placeholder="请输入新密码" required>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-offset-3 col-md-offset-3" style="color: #ff0000;font-size: 12px; padding-left: 10px; padding-bottom: 10px;">
+                                    <span ng-show="changePwdForm.newPwd.$dirty &amp;&amp; changePwdForm.newPwd.$error.required">*新密码不能为空</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 100%; text-align: right;">
+                            <button type="submit" class="btn btn-primary">
+                                修改密码
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+
+    <script src="js/vendor/jquery-1.12.2.min.js"></script>
+    <script src="js/vendor/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/vendor/angular.js"></script>
+    <script type="text/javascript" src="js/vendor/angular-ui-router.js"></script>
+    <script src="js/vendor/bootstrap.js"></script>
+    <script src="js/vendor/jquery-validate.js"></script>
+    <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="js/vendor/jquery.dialogBox.js"></script>
+        <script src="js/vendor/bootstrapValidator.js"></script>
+    <script type="text/javascript" src="laydate.dev.js"></script>
+    <script type="text/javascript" src="js/vendor/tm.pagination.js"></script>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=598398cbbf875a0858eb4633b326f0ba&plugin=AMap.Driving"></script>
+    <script src="js/main.js"></script>
+    <script src="js/base.js"></script>
+    <script src="js/controllers/importListCtrl.js"></script>
+    <script src="js/controllers/importDetailCtrl.js"></script>
+    <script src="js/controllers/exportListCtrl.js"></script>
+    <script src="js/controllers/exportDetailCtrl.js"></script>
+    <script src="js/controllers/billInquiryCtrl.js"></script>
+    <script src="js/controllers/ticketFollowCtrl.js"></script>
+    <script src="js/controllers/singleTicketFollowCtrl.js"></script></div>
+    <script src="js/controllers/transitOrderCtrl.js"></script></div>
+</body>
+</html>

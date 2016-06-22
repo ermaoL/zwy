@@ -1,0 +1,138 @@
+<div class="import-list-content" ng-controller="ticketFollowCtrl">
+    <div style="margin-top: 20px; position: relative;">
+        <div class="detail-back-list"><a id="import-back" style="color: #ffffff;"><  返回列表</a></div>
+        <span class="detail-back">进口订单列表 > 整票跟踪</span>
+    </div>
+    <div class="detail-second-table-top" style="border: 1px solid #ddd; margin-top: 30px; color: #333; min-width: 1040px;">
+        <span class="ticket-follow-title">提单号：APL20150620 / 船名：XING HE / 航次：235N</span>
+        <a href="http://app.sinoagentxm.com:8088/appserver/cargotracking.vc?blno=APLU077599348" class="red-btn" style="position: absolute; right: 88px;">全程跟踪</a>
+        <button class="blue-btn" style="position: absolute; right: 0;">订单详情</button>
+    </div>
+    <div id="import-detail-first-table">
+        <table class="table table-bordered table-hover" style="min-width: 1040px; margin-bottom: 0;">
+            <thead style="background: #e5e5e5;">
+            <tr>
+                <th class="id-display">
+                    <span>id</span>
+                </th>
+                <th>
+                    <span>箱型尺寸</span>
+                </th>
+                <th>
+                    <span>箱号</span>
+                </th>
+                <th>
+                    <span>铅封号</span>
+                </th>
+                <th>
+                    <span>状态跟踪</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody id="billListTable" ng-repeat="item in listData">
+            <tr>
+                <td class="id-display">
+                    <span class="billOrderId">{{item.orderId}}</span>
+                </td>
+                <td>
+                    {{item.orderBillNo}}
+                </td>
+                <td>
+                    {{item.orderSailingCode}}
+                </td>
+                <td>
+                    {{item.orderSailingCode}}
+                </td>
+                <td style="min-width: 580px; padding-left: 35px; height: 108px; position: relative;">
+                    <div class="follow-status-item">
+                        <img src="../images/grey-done.png">
+                        <div>下单完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 165px;">
+                        <img src="../images/grey-done.png">
+                        <div>提空完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 305px;">
+                        <img src="../images/grey-done.png">
+                        <div>到达工厂</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 445px;">
+                        <img src="../images/grey-done.png">
+                        <div>装柜完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 585px;">
+                        <img src="../images/grey-done.png">
+                        <div>进港完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <tm-pagination conf="paginationConf"></tm-pagination>
+    </div>
+    <div class="detail-second-table" style="background: #d7e3f3; margin-top: 80px; min-width: 1040px;">
+        <div class="detail-second-table-inner">
+            <div class="follow-info-container">
+                <div id="start" style="display: none;">start</div>
+                <div id="stop" style="display: none;">stop</div>
+                <div id="ticket-follow-info" class="follow-info-map">
+
+                </div>
+                <div class="follow-msg-container">
+                    <div class="follow-info-single-msg" style="color: #ff0000;">
+                        <img src="/images/blue-done.png" style="width: 15px; height: 15px; margin-right: 15px;">
+                        <span style="margin-right: 15px;">2016-03-30 06:00:33</span>
+                        <span>还空</span>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-03-28 16:05:10</span>
+                            <span>离开工厂（还空地点：   箱况：良好  是否超期：否）</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-03-28 10:05:34</span>
+                            <span>到达工厂</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-03-28 10:00:28</span>
+                            <span>重箱启程</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-03-27 10:30:00</span>
+                            <span>出闸（是否寄柜：是   寄柜地点：）</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-03-27 10:05:03</span>
+                            <span>开始操作（码头：厦门特运码头）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

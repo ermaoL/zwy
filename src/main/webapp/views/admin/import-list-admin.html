@@ -1,0 +1,184 @@
+<div class="import-list-content" ng-controller="importListAdminCtrl">
+    <div class="container search-content">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="list-input-container">
+                                <label for="_ladingBillNum" class="list-label">提单号：</label>
+                                <input id="_ladingBillNum" class="list-input" ng-model="importOrderBillNo" style="width: 66%; left: 68px;"/>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="list-input-container">
+                                <label for="_boatName" class="list-label">船名：</label>
+                                <input id="_boatName" class="list-input" ng-model="importOrderShipName" style="width: 76%; left: 50px; padding-left: 0;"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="list-input-container">
+                                <label for="_voyage" class="list-label">航次：</label>
+                                <input id="_voyage" class="list-input" ng-model="importOrderSailing" style="width: 76%; left: 50px; padding-left: 0;"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="list-input-container">
+                                <label for="_containerNo" class="list-label">箱号：</label>
+                                <input id="_containerNo" class="list-input" ng-model="importOrderContainerNo" style="width: 76%; left: 50px; padding-left: 0;"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            <div class="row" style="position: relative;">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="list-input-container">
+                                        <label for="importArriveTime1" class="list-label">抵港日期起：</label>
+                                        <input id="importArriveTime1" class="detail-date" ng-model="importOrderArrivalDateFrom" style="width: 98%; padding-left: 88px;"/>
+                                    </div>
+                                </div>
+                                <div style="font-weight: bold; line-height: 35px; position: absolute; left: 49%;">
+                                    —
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <div class="list-input-container">
+                                        <label for="importArriveTime2" class="list-label">抵港日期止：</label>
+                                        <input id="importArriveTime2" class="detail-date" ng-model="importOrderArrivalDateTo" style="width: 98%; padding-left: 88px;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="position: relative;">
+                <button class="btn-search" ng-click="importListSearch()">查询</button>
+                <button class="btn-reset" ng-click="importListReset()">重置</button>
+            </div>
+        </div>
+    </div>
+    <div style="min-width: 1040px;">
+        <div class="import-table-title">
+            <div style="margin-left: 20px;">订单列表</div>
+            <!--<div class="list-add">新增</div>
+            <div class="list-title-divider" style="right: 160px;"></div>-->
+            <!--<div class="list-import">导入</div>
+            <div class="list-title-divider" style="right: 80px;"></div>-->
+            <div class="list-template">模板下载</div>
+            <div class="list-title-divider" style="right: 0;"></div>
+            <div class="list-follow">全程跟踪</div>
+        </div>
+
+        <table class="table table-bordered table-hover table-list">
+            <thead>
+                <tr style="background: #eeeeee;">
+                    <th style="width: 20px;">
+                        <input id="import-list-select-all" type="checkbox" ng-click="selectImportListAll()"/>
+                    </th>
+                    <th class="id-display">
+                        <span>id</span>
+                    </th>
+                    <th>
+                        <span>序号</span>
+                    </th>
+                    <th>
+                        <span>提单号</span>
+                    </th>
+                    <th>
+                        <span>码头</span>
+                    </th>
+                    <th>
+                        <span>船名</span>
+                    </th>
+                    <th>
+                        <span>航次</span>
+                    </th>
+                    <th>
+                        <span>单据状态</span>
+                    </th>
+                    <th>
+                        <span>抵港日期</span>
+                    </th>
+                    <th style="display: none;">
+                        <span>免费使用期</span>
+                    </th>
+                    <th>
+                        <span>船代</span>
+                    </th>
+                    <th>
+                        <span>总箱数</span>
+                    </th>
+                    <th style="display: none;">
+                        <span>剩余箱数</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="importListTable" ng-repeat="item in listData">
+            <tr ng-dblclick="toAdminImportDetail(item.orderId)">
+                <td>
+                    <input name="importListCheck" class="checkbox" type="checkbox"/>
+                </td>
+                <td class="id-display">
+                    <span class="importOrderId">{{item.orderId}}</span>
+                </td>
+                <td>
+                    {{item.index}}
+                </td>
+                <td>
+                    {{item.orderBillNo}}
+                </td>
+                <td>
+                    {{item.orderWharf}}
+                </td>
+                <td>
+                    {{item.orderShipName}}
+                </td>
+                <td>
+                    {{item.orderSailing}}
+                </td>
+                <td>
+                    {{item.orderStateDesc}}
+                </td>
+                <td>
+                    {{item.orderArrivalDate}}
+                </td>
+                <td style="display: none;">
+                    {{item.orderFreeUseDay}}
+                </td>
+                <td>
+                    {{item.orderShipAgency}}
+                </td>
+                <td>
+                    {{item.orderTotalCase}}
+                </td>
+                <td style="display: none;">
+                    {{item.orderSurplusTank}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <tm-pagination conf="paginationConf"></tm-pagination>
+    </div>
+</div>
+
+<script>
+    function toDetail(item) {
+        sessionStorage.setItem("menuStatus", 2);
+        $('#import-detail-menu').addClass('menu-active');
+        $('#import-detail-menu').find('.home-arrow').css("display", "block");
+        $('#import-detail-menu').siblings().removeClass('menu-active');
+        $('#import-detail-menu').siblings().find('.home-arrow').css("display", "none");
+
+        var importOrderId = $(item).find('span').text();
+        sessionStorage.setItem("operate", "1");
+        sessionStorage.setItem("importOrderId", importOrderId);
+        console.log("list:  "+importOrderId);
+        window.location.href = "admin-home.html#/import/detail";
+
+
+    };
+</script>

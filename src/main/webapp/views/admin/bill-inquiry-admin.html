@@ -1,0 +1,184 @@
+<div class="import-list-content" ng-controller="billInquiryCtrl">
+    <div class="container search-content">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                            <div class="list-input-container">
+                                <label for="_ladingBillNum" class="list-label">提单号：</label>
+                                <input id="_ladingBillNum" class="list-input" ng-model="billOrderBillNo" style="width: 73%"/>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <label class="list-label" style="height: 35px; line-height: 35px; margin-bottom: 0;">进出口：</label>
+                            <div class="detail-bill-status">
+                                <select ng-model="billImExport" id="billImExport">
+                                    <option value="1">进口</option>
+                                    <option value="2">出口</option>
+                                </select>
+                                <img src="../images/down-arrow.png" class="detail-down-arrow">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                        </div>
+                    </div>
+                </div>
+                <div class="arrive-time-container">
+                    <label>抵港时间：</label>
+                    <input type="text" class="select-time-input" ng-model="billSailingDateFrom" id="billSailingTime1"/>
+                    <label style="margin-left: 10px; margin-right: 10px;">至</label>
+                    <input type="text" class="select-time-input" ng-model="billSailingDateTo" id="billSailingTime2"/>
+
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3" style="position: relative;">
+                <button class="btn-search" ng-click="billSearch()">查询</button>
+                <button class="btn-reset" ng-click="billReset()">重置</button>
+            </div>
+        </div>
+    </div>
+    <div style="min-width: 1040px;">
+        <div class="import-table-title">
+            <div style="margin-left: 20px;">账单列表</div>
+        </div>
+
+        <div style="min-width: 1040px; overflow-x: auto;">
+            <table class="table table-bordered table-hover" style="min-width: 1040px;">
+                <thead>
+                <tr>
+                    <th style="width: 20px;">
+                        <input id="bill-inquiry-select-all" type="checkbox" ng-click="selectBillListAll()"/>
+                    </th>
+                    <th class="id-display">
+                        <span>id</span>
+                    </th>
+                    <th>
+                        <span>序号</span>
+                    </th>
+                    <th>
+                        <span>开航日期</span>
+                    </th>
+                    <th>
+                        <span>操作日期</span>
+                    </th>
+                    <th>
+                        <span>提单号</span>
+                    </th>
+                    <th>
+                        <span>箱号</span>
+                    </th>
+                    <th>
+                        <span>箱型</span>
+                    </th>
+                    <th>
+                        <span>提箱地点</span>
+                    </th>
+                    <th>
+                        <span>返箱地点</span>
+                    </th>
+                    <th>
+                        <span>地点</span>
+                    </th>
+                    <th>
+                        <span>进出口</span>
+                    </th>
+                    <th>
+                        <span>船代</span>
+                    </th>
+                    <th>
+                        <span>包干费</span>
+                    </th>
+                    <th>
+                        <span>陆路拖运费</span>
+                    </th>
+                    <th>
+                        <span>充电费</span>
+                    </th>
+                    <th>
+                        <span>堆存费</span>
+                    </th>
+                    <th>
+                        <span>移动费</span>
+                    </th>
+                    <th>
+                        <span>柜检费</span>
+                    </th>
+                    <th>
+                        <span>合计</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="billListTable" ng-repeat="item in billList">
+                <tr>
+                    <td>
+                        <input name="billListCheck" type="checkbox"/>
+                    </td>
+                    <td class="id-display">
+                        <span class="billOrderId">{{item.orderId}}</span>
+                    </td>
+                    <td>
+                        {{item.index}}
+                    </td>
+                    <td>
+                        {{item.orderArrivalDate}}
+                    </td>
+                    <td>
+                        {{item.orderArrivalDate}}
+                    </td>
+                    <td>
+                        {{item.orderShipName}}
+                    </td>
+                    <td>
+                        {{item.orderSailing}}
+                    </td>
+                    <td>
+                        {{item.orderStateDesc}}
+                    </td>
+                    <td>
+                        {{item.orderStateDesc}}
+                    </td>
+                    <td>
+                        {{item.orderStateDesc}}
+                    </td>
+                    <td>
+                        {{item.orderFreeUseDay}}
+                    </td>
+                    <td>
+                        {{item.orderShipAgency}}
+                    </td>
+                    <td>
+                        {{item.orderTotalCase}}
+                    </td>
+                    <td>
+                        {{item.orderSurplusTank}}
+                    </td>
+                    <td>
+                        {{item.orderSurplusTank}}
+                    </td>
+                    <td>
+                        {{item.orderSurplusTank}}
+                    </td>
+                    <td>
+                        {{item.orderSurplusTank}}
+                    </td>
+                    <td>
+                        {{item.orderSurplusTank}}
+                    </td>
+                    <td>
+                        {{item.orderSurplusTank}}
+                    </td>
+                    <td>
+                        {{item.orderSurplusTank}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <tm-pagination conf="paginationConf"></tm-pagination>
+</div>

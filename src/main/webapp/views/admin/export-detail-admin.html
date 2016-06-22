@@ -1,0 +1,925 @@
+<div ng-controller="exportDetailAdminCtrl" class="import-list-content">
+    <div style="margin-top: 20px; position: relative;">
+        <div class="detail-back-list"><a id="export-detail-back" ui-sref="export/list" style="color: #ffffff;"><  返回列表</a></div>
+        <span class="detail-back">出口订单列表 > 出口订单维护</span>
+    </div>
+    <div class="import-table-title" style="background: #ffffff; color: #333;">
+        <div style="margin-left: 20px; font-weight: bold;">单据主信息</div>
+        <button class="red-btn" style="position: absolute; right: 150px;" ng-click="examExportOrder()" ng-show="isAdmin">审核</button>
+        <!--<div class="list-title-divider" style="right: 160px;"></div>-->
+        <button class="red-btn" style="position: absolute; right: 62px;">整票跟踪</button>
+        <!--<div class="list-title-divider" style="right: 80px;"></div>-->
+        <!--<div class="i-detail-top" style="position: absolute; right: 79px;">剩余寄柜</div>-->
+        <!--<div class="list-title-divider" style="right: 0;"></div>-->
+        <button class="blue-btn" style="position: absolute; right: 0;" tabindex="18" ng-click="saveExportOrder()">暂存</button>
+    </div>
+    <div class="import-detail-content">
+        <div class="container" style="padding: 20px; min-width: 1040px;">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container">
+                        <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
+                        <label for="_eDetailLadingBillNum" class="list-label">提单号：</label>
+                        <input id="_eDetailLadingBillNum" tabindex="1" class="list-input" ng-model="exportDetailOrderBillNo" style="width: 68%; left: 70px;"ng-keypress="enterExport($event)"/>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container">
+                        <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
+                        <label for="_eDetailTotalCase" class="list-label">总箱量：</label>
+                        <input id="_eDetailTotalCase" tabindex="2" class="list-input" style="width: 68%; left: 70px;" ng-model="exportDetailTotalCase">
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="position: relative;">
+                    <div class="list-input-container nice-select" name="nice-select">
+                        <label for="_eDetailOwner" class="list-label">箱主：</label>
+                        <input id="_eDetailOwner" tabindex="3" class="list-input exportOwnerInfo" ownerCode="" ng-model="exportDetailOwner" style="width: 78%; left: 50px; padding-left: 0;" onclick="getExportOrderOwner(this)" onkeyup="getExportOrderOwner(this)"/>
+                        <ul class="exportOrderOwner" ng-show="exportDetailOrderState==2?true:false">
+
+                        </ul>
+                    </div>
+                    <div class="list-input-container" style="display: none;">
+                        <label for="_eSystemOrderNum" class="list-label">系统订单号：</label>
+                        <input id="_eSystemOrderNum" class="sys-input" ng-model="exportDetailOrderSystemNo" style="width: 62%" value="123456" readonly/>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="position: relative;">
+                    <div class="list-input-container nice-select" name="nice-select">
+                        <label for="_eDetailBoatAgent" class="list-label">船代：</label>
+                        <input id="_eDetailBoatAgent" tabindex="4" class="list-input" ng-model="exportDetailOrderShipAgency" style="width: 78%; position: absolute; top: 0; height: 33px; left: 50px; padding-left: 0;" readonly/>
+                        <ul ng-show="eDetailBindCompany=='1'&&(exportDetailOrderState==2)?true:false">
+                            <li>外代</li>
+                            <li>中外运</li>
+                            <li>联代</li>
+                            <li>中远</li>
+                            <li>中海</li>
+                            <li>联骏</li>
+                            <li>海丰</li>
+                            <li>港城</li>
+                            <li>协通</li>
+                            <li>华联通</li>
+                        </ul>
+                        <ul ng-show="eDetailBindCompany=='2'&&(exportDetailOrderState==2)?true:false">
+                            <li>外运船代</li>
+                            <li>福州外代</li>
+                            <li>嘉航船代</li>
+                            <li>协通船代</li>
+                            <li>港城船代</li>
+                        </ul>
+                    </div>
+                    <div style="display: none;">
+                        <label class="list-label" style="height: 35px; line-height: 35px;">下发公司：</label>
+                        <div class="detail-bill-status nice-select" name="nice-select">
+                            <input id="exportOrderCompany" type="text" ng-model="exportDetailOrderCompany" readonly>
+                            <ul>
+                                <li data-value="1">裕雄(XMZZ)</li>
+                                <li data-value="2">裕国(FZZZ)</li>
+                            </ul>
+                            <!--<select ng-model="exportDetailOrderCompany">
+                                <option value="1">裕雄(XMHT)</option>
+                                <option value="2">裕国(FZDY)</option>
+                            </select>-->
+                            <img src="../images/down-arrow.png" class="detail-down-arrow">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container nice-select" name="nice-select">
+                        <label for="_eDetailBoatName" class="list-label">船名：</label>
+                        <input id="_eDetailBoatName" tabindex="5" class="list-input" boatCode="" ng-model="exportDetailOrderShipName" style="width: 78%; left: 50px; padding-left: 0;" onclick="getExportOrderBoat(this)" onkeyup="getExportOrderBoat(this)"/>
+                        <ul id="exportOrderBoat" ng-show="exportDetailOrderState==2?true:false">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container nice-select" name="nice-select">
+                        <label for="_eDetailVoyage" class="list-label">航次：</label>
+                        <input id="_eDetailVoyage" tabindex="6" class="list-input" sailCode="" ng-model="exportDetailOrderSailing" style="width: 78%; left: 50px; padding-left: 0;" onclick="getExportOrderSail(this)" onkeyup="getExportOrderSail(this)"/>
+                        <ul id="exportOrderSail" ng-show="exportDetailOrderState==2?true:false">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container nice-select" name="nice-select">
+                        <label for="_eDetailWharf" class="list-label">码头：</label>
+                        <input id="_eDetailWharf" tabindex="7" class="importWharfEnName" wharfCode="" ng-model="exportDetailOrderWharf" style="width: 78%; position: absolute; top: 0; height: 33px; left: 50px; padding-left: 0;" readonly/>
+                        <!--<ul id="exportOrderWharf" ng-show="exportDetailOrderState==2?true:false">
+
+                        </ul>-->
+                        <ul id="exportOrderWharf" ng-show="exportDetailOrderState==2?true:false">
+                            <li>
+                                <span class="boat-item">HTD</span>
+                                <span class="boat-item-name" style="width: 100px;">海天码头</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">HLT</span>
+                                <span class="boat-item-name" style="width: 100px;">海润</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">MZGJ</span>
+                                <span class="boat-item-name" style="width: 100px;">国际货柜</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">SYT</span>
+                                <span class="boat-item-name" style="width: 100px;">嵩屿</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">YHMT</span>
+                                <span class="boat-item-name" style="width: 100px;">远海码头</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container">
+                        <label for="_eDetailArriveTime" class="list-label">开航日期：</label>
+                        <input id="_eDetailArriveTime" tabindex="8" class="detail-date" ng-model="exportDetailOrderSailingDate" style="width: 98%" ng-show="exportDetailOrderState==2||exportDetailOrderState==undefined?true:false" onfocus="laydate();"/>
+                        <span class="detail-date" ng-show="exportDetailOrderState==2?false:true">{{exportDetailOrderSailingDate}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container nice-select" name="nice-select">
+                        <label for="_eDetailEnterPort" class="list-label">中转港：</label>
+                        <input id="_eDetailEnterPort" tabindex="9" class="list-input importWharfEnName" wharfCode="" ng-model="exportDetailOrderEnterPort" style="width: 68%; left: 70px; padding-left: 0;" onclick="getExportOrderPort(this)" onkeyup="getExportOrderPort(this)"/>
+                        <ul class="exportOrderPort" ng-show="exportDetailOrderState==2?true:false">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container nice-select" name="nice-select">
+                        <label for="_eDetailDestinationPort" class="list-label">目的港：</label>
+                        <input id="_eDetailDestinationPort" tabindex="10" class="list-input importWharfEnName" wharfCode="" ng-model="exportDetailOrderDestinationPort" style="width: 68%; left: 70px; padding-left: 0;" onclick="getExportOrderPort(this)" onkeyup="getExportOrderPort(this)"/>
+                        <ul class="exportOrderPort" ng-show="exportDetailOrderState==2?true:false">
+
+                        </ul>
+                    </div>
+                    <div class="list-input-container nice-select" name="nice-select" style="display: none;">
+                        <label for="_eDetailStartPort" class="list-label">起运港：</label>
+                        <input id="_eDetailStartPort" class="list-input importWharfEnName" wharfCode="" ng-model="exportDetailOrderPort" style="width: 73%; height: 18px; line-height: 18px; padding-left: 0;" onclick="getExportOrderPort(this)" onkeyup="getExportOrderPort(this)"/>
+                        <ul class="exportOrderPort" ng-show="exportDetailOrderState==2?true:false">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container">
+                        <label for="_eDetailBookingNumber" class="list-label">电子订舱号：</label>
+                        <input id="_eDetailBookingNumber" tabindex="11" class="list-input" ng-model="exportDetailBookingNumber" style="width: 60%; left: 90px;"/>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container">
+                        <label for="_eDetailShippingCode" class="list-label">货代代码：</label>
+                        <input id="_eDetailShippingCode" tabindex="12" class="list-input" ng-model="exportDetailShippingCode" style="width: 65%; left: 80px;"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px; height: 80px;">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container nice-select" name="nice-select">
+                        <label for="_eDetailGoodOwner" class="list-label">货主：</label>
+                        <input id="_eDetailGoodOwner" tabindex="13" class="list-input exportOwnerInfo" ownerCode="" ng-model="exportDetailOrderGoodOwner" style="width: 78%; left: 50px; padding-left: 0;" onclick="getExportOrderOwner(this)" onkeyup="getExportOrderOwner(this)"/>
+                        <ul class="exportOrderOwner" ng-show="exportDetailOrderState==2?true:false">
+
+                        </ul>
+                    </div>
+                    <div class="list-input-container" style="margin-top: 10px;">
+                        <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
+                        <label for="_eDetailContactPhone" class="list-label">联系电话：</label>
+                        <input id="_eDetailContactPhone" tabindex="15" class="list-input" ng-model="exportDetailOrderContactPhone" style="width: 65%; left: 80px;"/>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container">
+                        <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
+                        <label for="_eDetailLadingContact" class="list-label">联系人：</label>
+                        <input id="_eDetailLadingContact" tabindex="14" class="list-input" ng-model="exportDetailOrderContact" style="width: 68%; left: 70px;"/>
+                    </div>
+                    <div class="list-input-container" style="margin-top: 10px;">
+                        <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
+                        <label for="_eDetailContactEmail" class="list-label">联系邮箱：</label>
+                        <input id="_eDetailContactEmail" tabindex="16" class="list-input" ng-model="exportDetailOrderContactEmail" style="width: 65%; left: 80px;"/>
+                    </div>
+                    <!--<label class="list-label" style="height: 35px; line-height: 35px;">单据状态：</label>
+                    <div class="detail-bill-status">
+                        <span style="margin-left: 15px;">{{exportDetailOrderStateDec}}</span>
+                        &lt;!&ndash;<select ng-model="exportDetailOrderState">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>&ndash;&gt;
+                    </div>-->
+                    <div style="display: none;">{{exportDetailOrderState}}</div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="display: none;">
+                    <label class="list-label" style="height: 35px; line-height: 35px;">是否验箱：</label>
+                    <div class="detail-bill-status nice-select" name="nice-select">
+                        <input id="exportOrderValidContainer" type="text" ng-model="exportDetailOrderCheckContainer" readonly>
+                        <ul>
+                            <li data-value="0">否</li>
+                            <li data-value="1">是</li>
+                        </ul>
+                        <img src="../images/down-arrow.png" class="detail-down-arrow">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="list-input-container" style="height: 80px; padding-top: 3px;">
+                        <label for="_eDetailRemark" class="list-label">备注：</label>
+                        <textarea id="_eDetailRemark" tabindex="17" rows="4" maxlength="2000" style="position: absolute; top: 0; left: 50px; width: 89%; border: none; background: transparent;" ng-model="exportDetailRemark"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px; display: none;">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    <div class="list-input-container" style="display: none;">
+                        <label for="_eDetailFreeUseTime" class="list-label">免费使用期：</label>
+                        <input id="_eDetailFreeUseTime" class="list-input" ng-model="exportDetailOrderFreeUseDay" style="width: 60%"/>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+                </div>
+            </div>
+
+            <div class="row" style="color: #ff0000; font-weight: bold; margin-top: 10px; padding-left: 15px;" ng-show="exportDetailOrderState==3?true:false">
+                <span>拒绝理由：</span>
+                <span>{{exportDetailVerifierContent}}</span>
+            </div>
+        </div>
+
+        <!-- <div class="detail-btn-content">
+           <button class="red-btn" ng-click="addExportBox()">新增</button>
+            <button class="red-btn" ng-click="delExportBoxes()">删除</button>
+            <button class="red-btn" data-toggle="modal" data-target="#addNumsModal">批量新增</button>
+            &lt;!&ndash;<button class="blue-btn">双拖指令</button>&ndash;&gt;
+            <button class="blue-btn" style="position: absolute; right: 0; margin-right: 0px;" ng-click="saveExportContainer()">保存</button>
+        </div>-->
+        <div id="exam-dialogBox"></div>
+        <div id="reject-dialogBox"></div>
+        <div id="finish-dialogBox"></div>
+
+        <div class="detail-first-table">
+            <div style="border: 1px solid #bfbfbf;">
+                <div class="detail-second-table-top">
+                    <button ng-click="addExportBox()" class="second-table-top-operate" style="left: 0;">新增</button>
+                    <div class="second-table-top-divider" style="left: 69px;"></div>
+                    <button class="second-table-top-operate" style="left: 70px;" ng-click="delExportBoxes()">删除</button>
+                    <div class="second-table-top-divider" style="left: 139px;"></div>
+                    <button class="second-table-top-operate" style="left: 140px;" data-toggle="modal" data-target="#addNumsModal">批量新增</button>
+                    <div class="second-table-top-divider" style="left: 209px;"></div>
+                    <button class="second-table-top-operate" style="left: 210px;" ng-click="saveExportContainer()">保存</button>
+                </div>
+                <div id="export-detail-first-table">
+                    <table id="exportContainerTable" class="table table-bordered table-hover table-list" style="overflow-x: auto; margin-bottom: 0;" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==2?true:false">
+                        <thead style="background: #e5e5e5;">
+                        <tr>
+                            <th style="width: 20px;">
+                                <input id="export-select-all1" ng-click="selectExportAll1()" type="checkbox"/>
+                            </th>
+                            <th>
+                                <span>序号</span>
+                            </th>
+                            <th class="id-display">
+                                <span>id</span>
+                            </th>
+                            <th>
+                                <span>状态</span>
+                            </th>
+                            <th style="min-width: 160px; display: none;">
+                                <span>箱主</span>
+                            </th>
+                            <th>
+                                <span>箱号</span>
+                            </th>
+                            <th colspan="2">
+                                <span>箱型尺寸</span>
+                            </th>
+                            <th style="display: none;">
+                                <span>装箱件数</span>
+                            </th>
+                            <th>
+                                <span>提箱点</span>
+                            </th>
+                            <th>
+                                <span>返箱点</span>
+                            </th>
+                            <th>
+                                <span>货重（KG）</span>
+                            </th>
+                            <th>
+                                <span>超重</span>
+                            </th>
+                            <th>
+                                <span>带电机</span>
+                            </th>
+                            <th colspan="2" style="display: none;">
+                                <span>冻柜温度</span>
+                            </th>
+                            <th>
+                                <span>柜检</span>
+                            </th>
+                            <th style="display: none;">
+                                <span>需要柜检单</span>
+                            </th>
+                            <th style="display: none;">
+                                <span>冻代干</span>
+                            </th>
+                            <th>
+                                <span>多地装</span>
+                            </th>
+                            <th>
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="exportContainerBody">
+                        <tr ng-repeat="container in detailData1" ng-dblclick="getExportAddressList($event, container.containerId)">
+                            <td>
+                                <input name="export-box" type="checkbox">
+                            </td>
+                            <td>
+                                <span>{{container.index}}</span>
+                            </td>
+                            <td class="id-display">
+                                <input class="table-input exportContainerId" type="text" value="{{container.containerId}}">
+                            </td>
+                            <td>
+                                <span>{{container.containerStateTypeDesc}}</span>
+                            </td>
+                            <td style="display: none;">
+                                <input class="table-input exportOwnerInfo" type="text" ng-model="container.containerOwner" ownerCode="{{container.containerOwnerCode}}" onclick="getContainerOwnerInfo(this)" onkeyup="getContainerOwnerInfo(this)" onblur="setOwnerListHide(this)">
+                                <div class="table-div">{{container.containerOwner}}</div>
+                                <div class="owner-container">
+                                    <!--<ul class="owner-list">
+                                        <li class="owner-item" ng-repeat="item in importOwnerList">
+                                            <div style="white-space: nowrap;">{{item.companyName}}</div>
+                                        </li>
+                                    </ul>-->
+                                </div>
+                            </td>
+                            <td>
+                                <input class="table-input" type="text" ng-model="container.containerCaseNo" onblur="chkcntrno(this,0);">
+                                <div class="table-div">{{container.containerCaseNo}}</div>
+                            </td>
+                            <td>
+                                <select ng-model="container.containerType">
+                                    <option ng-repeat="x in containerExportType">{{x.typeCode}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select ng-model="container.containerCartonSize">
+                                    <option ng-repeat="x in containerSize">{{x.typeCode}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="table-input exportOwnerInfo" type="text" ng-model="container.containerDrayageDepot" containerAddressCode="{{container.containerDrayageDepotCode}}" onclick="getExportContainerAddress(this)" onkeyup="getExportContainerAddress(this)" onblur="setOwnerListHide(this)">
+                                <div class="table-div">{{container.containerDrayageDepot}}</div>
+                                <div class="owner-container">
+                                    <!--<ul class="owner-list">
+                                        <li class="owner-item" ng-repeat="item in importOwnerList">
+                                            <div style="white-space: nowrap;">{{item.companyName}}</div>
+                                        </li>
+                                    </ul>-->
+                                </div>
+                            </td>
+                            <td>
+                                <input class="table-input exportOwnerInfo" type="text" ng-model="container.containerReturnDepot" containerAddressCode="{{container.containerReturnDepotCode}}" onclick="getExportContainerAddress(this)" onkeyup="getExportContainerAddress(this)" onblur="setOwnerListHide(this)">
+                                <div class="table-div">{{container.containerReturnDepot}}</div>
+                                <div class="owner-container">
+                                    <!--<ul class="owner-list">
+                                        <li class="owner-item" ng-repeat="item in importOwnerList">
+                                            <div style="white-space: nowrap;">{{item.companyName}}</div>
+                                        </li>
+                                    </ul>-->
+                                </div>
+                            </td>
+                            <td style="display: none;">
+                                <input class="table-input" type="text" ng-model="container.containerCount">
+                            </td>
+                            <td>
+                                <input class="table-input" type="text" ng-model="container.containerGrossWeight">
+                                <div class="table-div">{{container.containerGrossWeight}}</div>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="container.containerIsOverWeight" ng-checked="container.containerIsOverWeight=='是'?true:false">
+                                <!--<select class="table-select" ng-model="container.containerIsOverWeight">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>-->
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="container.containerDynamo" ng-checked="container.containerDynamo=='是'?true:false">
+                                <!--<select class="table-select" ng-model="container.containerDynamo">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>-->
+                            </td>
+                            <td style="display: none;">
+                                <input class="table-input" type="text" ng-model="container.containerRfTemp" ng-show="container.containerDynamo=='是'?true:false">
+                                <div style="color: #808080; white-space: nowrap;" ng-show="container.containerDynamo=='否'?true:false"></div>
+                            </td>
+                            <td style="display: none;">
+                                <select ng-model="container.containerTemperUnit" ng-show="container.containerDynamo=='是'?true:false">
+                                    <option value="0">℉</option>
+                                    <option value="1">℃</option>
+                                </select>
+                                <div style="color: #808080; white-space: nowrap;" ng-show="container.containerDynamo=='否'?true:false"></div>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="container.containerIsCheck" ng-checked="container.containerIsCheck=='是'?true:false">
+                                <!-- <select class="table-select" ng-model="container.containerIsCheck">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>-->
+                            </td>
+                            <td style="display: none;">
+                                <select class="table-select" ng-model="container.containerIsCheckliest">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>
+                            </td>
+                            <td style="display: none;">
+                                <select class="table-select" ng-model="container.containerIsReplace">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="container.containerIsMoreUnload" ng-checked="container.containerIsMoreUnload=='是'?true:false">
+                            </td>
+                            <td>
+                                <button class="red-btn" ng-click="endExportBoxTrans(container.containerId)">结束</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-bordered table-hover table-list" style="overflow-x: auto; margin-bottom: 0;" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==2?false:true">
+                        <thead style="background: #e5e5e5;">
+                        <tr>
+                            <th style="width: 20px;">
+                                <input id="export-select-all3" ng-click="selectExportAll3()" type="checkbox"/>
+                            </th>
+                            <th>
+                                <span>序号</span>
+                            </th>
+                            <th class="id-display">
+                                <span>id</span>
+                            </th>
+                            <th>
+                                <span>状态</span>
+                            </th>
+                            <th style="min-width: 160px; display: none;">
+                                <span>箱主</span>
+                            </th>
+                            <th>
+                                <span>箱号</span>
+                            </th>
+                            <th colspan="2">
+                                <span>箱型尺寸</span>
+                            </th>
+                            <th style="display: none;">
+                                <span>装箱件数</span>
+                            </th>
+                            <th>
+                                <span>提箱点</span>
+                            </th>
+                            <th>
+                                <span>返箱点</span>
+                            </th>
+                            <th>
+                                <span>货重（KG）</span>
+                            </th>
+                            <th>
+                                <span>超重</span>
+                            </th>
+                            <th>
+                                <span>带电机</span>
+                            </th>
+                            <th colspan="2" style="display: none;">
+                                <span>冻柜温度</span>
+                            </th>
+                            <th>
+                                <span>柜检</span>
+                            </th>
+                            <th style="display: none;">
+                                <span>需要柜检单</span>
+                            </th>
+                            <th style="display: none;">
+                                <span>冻代干</span>
+                            </th>
+                            <th>
+                                <span>多地装</span>
+                            </th>
+                            <th>
+                                <span>操作</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="exportContainerBody">
+                        <tr ng-repeat="container in detailData1" ng-dblclick="getExportAddressList(container.containerId)">
+                            <td>
+                                <input name="export-box" type="checkbox">
+                            </td>
+                            <td>
+                                <span>{{container.index}}</span>
+                            </td>
+                            <td class="id-display">
+                                <input class="table-input exportContainerId" type="text" value="{{container.containerId}}">
+                            </td>
+                            <td>
+                                <span>{{container.containerStateTypeDesc}}</span>
+                            </td>
+                            <td style="display: none;">
+                                <span>{{container.containerOwner}}</span>
+                            </td>
+                            <td>
+                                <span>{{container.containerCaseNo}}</span>
+                            </td>
+                            <td>
+                                <select ng-model="container.containerType" disabled>
+                                    <option ng-repeat="x in containerExportType">{{x.typeCode}}</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select ng-model="container.containerCartonSize" disabled>
+                                    <option ng-repeat="x in containerSize">{{x.typeCode}}</option>
+                                </select>
+                            </td>
+                            <td style="display: none;">
+                                <span>{{container.containerCount}}</span>
+                            </td>
+                            <td>
+                                <span>{{container.containerDrayageDepot}}</span>
+                            </td>
+                            <td>
+                                <span>{{container.containerReturnDepot}}</span>
+                            </td>
+                            <td>
+                                <span>{{container.containerGrossWeight}}</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="container.containerIsOverWeight" ng-checked="container.containerIsOverWeight=='是'?true:false" disabled>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="container.containerDynamo" ng-checked="container.containerDynamo=='是'?true:false" disabled>
+                            </td>
+                            <td style="display: none;">
+                                <span ng-show="container.containerDynamo=='是'?false:true"></span>
+                                <span ng-show="container.containerDynamo=='是'?true:false">{{container.containerRfTemp}}</span>
+                            </td>
+                            <td style="display: none;">
+                                <span ng-show="container.containerDynamo=='是'?false:true"></span>
+                                <span ng-show="container.containerDynamo=='是'?true:false">{{container.containerTemperUnit==0?'℉':'℃'}}</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="container.containerIsCheck" ng-checked="container.containerIsCheck=='是'?true:false" disabled>
+                            </td>
+                            <td style="display: none;">
+                                <span>{{container.containerIsCheckliest}}</span>
+                            </td>
+                            <td style="display: none;">
+                                <span>{{container.containerIsReplace}}</span>
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model="container.containerIsMoreUnload" ng-checked="container.containerIsMoreUnload=='是'?true:false" disabled>
+                            </td>
+                            <td>
+                                <button class="red-btn" ng-click="endExportBoxTrans(container.containerId)">结束</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="detail-second-table-inner">
+                    <div style="border-top: 1px solid #bfbfbf;">
+                        <div class="detail-second-table-top">
+                            <button class="second-table-top-operate" style="left: 0;" ng-click="addExportBoxInfo()">新增</button>
+                            <div class="second-table-top-divider" style="left: 69px;"></div>
+                            <button class="second-table-top-operate" style="left: 70px;" ng-click="delExportBoxInfo()">删除</button>
+                            <div class="second-table-top-divider" style="left: 139px;"></div>
+                            <button class="second-table-top-operate" style="left: 140px;" ng-click="saveExportAddress()">保存</button>
+                        </div>
+                        <div id="export-detail-second-table">
+                            <table id="exportAddressTable" class="table table-bordered table-hover" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==2?true:false">
+                                <thead style="background: #e5e5e5;">
+                                <tr>
+                                    <th style="width: 20px;">
+                                        <input id="export-select-all2" ng-click="selectExportAll2()" type="checkbox"/>
+                                    </th>
+                                    <th>
+                                        <span>序号</span>
+                                    </th>
+                                    <th class="id-display">
+                                        <span>id</span>
+                                    </th>
+                                    <th>
+                                        <span>装货地</span>
+                                    </th>
+                                    <th>
+                                        <span>到柜时间</span>
+                                    </th>
+                                    <th>
+                                        <span>工厂联系人</span>
+                                    </th>
+                                    <th>
+                                        <span>联系电话</span>
+                                    </th>
+                                    <th>
+                                        <span>省</span>
+                                    </th>
+                                    <th>
+                                        <span>市</span>
+                                    </th>
+                                    <th>
+                                        <span>区</span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="address in detailData3">
+                                    <td>
+                                        <input name="export-boxInfo" type="checkbox"/>
+                                    </td>
+                                    <td>
+                                        <span>{{address.index}}</span>
+                                    </td>
+                                    <td class="id-display">
+                                        <input class="table-input exportAddressId" type="text" value="{{address.addressId}}">
+                                    </td>
+                                    <td>
+                                        <input class="table-input" type="text" value="{{address.addressPlace}}">
+                                    </td>
+                                    <td>
+                                        <input class="table-input" type="text" value="{{address.addressArriveTime}}" onfocus="laydate({istime: true, format: 'YYYY-MM-DD hh'})">
+                                    </td>
+                                    <td>
+                                        <input class="table-input" type="text" value="{{address.addressContacts}}">
+                                    </td>
+                                    <td>
+                                        <input class="table-input" type="text" value="{{address.addressTel}}" onblur="checkTel(this)">
+                                    </td>
+                                    <td>
+                                        <select required="" ng-model="address.addressProvince" ng-options="key as key for (key,value) in division"
+                                                ng-change="address.addressCity='';address.addressDistrict='';">
+                                        </select>
+                                        <!--<input class="table-input" type="text" value="{{address.addressProvince}}">-->
+                                    </td>
+                                    <td>
+                                        <select ng-model="address.addressCity" ng-options="key as key for (key,value) in division[address.addressProvince]"
+                                                ng-change="address.addressDistrict='';">
+                                        </select>
+                                        <!--<input class="table-input" type="text" value="{{address.addressCity}}">-->
+                                    </td>
+                                    <td>
+                                        <select ng-model="address.addressDistrict">
+                                            <option ng-repeat="value in division[address.addressProvince][address.addressCity]">{{value}}</option>
+                                        </select>
+                                        <!--<input class="table-input" type="text" value="{{address.addressDistrict}}">-->
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered table-hover" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==2?false:true">
+                                <thead style="background: #e5e5e5;">
+                                <tr>
+                                    <th style="width: 20px;">
+                                        <input id="export-select-all4" ng-click="selectExportAll4()" type="checkbox"/>
+                                    </th>
+                                    <th>
+                                        <span>序号</span>
+                                    </th>
+                                    <th class="id-display">
+                                        <span>id</span>
+                                    </th>
+                                    <th>
+                                        <span>装货地</span>
+                                    </th>
+                                    <th>
+                                        <span>到柜时间</span>
+                                    </th>
+                                    <th>
+                                        <span>工厂联系人</span>
+                                    </th>
+                                    <th>
+                                        <span>联系电话</span>
+                                    </th>
+                                    <th>
+                                        <span>省</span>
+                                    </th>
+                                    <th>
+                                        <span>市</span>
+                                    </th>
+                                    <th>
+                                        <span>区</span>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="address in detailData3">
+                                    <td>
+                                        <input name="export-boxInfo" type="checkbox"/>
+                                    </td>
+                                    <td>
+                                        <span>{{address.index}}</span>
+                                    </td>
+                                    <td class="id-display">
+                                        <input class="table-input exportAddressId" type="text" value="{{address.addressId}}">
+                                    </td>
+                                    <td>
+                                        <span>{{address.addressPlace}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{address.addressArriveTime}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{address.addressContacts}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{address.addressTel}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{address.addressProvince}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{address.addressCity}}</span>
+                                    </td>
+                                    <td>
+                                        <span>{{address.addressDistrict}}</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="addNumsModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 780px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        批量新增
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <!--<label for="_eBoxOwners" class="col-lg-2 col-md-2 control-label">箱主：</label>
+                            <div class="col-lg-4 col-md-4 nice-select" name="nice-select" style="padding-right: 30px;">
+                                <input id="_eBoxOwners" type="text" ownerCode="" class="form-control" ng-model="exportMultiContainerOwner" style="border: 1px solid #ccc;" ng-model="importMultiContainerOwner" onclick="getExportMultiOrderOwner(this)" onkeyup="getExportMultiOrderOwner(this)">
+                                <ul id="exportMultiOrderOwner" style="margin-left: 16px; margin-right: 31px; top: 35px;">
+
+                                </ul>
+                            </div>-->
+                            <label for="_eBoxNos" class="col-lg-2 col-md-2 col-sm-2 control-label">箱号：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
+                                <input id="_eBoxNos" type="text" class="form-control" ng-model="exportMultiContainerNo" onblur="chkcntrno(this,0);">
+                            </div>
+                            <label for="_iBoxTypes" class="col-lg-2 col-md-2 col-sm-2 control-label">箱型：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
+                                <select id="_iBoxTypes" class="form-control" ng-model="exportMultiContainerType">
+                                    <option ng-repeat="x in containerExportType">{{x.typeCode}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="_iBoxSizes" class="col-lg-2 col-md-2 col-sm-2 control-label">尺寸：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
+                                <select id="_iBoxSizes" class="form-control" ng-model="exportMultiContainerSize">
+                                    <option ng-repeat="x in containerSize" value="{{x.typeCode}}">{{x.typeCode}}</option>
+                                </select>
+                            </div>
+                            <label for="_eBoxDrayages" class="col-lg-2 col-md-2 col-sm-2 control-label">提箱点：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4 nice-select" name="nice-select" style="padding-right: 30px;">
+                                <input id="_eBoxDrayages" containerAddressCode ="" type="text" class="form-control exportDepot" style="border: 1px solid #ccc;" ng-model="exportMultiContainerDrayage" onclick="getExportMultiOrderDepot(this)" onkeyup="getExportMultiOrderDepot(this)">
+                                <ul class="exportMultiOrderDepot" style="margin-left: 16px; margin-right: 31px; top: 35px;">
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="_eBoxReturns" class="col-lg-2 col-md-2 col-sm-2 control-label">返箱点：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4 nice-select" name="nice-select" style="padding-right: 30px;">
+                                <input id="_eBoxReturns" containerAddressCode ="" type="text" class="form-control exportDepot" style="border: 1px solid #ccc;" ng-model="importMultiContainerReturn" onclick="getExportMultiOrderDepot(this)" onkeyup="getExportMultiOrderDepot(this)">
+                                <ul class="exportMultiOrderDepot" style="margin-left: 16px; margin-right: 31px; top: 35px;">
+
+                                </ul>
+                            </div>
+                            <label for="_iRoughWeight" class="col-lg-2 col-md-2 col-sm-2 control-label">货重（KG）：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
+                                <input id="_iRoughWeight" type="text" class="form-control" ng-model="exportMultiContainerGrossWeight">
+                            </div>
+                        </div>
+                        <!--<div class="form-group" ng-show="exportMultiContainerDynamo=='否'?false:true">
+                            <label for="_iFreezers" class="col-lg-2 col-md-2 control-label">冻柜温度：</label>
+                            <div class="col-lg-4 col-md-4" style="padding-right: 30px;">
+                                <input id="_iFreezers" type="text" class="form-control" ng-model="exportMultiContainerRfTemp">
+                            </div>
+                            <label for="_iFreezerUnits" class="col-lg-2 col-md-2 control-label">冻柜温度单位：</label>
+                            <div class="col-lg-4 col-md-4" style="padding-right: 30px;">
+                                <select id="_iFreezerUnits" class="form-control" ng-model="exportMultiContainerTemperUnit">
+                                    <option value="0">℉</option>
+                                    <option value="1">℃</option>
+                                </select>
+                            </div>
+                        </div>-->
+                        <div class="form-group">
+                            <label for="_iIsMultis" class="col-lg-2 col-md-2 col-sm-2 control-label">是否超重：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
+                                <select id="_iIsMultis" class="form-control" ng-model="exportMultiContainerIsOverWeight">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>
+                            </div>
+                            <label for="_iIsTakes" class="col-lg-2 col-md-2 col-sm-2 control-label">是否带电机：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
+                                <select id="_iIsTakes" class="form-control" ng-model="exportMultiContainerDynamo">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="_iIsCaseChecks" class="col-lg-2 col-md-2 col-sm-2 control-label">是否柜检：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
+                                <select id="_iIsCaseChecks" class="form-control" ng-model="exportMultiContainerIsCheck">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>
+                            </div>
+                            <label for="_iIsCaseChecks" class="col-lg-2 col-md-2 col-sm-2 control-label">是否多地装：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
+                                <select id="_iIsMultiUpload" class="form-control" ng-model="exportMultiUpload">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="_iNumbers" class="col-lg-2 col-md-2 col-sm-2 control-label">数量：</label>
+                            <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
+                                <input id="_iNumbers" type="text" class="form-control" ng-model="exportMultiAdd.numbers">
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <label for="_iIsNeedCaseLists" class="col-lg-2 col-md-2 control-label">是否要柜检单：</label>
+                            <div class="col-lg-4 col-md-4" style="padding-right: 30px;">
+                                <select id="_iIsNeedCaseLists" class="form-control" ng-model="exportMultiContainerIsCheckliest">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>
+                            </div>
+                            <label for="_iIsFreeReplaces" class="col-lg-2 col-md-2 control-label">是否冻代干：</label>
+                            <div class="col-lg-4 col-md-4" style="padding-right: 30px;">
+                                <select id="_iIsFreeReplaces" class="form-control" ng-model="exportMultiContainerIsReplace">
+                                    <option value="是">是</option>
+                                    <option value="否">否</option>
+                                </select>
+                            </div>
+                            <label for="_iBoxNums" class="col-lg-2 col-md-2 control-label">装箱件数：</label>
+                            <div class="col-lg-4 col-md-4" style="padding-right: 30px;">
+                                <input id="_iBoxNums" type="text" class="form-control" ng-model="exportMultiContainerCount">
+                            </div>
+                        </div>-->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addExportBoxes()">
+                        新增
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+
+    </div>
+
+</div>
+

@@ -1,0 +1,253 @@
+<div class="import-list-content" ng-controller="billInquiryCtrl">
+    <div class="container search-content">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                            <div class="list-input-container">
+                                <label for="_ladingBillNum" class="list-label">提单号：</label>
+                                <input id="_ladingBillNum" class="list-input" ng-model="billOrderBillNo" style="width: 73%"/>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3">
+                            <label class="list-label" style="height: 35px; line-height: 35px; margin-bottom: 0;">进出口：</label>
+                            <div class="detail-bill-status">
+                                <select ng-model="billImExport" id="billImExport">
+                                    <option value="1">进口</option>
+                                    <option value="2">出口</option>
+                                </select>
+                                <img src="../images/down-arrow.png" class="detail-down-arrow">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="list-input-container">
+                                <label for="_containerNo" class="list-label">箱号：</label>
+                                <input id="_containerNo" class="list-input" ng-model="containerNo" style="width: 80%"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="arrive-time-container">
+                    <div style="font-weight: bold; height: 35px; line-height: 35px;">统计时间：</div>
+                    <div class="date-input-container nice-select" name="nice-select" style="left: 95px; width: 80px;">
+                        <input type="text" class="select-time-input" ng-model="billSailingDateFrom" id="billSailingYear" readonly/>
+                        <ul>
+                            <li>2000</li>
+                            <li>2001</li>
+                            <li>2002</li>
+                            <li>2003</li>
+                            <li>2004</li>
+                            <li>2005</li>
+                            <li>2006</li>
+                            <li>2007</li>
+                            <li>2008</li>
+                            <li>2009</li>
+                            <li>2010</li>
+                            <li>2011</li>
+                            <li>2012</li>
+                            <li>2013</li>
+                            <li>2014</li>
+                            <li>2015</li>
+                            <li>2016</li>
+                            <li>2017</li>
+                            <li>2018</li>
+                            <li>2019</li>
+                            <li>2020</li>
+                            <li>2021</li>
+                            <li>2022</li>
+                            <li>2023</li>
+                            <li>2024</li>
+                            <li>2025</li>
+                        </ul>
+                        <img src="../images/down-arrow.png" class="detail-down-arrow">
+                    </div>
+
+                    <div style="position: absolute; left: 185px; top: 0; height: 35px; line-height: 35px; font-weight: bold;">年</div>
+
+                    <div class="date-input-container nice-select" name="nice-select" style="left: 210px; width: 80px;">
+                        <input type="text" class="select-time-input" ng-model="billSailingDateTo" id="billSailingMonth" readonly/>
+                        <ul>
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
+                            <li>4</li>
+                            <li>5</li>
+                            <li>6</li>
+                            <li>7</li>
+                            <li>8</li>
+                            <li>9</li>
+                            <li>10</li>
+                            <li>11</li>
+                            <li>12</li>
+                        </ul>
+                        <img src="../images/down-arrow.png" class="detail-down-arrow">
+                    </div>
+                    <div style="position: absolute; left: 300px; top: 0; height: 35px; line-height: 35px; font-weight: bold;">月</div>
+
+                    <div style="position: absolute; left: 330px; top: 0;">
+                        <div class="date-input-container" style="width: 200px;">
+                            <input type="text" class="select-time-input" ng-model="importOrderArrivalDateFrom" id="billSailingTime1" onclick="laydate();" onblur="cleanBillYearAndMonth()"/>
+                            <img src="../images/down-arrow.png" class="detail-down-arrow">
+                        </div>
+                        <div style="position: absolute; left: 210px; top: 0; height: 35px; line-height: 35px; font-weight: bold;">至</div>
+
+                        <div class="date-input-container" style="left: 235px; width: 200px;">
+                            <input type="text" class="select-time-input" ng-model="importOrderArrivalDateTo" id="billSailingTime2" onclick="laydate();" onblur="cleanBillYearAndMonth()"/>
+                            <img src="../images/down-arrow.png" class="detail-down-arrow">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3" style="position: relative;">
+                <button class="btn-search" ng-click="billSearch()">查询</button>
+                <button class="btn-reset" ng-click="billReset()">重置</button>
+            </div>
+        </div>
+    </div>
+    <div style="min-width: 1040px;">
+        <div class="import-table-title">
+            <div style="margin-left: 20px;">账单列表</div>
+        </div>
+
+        <div style="min-width: 1040px; overflow-x: auto;">
+            <table class="table table-bordered table-hover" style="min-width: 1040px;">
+                <thead>
+                <tr>
+                    <th style="width: 20px;">
+                        <input id="bill-inquiry-select-all" type="checkbox" ng-click="selectBillListAll()"/>
+                    </th>
+                    <th class="id-display">
+                        <span>id</span>
+                    </th>
+                    <th>
+                        <span>序号</span>
+                    </th>
+                    <th>
+                        <span>开航日期</span>
+                    </th>
+                    <th>
+                        <span>操作日期</span>
+                    </th>
+                    <th>
+                        <span>提单号</span>
+                    </th>
+                    <th>
+                        <span>箱号</span>
+                    </th>
+                    <th>
+                        <span>箱型</span>
+                    </th>
+                    <th>
+                        <span>提箱地点</span>
+                    </th>
+                    <th>
+                        <span>返箱地点</span>
+                    </th>
+                    <th>
+                        <span>地点</span>
+                    </th>
+                    <th>
+                        <span>进出口</span>
+                    </th>
+                    <th>
+                        <span>船代</span>
+                    </th>
+                    <th>
+                        <span>包干费</span>
+                    </th>
+                    <th>
+                        <span>陆路拖运费</span>
+                    </th>
+                    <th>
+                        <span>充电费</span>
+                    </th>
+                    <th>
+                        <span>堆存费</span>
+                    </th>
+                    <th>
+                        <span>移动费</span>
+                    </th>
+                    <th>
+                        <span>柜检费</span>
+                    </th>
+                    <th>
+                        <span>合计</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="billListTable" ng-repeat="item in billList">
+                <tr>
+                    <td>
+                        <input name="billListCheck" type="checkbox"/>
+                    </td>
+                    <td class="id-display">
+                        <span class="billOrderId">{{item.orderId}}</span>
+                    </td>
+                    <td>
+                        {{item.index}}
+                    </td>
+                    <td>
+                        {{item.kaiHangDate}}
+                    </td>
+                    <td>
+                        {{item.kaiHangDate}}
+                    </td>
+                    <td>
+                        {{item.tiDanHao}}
+                    </td>
+                    <td>
+                        {{item.xiangHao}}
+                    </td>
+                    <td>
+                        {{item.xiangXing}}
+                    </td>
+                    <td>
+                        {{item.tiXiangDiDian}}
+                    </td>
+                    <td>
+                        {{item.fangXiangDiDian}}
+                    </td>
+                    <td>
+                        {{item.diDian}}
+                    </td>
+                    <td>
+                        {{item.jinChuKou}}
+                    </td>
+                    <td>
+                        {{item.chuangDai}}
+                    </td>
+                    <td>
+                        {{item.baoGanFei}}
+                    </td>
+                    <td>
+                        {{item.luyuntuoyunfei}}
+                    </td>
+                    <td>
+                        {{item.chongdianfei}}
+                    </td>
+                    <td>
+                        {{item.duicunfei}}
+                    </td>
+                    <td>
+                        {{item.yindongfei}}
+                    </td>
+                    <td>
+                        {{item.guijianfei}}
+                    </td>
+                    <td>
+                        {{item.heji}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <tm-pagination conf="paginationConf"></tm-pagination>
+    <div class="bill-total-cost"><label>总计：</label><span>18654</span></div>
+
+
+</div>

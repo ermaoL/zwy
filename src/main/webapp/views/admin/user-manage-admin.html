@@ -1,0 +1,157 @@
+<div class="import-list-content" ng-controller="userManageCtrl">
+    <div class="container search-content" style="height: auto;">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="list-input-container">
+                                <label for="_userName" class="list-label">用户名：</label>
+                                <input id="_userName" class="list-input" ng-model="userName" style="width: 70%"/>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <div class="list-input-container">
+                                <label for="_phoneNum" class="list-label">手机号：</label>
+                                <input id="_phoneNum" class="list-input" ng-model="phoneNum" style="width: 70%"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="position: relative;">
+                <button class="btn-search" style="height: 35px; margin-top: 0;" ng-click="userListSearch()">查询</button>
+                <button class="btn-reset" style="height: 35px; margin-top: 0;" ng-click="userListReset()">重置</button>
+            </div>
+        </div>
+    </div>
+    <div id="success-dialogBox"></div>
+    <div id="fail-dialogBox"></div>
+    <div style="min-width: 1040px;">
+        <div class="import-table-title">
+            <div style="margin-left: 20px;">注册用户列表</div>
+        </div>
+
+        <table class="table table-bordered table-hover table-list">
+            <thead>
+            <tr style="background: #eeeeee;">
+                <th style="width: 20px;">
+                    <input id="user-list-select-all" type="checkbox" ng-click="selectUserInfoListAll()"/>
+                </th>
+                <th class="id-display">
+                    <span>id</span>
+                </th>
+                <th>
+                    <span>序号</span>
+                </th>
+                <th>
+                    <span>用户名</span>
+                </th>
+                <th>
+                    <span>手机号</span>
+                </th>
+                <th>
+                    <span>公司名</span>
+                </th>
+                <th colspan="2">
+                    <span>审核状态</span>
+                </th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in listData">
+                <td>
+                    <input name="userListCheck" class="checkbox" type="checkbox"/>
+                </td>
+                <td class="id-display">
+                    <span class="userId">{{item.userId}}</span>
+                </td>
+                <td>
+                    {{item.index}}
+                </td>
+                <td>
+                    {{item.userName}}
+                </td>
+                <td>
+                    {{item.userTel}}
+                </td>
+                <td>
+                    {{item.userCompany}}
+                </td>
+                <td style="color: #2b82c7; width: 70px;">
+                    <div class="user-is-pass" data-target="#passModal" data-toggle="modal" ng-click="setCompanyName(item.userId, item.userCompany)">通过</div>
+                </td>
+                <td style="color: #f47040; width: 70px;" ng-click="examUserInfoFail(item.userId)">
+                    <div class="user-is-pass">不通过</div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <tm-pagination conf="paginationConf"></tm-pagination>
+    </div>
+    <div class="modal fade" id="passModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 300px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        审核通过
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div ng-model="examUserId">
+                        <div style="font-size: 13px;">请选择绑定运输公司</div>
+                        <table class="table table-bordered" style="margin-top: 10px; width: 265px;">
+                            <tr>
+                                <td style="width: 40px; vertical-align: middle;">
+                                    <input id="xmzzCheck" type="radio" name="bindCompany" checked>
+                                </td>
+                                <td>裕雄(XMZZ)</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 40px; vertical-align: middle;">
+                                    <input id="fzzzCheck" type="radio" name="bindCompany">
+                                </td>
+                                <td>裕国(FZZZ)</td>
+                            </tr>
+                        </table>
+                        <div style="font-size: 13px; margin-top: 10px;">请选择绑定用户所属公司</div>
+                        <div style="position: relative; height: 40px; line-height: 40px; margin-top: 5px; margin-bottom: 50px;">
+                            <label for="_userCompanyName">公司名称：</label>
+                            <div class="form-control nice-select" name="nice-select" style="position: absolute; top: 0; left: 75px; width: 190px; height: 40px; padding: 0;">
+                                <input id="_userCompanyName" type="text" companyId="" ng-model="userManageCompany" style="height: 38px; width: 180px; font-size: 13px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;" placeholder="请输入公司名称" onfocus="getRegisterCompany(this)" onkeyup="getRegisterCompany(this)">
+                                <ul id="reg-company" style="top: 40px;">
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="dialog-btn">
+                        <span class="dialog-btn-cancel" data-dismiss="modal">取消</span>
+                        <span class="dialog-btn-confirm" ng-click="passUserExam()">通过</span>
+                    </div>
+                </div>
+                <!--<div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">取消
+                    </button>
+                    <div class="dialog-btn" ng-click="passUserExam()">
+                        <span>通过</span>
+                    </div>
+                </div>-->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+        </div>
+</div>

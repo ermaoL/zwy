@@ -1,0 +1,105 @@
+<div class="import-list-content" ng-controller="ticketFollowCtrl">
+    <div class="container search-content">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                            <div class="list-input-container">
+                                <label for="_ladingBillNum" class="list-label">提单号：</label>
+                                <input id="_ladingBillNum" class="list-input" ng-model="billOrderBillNo" style="width: 73%"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-5">
+                            <div class="list-input-container">
+                                <label for="_ticketCaseNum" class="list-label">柜号：</label>
+                                <input id="_ticketCaseNum" class="list-input" ng-model="ticketCaseNo" style="width: 73%"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="row arrive-time-container">
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <label class="list-label" style="height: 35px; line-height: 35px; margin-bottom: 0;">进出口：</label>
+                        <div class="detail-bill-status" style="left: 75px;">
+                            <select ng-model="ticketImExport" id="ticketImExport">
+                                <option value="1">进口</option>
+                                <option value="2">出口</option>
+                            </select>
+                            <img src="../images/down-arrow.png" class="detail-down-arrow">
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3">
+                        <label class="list-label" style="height: 35px; line-height: 35px; margin-bottom: 0;">柜型：</label>
+                        <div class="detail-bill-status" style="left: 75px;">
+                            <select ng-model="billImExport" id="billImExport">
+                                <option value="1">进口</option>
+                                <option value="2">出口</option>
+                            </select>
+                            <img src="../images/down-arrow.png" class="detail-down-arrow">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3" style="position: relative;">
+                <button class="btn-search" style="right: 210px;" ng-click="billSearch()">查询</button>
+                <button class="btn-reset" style="right: 115px;" ng-click="billReset()">重置</button>
+                <button class="btn-follow" ng-click="ticketFollow()">运输跟踪</button>
+            </div>
+        </div>
+    </div>
+    <div style="min-width: 1040px;">
+        <div class="import-table-title">
+            <div style="margin-left: 20px;">状态列表</div>
+        </div>
+
+        <div style="min-width: 1040px; overflow-x: auto;">
+            <table class="table table-bordered table-hover" style="min-width: 1040px;">
+                <thead>
+                <tr>
+                    <th style="width: 20px;">
+                        <input id="ticket-follow-select-all" type="checkbox" ng-click="selectBillListAll()"/>
+                    </th>
+                    <th class="id-display">
+                        <span>id</span>
+                    </th>
+                    <th>
+                        <span>提单号</span>
+                    </th>
+                    <th>
+                        <span>柜号</span>
+                    </th>
+                    <th>
+                        <span>状态跟踪</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody id="billListTable" ng-repeat="item in billList">
+                <tr>
+                    <td>
+                        <input name="ticketCheck" type="checkbox"/>
+                    </td>
+                    <td class="id-display">
+                        <span class="billOrderId">{{item.orderId}}</span>
+                    </td>
+                    <td>
+                        {{item.index}}
+                    </td>
+                    <td>
+                        {{item.orderArrivalDate}}
+                    </td>
+                    <td>
+                        {{item.orderArrivalDate}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

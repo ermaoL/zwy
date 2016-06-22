@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="changePwdApp">
+<head>
+    <meta charset="UTF-8">
+    <title>福建外运无车承运平台</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/user.info.css">
+</head>
+<body>
+<div class="reg-content">
+    <div class="reg-top-bar">
+        <div style="padding-top: 10px; margin-left: 20px;">OMS</div>
+        <div style="margin-left: 20px;">order management system</div>
+    </div>
+    <div class="reg-input-container">
+        <div class="reg-logo">
+            <img src="images/user-logo.png" style="width: 150px; height: 80px;">
+        </div>
+        <div class="reg-info" ng-controller="changePwdCtrl">
+            <form role="form" name="changePwdForm"  novalidate="novalidate" ng-submit="sendChangePwd()">
+                <div class="has-feedback">
+                    <div class="reg-input-content">
+                        <label for="_regUserName" class="reg-label">原密码：</label>
+                        <input id="_regUserName" type="password" name="oldPwd" ng-model="oldPwd" class="reg-input" placeholder="请输入原密码"  required>
+                    </div>
+                    <div class="user-hint">
+                        <span ng-show="changePwdForm.oldPwd.$dirty &amp;&amp; changePwdForm.oldPwd.$error.required">*原密码不能为空</span>
+                    </div>
+                </div>
+                <div class="has-feedback">
+                    <div class="reg-input-content">
+                        <label for="_regUserPhone" class="reg-label">新密码：</label>
+                        <input id="_regUserPhone" type="password" name="newPwd" ng-model="newPwd" class="reg-input" placeholder="请输入新密码" required>
+                    </div>
+                    <div class="user-hint">
+                        <span ng-show="changePwdForm.newPwd.$dirty &amp;&amp; changePwdForm.newPwd.$error.required">*新密码不能为空</span>
+                    </div>
+                </div>
+
+                <button class="reg-btn" type="submit">修改密码</button>
+            </form>
+
+        </div>
+    </div>
+    <div class="reg-bottom">
+        <span>版权所有@Cloud Top Information Technologies Co., Ltd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright©福建中外运</span>
+    </div>
+</div>
+<script src="js/vendor/jquery-1.12.2.min.js"></script>
+<script type="text/javascript" src="js/vendor/angular.js"></script>
+<script type="text/javascript" src="js/vendor/angular-ui-router.js"></script>
+<script src="js/vendor/bootstrap.js"></script>
+<script src="js/controllers/changePwdCtrl.js"></script>
+</body>
+</html>

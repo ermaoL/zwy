@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="loginApp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>福建外运无车承运平台</title>
+    <link rel="stylesheet" href="css/user.info.css">
+</head>
+<body>
+<div class="reg-content" ng-controller="loginCtrl">
+    <div class="reg-top-bar">
+        <div style="padding-top: 10px; margin-left: 20px;">OMS</div>
+        <div style="margin-left: 20px;">order management system</div>
+    </div>
+    <div class="login-input-container">
+        <div class="login-logo">
+            <img src="images/user-logo.png" width="150px" height="80px">
+            <div class="login-project-name">福建中外运无车承运接单平台</div>
+        </div>
+        <div class="login-info">
+            <form role="form" name="loginForm"  novalidate="novalidate" ng-submit="sendLogin()" method="post">
+                <div class="login-info-input">
+                    <div class="login-user-input-content">
+                        <label for="_loginUserName" class="reg-label">用户名：</label>
+                        <input id="_loginUserName" type="text" name="user" ng-model="loginUser" class="reg-input" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="login-pwd-input-content">
+                        <label for="_loginUserPwd" class="reg-label">密&nbsp;码：</label>
+                        <input id="_loginUserPwd" type="password" name="pwd" ng-model="loginPwd" class="reg-input" placeholder="请输入密码" required>
+                    </div>
+                </div>
+                <button class="login-btn" type="submit" id="toLogin">GO</button>
+            </form>
+
+        </div>
+        <a href="reset-pwd.html" class="login-forget-pwd">忘记密码？</a>
+        <a href="register.html" class="login-forget-pwd">注册</a>
+
+        <div class="login-browser">
+            <span>为了能够更好的使用系统，建议使用Google</span>
+            <a href="http://rj.baidu.com/soft/detail/14744.html?ald" target="_blank" style="color: #ff0000;">【下载】</a>
+            <span>、IE8以上</span>
+            <a href="http://rj.baidu.com/soft/detail/23360.html?ald" target="_blank" style="color: #ff0000;">【下载】</a>
+            <span>、火狐</span>
+            <a href="http://rj.baidu.com/soft/detail/11843.html?ald" target="_blank" style="color: #ff0000;">【下载】</a>
+            <span>浏览器</span>
+        </div>
+    </div>
+    <div class="reg-bottom">
+        <span>版权所有@Cloud Top Information Technologies Co., Ltd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright©福建中外运</span>
+    </div>
+</div>
+<script src="js/vendor/jquery-1.12.2.min.js"></script>
+<script src="js/vendor/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/vendor/angular.js"></script>
+<script type="text/javascript" src="js/vendor/angular-ui-router.js"></script>
+<script src="js/vendor/bootstrap.js"></script>
+<script src="js/main.js"></script>
+<script src="js/controllers/loginCtrl.js"></script>
+</body>
+</html>

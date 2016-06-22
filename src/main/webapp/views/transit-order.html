@@ -1,0 +1,43 @@
+<div class="import-list-content" ng-controller="transitOrderCtrl">
+    <div class="container search-content" style="height: auto;">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="list-input-container">
+                                <label for="_userName" class="list-label">客户：</label>
+                                <input id="_userName" class="list-input" ng-model="userName" style="width: 80%"/>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <label class="list-label" style="height: 35px; line-height: 35px; margin-bottom: 0;">单据类型：</label>
+                            <div class="detail-bill-status">
+                                <select ng-model="billImExport" id="billImExport">
+                                    <option value="1">进口</option>
+                                    <option value="2">出口</option>
+                                </select>
+                                <img src="../images/down-arrow.png" class="detail-down-arrow">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3" style="position: relative;">
+                <button class="btn-search" style="height: 35px; margin-top: 0;" ng-click="userListSearch()">查询</button>
+            </div>
+        </div>
+    </div>
+    <div style="min-width: 1040px; padding: 5px; border: 1px solid #bfbfbf; margin-top: 10px;">
+        <div id="order-map">
+            <div id="order-panel" class="map-style">
+            </div>
+
+        </div>
+    </div>
+</div>
