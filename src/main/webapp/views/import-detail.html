@@ -603,17 +603,20 @@
                                     <td>
                                         <select required="" ng-model="address.addressProvince" ng-options="key as key for (key,value) in division"
                                                 ng-change="address.addressCity='';address.addressDistrict='';">
+                                            <option value=""></option>
                                         </select>
                                         <!--<input class="table-input" type="text" value="{{address.addressProvince}}">-->
                                     </td>
                                     <td>
                                         <select ng-model="address.addressCity" ng-options="key as key for (key,value) in division[address.addressProvince]"
                                                 ng-change="address.addressDistrict='';">
+                                            <option value=""></option>
                                         </select>
                                         <!--<input class="table-input" type="text" value="{{address.addressCity}}">-->
                                     </td>
                                     <td>
                                         <select ng-model="address.addressDistrict">
+                                            <option value=""></option>
                                             <option ng-repeat="value in division[address.addressProvince][address.addressCity]">{{value}}</option>
                                         </select>
                                         <!--<input class="table-input" type="text" value="{{address.addressDistrict}}">-->
