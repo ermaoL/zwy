@@ -3,16 +3,16 @@
  */
 myApp.controller('importListCtrl', ['$scope', '$state', '$http', 'ImportListService', function($scope, $state, $http, ImportListService) {
 
-    laydate({
+    /*laydate({
         elem: '#importArriveTime1'
     });
 
     laydate({
         elem: '#importArriveTime2'
-    });
+    });*/
 
-    //alert($.cookie("userName"));
 
+    $('#laydate_box').css("display", "none");
     /*$('tr').dblclick(function () {
         window.location.href = "index.html#/import/detail";
         sessionStorage.setItem("menuStatus", 2);

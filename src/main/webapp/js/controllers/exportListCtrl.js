@@ -4,15 +4,15 @@
 
 myApp.controller('exportListCtrl', ['$scope', '$state', '$http', 'ExportListService', function($scope, $state, $http, ExportListService) {
 
-    laydate({
+    /*laydate({
         elem: '#exportArriveTime1'
     });
 
     laydate({
         elem: '#exportArriveTime2'
-    });
-
-
+    });*/
+    
+    $('#laydate_box').css("display", "none");
 
     $scope.selectExportListAll = function () {
         var temp = $('#export-list-select-all').prop('checked');

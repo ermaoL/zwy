@@ -2,7 +2,7 @@
  * Created by cookie on 2016/5/11.
  */
 
-myApp.controller('exportDetailCtrl', function($scope, $http) {
+myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($scope, $state, $http) {
 
     /*laydate({
         elem: '#_eDetailArriveTime'
@@ -690,7 +690,13 @@ myApp.controller('exportDetailCtrl', function($scope, $http) {
             content: '是否确定下单？'
         });
     }
-
+    
+// 跳转到整票跟踪
+    $scope.toTicketFollow = function () {
+        $state.go('ticket/follow');
+        sessionStorage.setItem("menuStatus", 4);
+        sessionStorage.setItem("isImOrEx", 2);
+    }
 
 
     /******************** 出口订单维护表格操作 ************************/
@@ -922,7 +928,7 @@ myApp.controller('exportDetailCtrl', function($scope, $http) {
 
     }
 
-});
+}]);
 
 function getContainerOwnerInfo(item) {
     var owner = $(item).val();

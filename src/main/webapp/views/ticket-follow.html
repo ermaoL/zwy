@@ -1,15 +1,21 @@
+<script type="text/javascript">
+    jQuery(function($) {
+        $(".swipebox").swipebox();
+    });
+</script>
 <div class="import-list-content" ng-controller="ticketFollowCtrl">
-    <div style="margin-top: 20px; position: relative;">
-        <div class="detail-back-list"><a id="import-back" style="color: #ffffff;"><  返回列表</a></div>
-        <span class="detail-back">进口订单列表 > 整票跟踪</span>
+    <div style="margin-top: 10px; position: relative;">
+        <div class="detail-back-list" ng-click="backList()" style="cursor: pointer;"><a id="import-back" style="color: #ffffff;"><  返回中心</a></div>
+        <span ng-show="isImportOrExport" class="detail-back">进口订单中心 > 整票跟踪</span>
+        <span ng-show="!isImportOrExport" class="detail-back">出口订单中心 > 整票跟踪</span>
     </div>
     <div class="detail-second-table-top" style="border: 1px solid #ddd; margin-top: 30px; color: #333; min-width: 1040px;">
-        <span class="ticket-follow-title">提单号：APL20150620 / 船名：XING HE / 航次：235N</span>
+        <span class="ticket-follow-title">提单号：APLU077620902 / 船名：APL OAKLAND / 航次：050</span>
         <a href="http://app.sinoagentxm.com:8088/appserver/cargotracking.vc?blno=APLU077599348" class="red-btn" style="position: absolute; right: 88px;">全程跟踪</a>
-        <button class="blue-btn" style="position: absolute; right: 0;">订单详情</button>
+        <button class="blue-btn" style="position: absolute; right: 0;" ng-click="backDetail()">订单详情</button>
     </div>
     <div id="import-detail-first-table">
-        <table class="table table-bordered table-hover" style="min-width: 1040px; margin-bottom: 0;">
+        <table ng-show="isImportOrExport" class="table table-bordered table-hover unEditContainerTable" style="min-width: 1040px; margin-bottom: 0;">
             <thead style="background: #e5e5e5;">
             <tr>
                 <th class="id-display">
@@ -29,105 +35,334 @@
                 </th>
             </tr>
             </thead>
-            <tbody id="billListTable" ng-repeat="item in listData">
-            <tr>
+            <tbody>
+            <tr ng-repeat="item in listData" ng-dblclick="getContainerMsg($event, item.index)">
                 <td class="id-display">
-                    <span class="billOrderId">{{item.orderId}}</span>
+                    <span class="billOrderId">{{item.index}}</span>
                 </td>
                 <td>
-                    {{item.orderBillNo}}
+                    {{item.type}}
                 </td>
                 <td>
-                    {{item.orderSailingCode}}
+                    {{item.containerNo}}
                 </td>
                 <td>
-                    {{item.orderSailingCode}}
+                    {{item.sealNo}}
                 </td>
-                <td style="min-width: 580px; padding-left: 35px; height: 108px; position: relative;">
+                <td style="width: 725px; padding-left: 25px; height: 108px; position: relative;">
                     <div class="follow-status-item">
-                        <img src="../images/grey-done.png">
+                        <img src="../images/blue-done.png">
                         <div>下单完成</div>
                         <div style="font-size: 8px;">2016.06.21 16:34:51</div>
                     </div>
                     <div class="follow-status-item" style="left: 165px;">
-                        <img src="../images/grey-done.png">
-                        <div>提空完成</div>
+                        <img src="../images/blue-done.png">
+                        <div>出闸时间</div>
                         <div style="font-size: 8px;">2016.06.21 16:34:51</div>
                     </div>
                     <div class="follow-status-item" style="left: 305px;">
-                        <img src="../images/grey-done.png">
+                        <img src="../images/blue-done.png">
                         <div>到达工厂</div>
                         <div style="font-size: 8px;">2016.06.21 16:34:51</div>
                     </div>
                     <div class="follow-status-item" style="left: 445px;">
-                        <img src="../images/grey-done.png">
-                        <div>装柜完成</div>
+                        <img src="../images/blue-done.png">
+                        <div>卸货完成</div>
                         <div style="font-size: 8px;">2016.06.21 16:34:51</div>
                     </div>
                     <div class="follow-status-item" style="left: 585px;">
-                        <img src="../images/grey-done.png">
-                        <div>进港完成</div>
+                        <img src="../images/blue-check.png">
+                        <div>还空完成</div>
                         <div style="font-size: 8px;">2016.06.21 16:34:51</div>
                     </div>
+                    <div class="follow-status-line" style="left: 108px;">
+                        <span ng-show="false">等待提重</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+                    <div class="follow-status-line" style="left: 248px;">
+                        <span ng-show="false">等待上柜</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+                    <div class="follow-status-line" style="left: 388px;">
+                        <span ng-show="false">等待卸货</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+                    <div class="follow-status-line" style="left: 528px;">
+                        <span ng-show="false">等待还空</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+
                 </td>
             </tr>
             </tbody>
         </table>
+        <table ng-show="!isImportOrExport" class="table table-bordered table-hover unEditContainerTable" style="min-width: 1040px; margin-bottom: 0;">
+            <thead style="background: #e5e5e5;">
+            <tr>
+                <th class="id-display">
+                    <span>id</span>
+                </th>
+                <th>
+                    <span>箱型尺寸</span>
+                </th>
+                <th>
+                    <span>箱号</span>
+                </th>
+                <th>
+                    <span>铅封号</span>
+                </th>
+                <th>
+                    <span>状态跟踪</span>
+                </th>
+            </tr>
+            </thead>
+            <tbody id="billListTable">
+            <tr ng-repeat="item in listData" ng-dblclick="getContainerMsg($event, item.index)">
+                <td class="id-display">
+                    <span class="billOrderId">{{item.index}}</span>
+                </td>
+                <td>
+                    {{item.type}}
+                </td>
+                <td>
+                    {{item.containerNo}}
+                </td>
+                <td>
+                    {{item.sealNo}}
+                </td>
+                <td style="width: 725px; padding-left: 25px; height: 108px; position: relative;">
+                    <div class="follow-status-item">
+                        <img src="../images/blue-done.png">
+                        <div>下单完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 165px;">
+                        <img src="../images/blue-done.png">
+                        <div>提空完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 305px;">
+                        <img src="../images/blue-done.png">
+                        <div>到达工厂</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 445px;">
+                        <img src="../images/blue-done.png">
+                        <div>装柜完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-item" style="left: 585px;">
+                        <img src="../images/blue-check.png">
+                        <div>进港完成</div>
+                        <div style="font-size: 8px;">2016.06.21 16:34:51</div>
+                    </div>
+                    <div class="follow-status-line" style="left: 108px;">
+                        <span ng-show="false">等待提空</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+                    <div class="follow-status-line" style="left: 248px;">
+                        <span ng-show="false">等待上柜</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+                    <div class="follow-status-line" style="left: 388px;">
+                        <span ng-show="false">等待装货</span>
+                        <img src="/images/blue-line.png">
+                    </div>
+                    <div class="follow-status-line" style="left: 528px;">
+                        <span ng-show="false">等待进码头</span>
+                        <img src="/images/blue-line.png">
+                    </div>
 
-        <tm-pagination conf="paginationConf"></tm-pagination>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="display: none;">
+            <tm-pagination conf="paginationConf"></tm-pagination>
+        </div>
+
     </div>
-    <div class="detail-second-table" style="background: #d7e3f3; margin-top: 80px; min-width: 1040px;">
+    <div class="detail-second-table" style="background: #d7e3f3; margin-top: 40px; min-width: 1040px;">
         <div class="detail-second-table-inner">
             <div class="follow-info-container">
                 <div id="start" style="display: none;">start</div>
                 <div id="stop" style="display: none;">stop</div>
-                <div id="ticket-follow-info" class="follow-info-map">
+                <div id="ticket-follow-info" class="follow-info-map" ng-click="toSingleTicket()">
+                    <div id="panel">
+
+                    </div>
+                </div>
+                <div class="follow-info-pic">
+                    <div style="position: relative;">
+                        <img src="/images/long-left-arrow.png" style="height: 70px; width: 25px; position: absolute;top: 0; left: 0;">
+                        <a href="/images/temp/all-track.png" class="swipebox" style="margin-left: 25px;">
+                            <img src="/images/temp/all-track.png" width="100" height="70">
+                        </a>
+                        <a href="/images/temp/containerNo.jpg" class="swipebox">
+                            <img src="/images/temp/containerNo.jpg" width="100" height="70">
+                        </a>
+                        <a href="/images/temp/sealNo.jpg" class="swipebox">
+                            <img src="/images/temp/sealNo.jpg" width="100" height="70">
+                        </a>
+                        <img src="/images/long-right-arrow.png" style="height: 70px; width: 25px; position: absolute;top: 0; right: 0;">
+                    </div>
 
                 </div>
-                <div class="follow-msg-container">
-                    <div class="follow-info-single-msg" style="color: #ff0000;">
-                        <img src="/images/blue-done.png" style="width: 15px; height: 15px; margin-right: 15px;">
-                        <span style="margin-right: 15px;">2016-03-30 06:00:33</span>
-                        <span>还空</span>
+                <div class="follow-msg-container" ng-show="conStatus">
+                    <div class="follow-info-single-msg" style="color: #ff0000; margin-left: -5px;">
+                        <img src="/images/red-done.png" style="width: 25px; height: 25px; margin-right: 8px;">
+                        <span style="margin-right: 15px;">2016-5-27 16:03:23</span>
+                        <span>进港（码头：海天码头   车牌号：闽D-55922   司机：方曦）</span>
                     </div>
                     <div>
                         <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
                         <div class="follow-info-single-msg">
                             <img src="/images/little-grey-done.png" class="follow-info-img">
-                            <span style="margin-right: 15px;">2016-03-28 16:05:10</span>
-                            <span>离开工厂（还空地点：   箱况：良好  是否超期：否）</span>
+                            <span style="margin-right: 15px;">2016-5-27 14:02:23</span>
+                            <span>离开工厂（车牌号：闽D-55922   司机：方曦）</span>
                         </div>
                     </div>
                     <div>
                         <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
                         <div class="follow-info-single-msg">
                             <img src="/images/little-grey-done.png" class="follow-info-img">
-                            <span style="margin-right: 15px;">2016-03-28 10:05:34</span>
-                            <span>到达工厂</span>
+                            <span style="margin-right: 15px;">2016-5-27 12:35:23</span>
+                            <span>抵达工厂（工厂地址：南安大霞美滨江机械制造基地宏盛兴机械）</span>
                         </div>
                     </div>
                     <div>
                         <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
                         <div class="follow-info-single-msg">
                             <img src="/images/little-grey-done.png" class="follow-info-img">
-                            <span style="margin-right: 15px;">2016-03-28 10:00:28</span>
-                            <span>重箱启程</span>
+                            <span style="margin-right: 15px;">2016-5-27 8:48:26</span>
+                            <span>提空完成（箱号：APZU3674567   铅封号：AH60119916）</span>
                         </div>
                     </div>
                     <div>
                         <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
                         <div class="follow-info-single-msg">
                             <img src="/images/little-grey-done.png" class="follow-info-img">
-                            <span style="margin-right: 15px;">2016-03-27 10:30:00</span>
-                            <span>出闸（是否寄柜：是   寄柜地点：）</span>
+                            <span style="margin-right: 15px;">2016-5-27 7:45:23</span>
+                            <span>出发提空（司机：方曦   车牌号：闽D-55922）</span>
                         </div>
                     </div>
                     <div>
                         <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
                         <div class="follow-info-single-msg">
                             <img src="/images/little-grey-done.png" class="follow-info-img">
-                            <span style="margin-right: 15px;">2016-03-27 10:05:03</span>
-                            <span>开始操作（码头：厦门特运码头）</span>
+                            <span style="margin-right: 15px;">2016-5-26 15:55:03</span>
+                            <span>接受任务</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-26 15:41:10</span>
+                            <span>下达司机</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-26 15:40:26</span>
+                            <span>计划任务</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-26 14:09:22</span>
+                            <span>审核</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-26 13:59:22</span>
+                            <span>下单</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="follow-msg-container" ng-show="!conStatus">
+                    <div class="follow-info-single-msg" style="color: #ff0000; margin-left: -5px;">
+                        <img src="/images/red-done.png" style="width: 25px; height: 25px; margin-right: 8px;">
+                        <span style="margin-right: 15px;">2016-5-27 16:03:23</span>
+                        <span>进港（码头：海天码头   车牌号：闽D-C3736   司机：陈领震）</span>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-27 10:09:23</span>
+                            <span>离开工厂（车牌号：闽D-C3736   司机：陈领震）</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-27 4:10:23</span>
+                            <span>抵达工厂（工厂地址：南安大霞美滨江机械制造基地宏盛兴机械）</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-27 10:36:26</span>
+                            <span>提空完成（箱号：APZU3822690   铅封号：AH60119917）</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-27 9:25:23</span>
+                            <span>出发提空（车牌号：闽D-C3736   司机：陈领震）</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-26 18:59:03</span>
+                            <span>接受任务</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-26 18:52:10</span>
+                            <span>下达司机</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-26 18:50:26</span>
+                            <span>计划任务</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-26 14:09:26</span>
+                            <span>审核</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="height: 30px; width: 1px; background: #d2d2d2; margin-left: 7px;"></div>
+                        <div class="follow-info-single-msg">
+                            <img src="/images/little-grey-done.png" class="follow-info-img">
+                            <span style="margin-right: 15px;">2016-5-26 13:59:26</span>
+                            <span>下单</span>
                         </div>
                     </div>
                 </div>

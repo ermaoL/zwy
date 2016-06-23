@@ -1,5 +1,5 @@
 <div class="import-list-content" ng-controller="exportDetailCtrl">
-    <div style="margin-top: 20px; position: relative;">
+    <div style="margin-top: 10px; position: relative;">
         <div class="detail-back-list"><a id="export-detail-back" ui-sref="export/list" style="color: #ffffff;"><  返回中心</a></div>
         <span class="detail-back">出口订单中心 > 出口订单维护</span>
     </div>
@@ -12,7 +12,7 @@
         <!--<div class="list-title-divider" style="right: 80px;"></div>-->
         <!--<div class="i-detail-top" style="position: absolute; right: 79px;">剩余寄柜</div>-->
         <!--<div class="list-title-divider" style="right: 0;"></div>-->
-        <button class="red-btn" style="position: absolute; right: 0;">整票跟踪</button>
+        <button class="red-btn" style="position: absolute; right: 0;" ng-click="toTicketFollow()">整票跟踪</button>
     </div>
     <div class="import-detail-content">
         <form class="form-horizontal" style="padding: 20px; min-width: 1040px;">
@@ -674,19 +674,22 @@
                                         <input class="table-input" type="text" value="{{address.addressTel}}" onkeyup="checkTel(this)">
                                     </td>
                                     <td>
-                                        <select required="" ng-model="address.addressProvince" ng-init="address.addressProvince=''" ng-options="key as key for (key,value) in division"
+                                        <select ng-model="address.addressProvince" ng-options="key as key for (key,value) in division"
                                                 ng-change="address.addressCity='';address.addressDistrict='';">
+                                            <option value=""></option>
                                         </select>
                                         <!--<input class="table-input" type="text" value="{{address.addressProvince}}">-->
                                     </td>
                                     <td>
-                                        <select ng-model="address.addressCity" ng-init="address.addressCity=''" ng-options="key as key for (key,value) in division[address.addressProvince]"
+                                        <select ng-model="address.addressCity" ng-options="key as key for (key,value) in division[address.addressProvince]"
                                                 ng-change="address.addressDistrict='';">
+                                            <option value=""></option>
                                         </select>
                                         <!--<input class="table-input" type="text" value="{{address.addressCity}}">-->
                                     </td>
                                     <td>
-                                        <select ng-model="address.addressDistrict" ng-init="address.addressDistrict=''">
+                                        <select ng-model="address.addressDistrict">
+                                            <option value=""></option>
                                             <option ng-repeat="value in division[address.addressProvince][address.addressCity]">{{value}}</option>
                                         </select>
                                         <!--<input class="table-input" type="text" value="{{address.addressDistrict}}">-->
