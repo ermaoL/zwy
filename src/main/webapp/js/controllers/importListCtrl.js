@@ -11,6 +11,8 @@ myApp.controller('importListCtrl', ['$scope', '$state', '$http', 'ImportListServ
         elem: '#importArriveTime2'
     });
 
+    //alert($.cookie("userName"));
+
     /*$('tr').dblclick(function () {
         window.location.href = "index.html#/import/detail";
         sessionStorage.setItem("menuStatus", 2);
