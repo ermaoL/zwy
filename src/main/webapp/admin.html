@@ -10,6 +10,18 @@
     <link href="css/jquery.dialogbox.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/user.info.css" rel="stylesheet">
+    <!--[if lte IE 8]>
+    <script>
+        document.createElement('ng-include');
+        document.createElement('ng-pluralize');
+        document.createElement('ui-view');
+
+        // Optionally these for CSS
+        document.createElement('ng:include');
+        document.createElement('ng:pluralize');
+        document.createElement('ng:view');
+    </script>
+    <![endif]-->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -27,6 +39,7 @@
 <script type="text/javascript" src="js/vendor/angular-ui-router.js"></script>
 <script src="js/vendor/bootstrap.js"></script>
 <script src="js/vendor/jquery.dialogBox.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20121008/json2.js"></script>
 <script type="text/javascript" src="laydate.dev.js"></script>
 <script type="text/javascript" src="js/vendor/tm.pagination.js"></script>
 <script type="text/javascript" src="js/vendor/zDrag.js"></script>
