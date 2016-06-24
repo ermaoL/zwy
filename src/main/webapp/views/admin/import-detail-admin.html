@@ -1,6 +1,6 @@
 <div ng-controller="importDetailAdminCtrl" class="import-list-content">
     <div style="margin-top: 10px; position: relative;">
-        <div class="detail-back-list"><a id="import-back" ui-sref="import/list" style="color: #ffffff;"><  返回列表</a></div>
+        <div class="detail-back-list"><a id="import-back" ui-sref="mainAdmin.importList" style="color: #ffffff;"><  返回列表</a></div>
         <span class="detail-back">进口订单列表 > 进口订单维护</span>
     </div>
     <div class="import-table-title" style="background: #ffffff; color: #333;">
@@ -312,7 +312,7 @@
                                 </div>
                             </td>
                             <td>
-                                <input class="table-input" type="text" ng-model="container.containerCaseNo" onblur="chkcntrno(this,0);">
+                                <input class="table-input" type="text" ng-model="container.containerCaseNo" onkeyup="this.value = this.value.toUpperCase();" onblur="chkcntrno(this,0);">
                                 <div class="table-div">{{container.containerCaseNo}}</div>
                             </td>
                             <td style="display: none;">
@@ -320,7 +320,7 @@
                                 <div class="table-div">{{container.containerCount}}</div>
                             </td>
                             <td>
-                                <input class="table-input" type="text" ng-model="container.containerSealNo">
+                                <input class="table-input" type="text" ng-model="container.containerSealNo" onkeyup="this.value = this.value.toUpperCase();">
                                 <div class="table-div">{{container.containerSealNo}}</div>
                             </td>
                             <td>

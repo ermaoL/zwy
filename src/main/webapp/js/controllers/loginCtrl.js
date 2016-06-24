@@ -69,7 +69,7 @@ myApp.controller('loginCtrl', ['$scope', '$http', '$state', function($scope, $ht
                     $.cookie('userConnectPhone', data.userConnectPhone);
                     $.cookie('userConnectEmail', data.userConnectEmail);
                     // window.location.href = "/index.html";
-                    // window.location.href = "/admin-home.html";
+                    // window.location.href = "/main-admin.html";
                     $state.go('index.importList');
                 }else{
                     alert(data.errorMsg);

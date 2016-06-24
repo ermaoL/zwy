@@ -1,9 +1,8 @@
 /**
  * Created by Administrator on 2016/6/2.
  */
-var loginAdminApp = angular.module('loginAdminApp', [
-    'ui.router']);
-loginAdminApp.controller('loginAdminCtrl', ['$scope', '$http', '$state', function($scope, $http, $state) {
+
+myAdminApp.controller('loginAdminCtrl', ['$scope', '$http', '$state', function($scope, $http, $state) {
     var height = $(window).height();
     $('.reg-content').css("height", height);
     $('.reg-input-container').css("height", height-120);
@@ -64,9 +63,9 @@ loginAdminApp.controller('loginAdminCtrl', ['$scope', '$http', '$state', functio
                     $.cookie('token',data.token);
                     $.cookie('authType',data.authType);
                     $.cookie('nickName',data.nickName);
-                    window.location.href = "/admin-home.html";
+                    $state.go('mainAdmin.importList');
                 }else{
-                    alert(data.errorMsg);
+                    errorAdminMsgHint(data.errorCode, data.errorMsg);
                 }
             });
 
@@ -90,7 +89,7 @@ loginAdminApp.controller('loginAdminCtrl', ['$scope', '$http', '$state', functio
              });*/
         }
         else {
-            alert("用户名或密码不能为空");
+            Dialog.alert("用户名或密码不能为空");
         }
     };
 

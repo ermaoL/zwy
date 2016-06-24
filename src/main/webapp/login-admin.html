@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="loginAdminApp">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>福建外运无车承运平台</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/user.info.css">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<div class="reg-content">
+<script>
+    var isLoginUrl = window.location.href;
+    if (isLoginUrl.indexOf('login-admin.html') > 0) {
+        window.location.href = "admin.html#/admin/login";
+    }
+</script>
+<div class="reg-content" ng-controller="loginAdminCtrl">
     <div class="reg-top-bar">
         <div style="padding-top: 10px; margin-left: 20px;">OMS</div>
         <div style="margin-left: 20px;">order management system</div>
@@ -20,7 +13,7 @@
         <div class="reg-logo">
             <img src="images/user-logo.png" style="width: 150px; height: 80px;">
         </div>
-        <div class="reg-info" ng-controller="loginAdminCtrl">
+        <div class="reg-info">
             <form role="form" name="loginAdminForm"  novalidate="novalidate" ng-submit="sendAdminLogin()">
                 <div class="reg-input-content">
                     <label for="_logAdminAccount" class="reg-label">账&nbsp;&nbsp;号：</label>
@@ -61,11 +54,3 @@
         <span>版权所有@Cloud Top Information Technologies Co., Ltd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright©福建中外运</span>
     </div>
 </div>
-<script src="js/vendor/jquery-1.12.2.min.js"></script>
-<script src="js/vendor/jquery.cookie.js"></script>
-<script type="text/javascript" src="js/vendor/angular.js"></script>
-<script type="text/javascript" src="js/vendor/angular-ui-router.js"></script>
-<script src="js/vendor/bootstrap.js"></script>
-<script src="js/controllers/admin/loginAdminCtrl.js"></script>
-</body>
-</html>

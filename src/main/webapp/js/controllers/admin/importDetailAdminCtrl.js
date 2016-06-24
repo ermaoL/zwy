@@ -61,7 +61,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         var item = $event.target;
         $(item).parents('tr').css("background", "#d7f1f2");
         $(item).parents('tr').siblings('tr').css("background", "#ffffff");
-        console.log("containerId:   "+ id);
+        // console.log("containerId:   "+ id);
         sessionStorage.setItem("importFirstContainerId", id);
         var url = "/trans/base/admin/import/" + id + "/address";
         $http({
@@ -120,8 +120,8 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                     transformRequest: transform
                 }).success(function(data) {
                     if (data.success) {
-                        alert("订单审核通过");
-                        window.location.href = "admin-home.html#/import/list";
+                        Dialog.alert("订单审核通过");
+                        window.location.href = "main-admin.html#/import/list";
                     }else{
                         errorAdminMsgHint(data.errorCode, data.errorMsg);
                     }
@@ -159,8 +159,8 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                                 transformRequest: transform
                             }).success(function(data) {
                                 if (data.success) {
-                                    alert("订单审核不通过");
-                                    window.location.href = "admin-home.html#/import/list";
+                                    Dialog.alert("订单审核不通过");
+                                    window.location.href = "main-admin.html#/import/list";
                                 }else{
                                     errorAdminMsgHint(data.errorCode, data.errorMsg);
                                 }
@@ -201,10 +201,10 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                         alert(data.errorMsg);
                     }
                 });*/
-                alert("结束！");
+                Dialog.alert("结束");
             },
             cancel: function(){
-                alert("不结束！");
+                Dialog.alert("不结束");
             },
             effect: 'sign',
             title: '提示',
@@ -219,7 +219,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
     var operate = sessionStorage.getItem("operate");
     var importOrderId = sessionStorage.getItem("importOrderId");
 
-    console.log("detail:  "+importOrderId);
+    // console.log("detail:  "+importOrderId);
 
     if (operate == "1" && importOrderId != "") {
         var url = "/trans/base/admin/import/" + importOrderId + "/all";
@@ -285,7 +285,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
             // 把第一个箱子Id存进session以便地址加载
             sessionStorage.setItem("importFirstContainerId", getImportDetail.firstContainerId);
 
-            console.log(getImportDetail.firstContainerId);
+            // console.log(getImportDetail.firstContainerId);
 
             $scope.detailData = getImportDetail.containerVoList;
             $scope.detailData2 = getImportDetail.addressVoList;
@@ -452,7 +452,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
             transformRequest: transform
         }).success(function(data) {
             if (data.success) {
-                alert("单据主信息保存成功");
+                Dialog.alert("单据主信息保存成功");
                 sessionStorage.setItem("importOrderId", data.orderId);
                 $scope.importDetailOrderSystemNo = data.orderSystemNo;
             }else{
@@ -586,9 +586,11 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         }).success(function(data) {
             if(data.success){
                 $scope.detailData = data.data;
-                sessionStorage.setItem("importFirstContainerId", data.data[0].containerId);
+                if (data.data.length > 0) {
+                    sessionStorage.setItem("importFirstContainerId", data.data[0].containerId);
+                }
                 $scope.importDetailOrderTotalCase = data.data.length;
-                alert("箱信息保存成功");
+                Dialog.alert("箱信息保存成功");
             }else{
                 errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
@@ -671,7 +673,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         }).success(function(data) {
             if(data.success){
                 $scope.detailData2 = data.data;
-                alert("地址信息保存成功");
+                Dialog.alert("地址信息保存成功");
             }else{
                 errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
@@ -813,7 +815,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
     $scope.delImportBoxes = function () {
         var box = $("input[name=box]:checked");
         if(box.size()==0){
-            alert("要删除指定行，需选中要删除的行！");
+            Dialog.alert("要删除指定行，需选中要删除的行");
             return;
         }
         var containerIdArr = new Array();
@@ -843,7 +845,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                     $scope.importDetailOrderTotalCase = data.containerVoList.length;
                     sessionStorage.setItem("importFirstContainerId", data.firstContainerId);
                     $scope.detailData2 = data.addressVoList;
-                    alert("删除成功");
+                    Dialog.alert("删除成功");
                 }else{
                     errorAdminMsgHint(data.errorCode, data.errorMsg);
                 }
@@ -854,7 +856,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
     $scope.delImportBoxInfo = function () {
         var boxInfo = $("input[name=boxInfo]:checked");
         if(boxInfo.size()==0){
-            alert("要删除指定行，需选中要删除的行！");
+            Dialog.alert("要删除指定行，需选中要删除的行");
             return;
         }
         var addressIdArr = new Array();
@@ -880,7 +882,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
             }).success(function(data) {
                 if(data.success){
                     $scope.detailData2 = data.data;
-                    alert("删除成功");
+                    Dialog.alert("删除成功");
                 }else{
                     errorAdminMsgHint(data.errorCode, data.errorMsg);
                 }
@@ -987,7 +989,7 @@ function getImportOrderWharf(item) {
                 $('#importOrderWharf').show();
                 // alert("data.crms    "+data);
             } else {
-                errorMsgHint(data.errorCode, data.errorMsg);
+                errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
         }
     });
@@ -997,7 +999,7 @@ function setAdminImportWharfItem(item) {
     var enName = $(item).find('.boat-item-name').text();
     $('#_detailWharf').val(enName);
     $('#_detailWharf').attr("wharfCode", $(item).find('.boat-item').text());
-    console.log($(item).find('.boat-item').text());
+    // console.log($(item).find('.boat-item').text());
     $(item).parent().css("display", "none");
     event.stopPropagation();
 }

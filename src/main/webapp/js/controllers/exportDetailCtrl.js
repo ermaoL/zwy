@@ -403,7 +403,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
             transformRequest: transform
         }).success(function(data) {
             if (data.success) {
-                alert("单据主信息保存成功");
+                Dialog.alert("单据主信息保存成功");
                 sessionStorage.setItem("exportOrderId", data.orderId);
                 $scope.exportDetailOrderSystemNo = data.orderSystemNo;
             }else{
@@ -535,9 +535,11 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                 "token": $.cookie("token")}}).success(function(data) {
             if(data.success){
                 $scope.detailData1 = data.data;
-                sessionStorage.setItem("exportFirstContainerId", data.data[0].containerId);
+                if (data.data.length > 0) {
+                    sessionStorage.setItem("exportFirstContainerId", data.data[0].containerId);
+                }
                 $scope.exportDetailTotalCase = data.data.length;
-                alert("箱信息保存成功");
+                Dialog.alert("箱信息保存成功");
             }else{
                 errorMsgHint(data.errorCode, data.errorMsg);
             }
@@ -621,7 +623,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         }).success(function(data) {
             if(data.success){
                 $scope.detailData3 = data.data;
-                alert("地址信息保存成功");
+                Dialog.alert("地址信息保存成功");
             }else{
                 errorMsgHint(data.errorCode, data.errorMsg);
             }
@@ -669,7 +671,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                     headers: {"userName": $.cookie("userName"), "token": $.cookie("token")}
                 }).success(function(data) {
                     if(data.success){
-                        alert("下单成功");
+                        Dialog.alert("下单成功");
                         // console.log(data);
                         $scope.exportDetailOrderStateDec = data.orderVo.orderStateDesc;
                         $scope.exportDetailOrderState = data.orderVo.orderState;
@@ -821,7 +823,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     $scope.delExportBoxes = function () {
         var box = $("input[name=export-box]:checked");
         if(box.size()==0){
-            alert("要删除指定行，需选中要删除的行！");
+            Dialog.alert("要删除指定行，需选中要删除的行");
             return;
         }
         var containerIdArr = new Array();
@@ -852,7 +854,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                     $scope.exportDetailTotalCase = data.containerVoList.length;
                     sessionStorage.setItem("exportFirstContainerId", data.firstContainerId);
                     $scope.detailData3 = data.addressVoList;
-                    alert("删除成功");
+                    Dialog.alert("删除成功");
                 }else{
                     errorMsgHint(data.errorCode, data.errorMsg);
                 }
@@ -877,7 +879,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     $scope.delExportBoxInfo = function () {
         var boxInfo = $("input[name=export-boxInfo]:checked");
         if(boxInfo.size()==0){
-            alert("要删除指定行，需选中要删除的行！");
+            Dialog.alert("要删除指定行，需选中要删除的行");
             return;
         }
 
@@ -905,7 +907,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                     "token": $.cookie("token")}}).success(function(data) {
                 if(data.success){
                     $scope.detailData3 = data.data;
-                    alert("删除成功");
+                    Dialog.alert("删除成功");
                 }else{
                     errorMsgHint(data.errorCode, data.errorMsg);
                 }

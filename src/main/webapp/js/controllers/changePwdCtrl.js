@@ -34,7 +34,7 @@ changePwdApp.controller('changePwdCtrl', ['$scope', '$http', '$state', function(
                     $.cookie('accessToken',data.token);
                     $.cookie("loginStatus", 1);
                     // window.location.href = "/index.html";
-                    window.location.href = "/admin-home.html";
+                    window.location.href = "/main-admin.html";
                 }else{
                     alert(data.errorMsg);
                 }

@@ -514,7 +514,9 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         }).success(function(data) {
             if(data.success){
                 $scope.detailData = data.data;
-                sessionStorage.setItem("importFirstContainerId", data.data[0].containerId);
+                if (data.data.length > 0) {
+                    sessionStorage.setItem("importFirstContainerId", data.data[0].containerId);
+                }
                 $scope.importDetailOrderTotalCase = data.data.length;
                 // alert("箱信息保存成功");
                 Dialog.alert("箱信息保存成功");

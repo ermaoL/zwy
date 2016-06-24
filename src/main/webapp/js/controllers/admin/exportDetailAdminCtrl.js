@@ -86,8 +86,8 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                     transformRequest: transform
                 }).success(function(data) {
                     if (data.success) {
-                        alert("订单审核通过");
-                        window.location.href = "admin-home.html#/export/list";
+                        Dialog.alert("订单审核通过");
+                        window.location.href = "main-admin.html#/export/list";
                     }else{
                         errorAdminMsgHint(data.errorCode, data.errorMsg);
                     }
@@ -125,8 +125,8 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                                     transformRequest: transform
                                 }).success(function(data) {
                                     if (data.success) {
-                                        alert("订单审核不通过");
-                                        window.location.href = "admin-home.html#/export/list";
+                                        Dialog.alert("订单审核不通过");
+                                        window.location.href = "main-admin.html#/export/list";
                                     }else{
                                         errorAdminMsgHint(data.errorCode, data.errorMsg);
                                     }
@@ -156,11 +156,10 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
             confirmValue: "确定",
             cancelValue: "取消",
             confirm: function () {
-
-                alert("结束！");
+                Dialog.alert("结束");
             },
             cancel: function(){
-                alert("不结束！");
+                Dialog.alert("不结束");
             },
             effect: 'sign',
             title: '提示',
@@ -175,7 +174,7 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
     var eOperate = sessionStorage.getItem("eOperate");
     var exportOrderId = sessionStorage.getItem("exportOrderId");
 
-    console.log("detail:  "+exportOrderId);
+    // console.log("detail:  "+exportOrderId);
 
     if (eOperate == "1" && exportOrderId != "") {
         var url = "/trans/base/admin/export/" + exportOrderId + "/all";
@@ -317,7 +316,7 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
         var item = $event.target;
         $(item).parents('tr').css("background", "#d7f1f2");
         $(item).parents('tr').siblings('tr').css("background", "#ffffff");
-        console.log("containerId:   "+ id);
+        // console.log("containerId:   "+ id);
         sessionStorage.setItem("exportFirstContainerId", id);
         var url = "/trans/base/admin/export/" + id + "/address";
         $http({
@@ -491,7 +490,7 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
             transformRequest: transform
         }).success(function(data) {
             if (data.success) {
-                alert("单据主信息保存成功");
+                Dialog.alert("单据主信息保存成功");
                 sessionStorage.setItem("exportOrderId", data.orderId);
                 $scope.exportDetailOrderSystemNo = data.orderSystemNo;
             }else{
@@ -624,9 +623,12 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                 "authType": $.cookie("authType")}}).success(function(data) {
             if(data.success){
                 $scope.detailData1 = data.data;
-                sessionStorage.setItem("exportFirstContainerId", data.data[0].containerId);
+                if (data.data.length > 0) {
+                    sessionStorage.setItem("exportFirstContainerId", data.data[0].containerId);
+                }
+
                 $scope.exportDetailTotalCase = data.data.length;
-                alert("箱信息保存成功");
+                Dialog.alert("箱信息保存成功");
             }else{
                 errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
@@ -712,52 +714,12 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
         }).success(function(data) {
             if(data.success){
                 $scope.detailData3 = data.data;
-                alert("地址信息保存成功");
+                Dialog.alert("地址信息保存成功");
             }else{
                 errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
         });
 
-    }
-
-    $scope.sendExportOrder = function () {
-        $('#send-export-dialogBox').dialogBox({
-            type: 'correct',  //three type:'normal'(default),'correct','error',
-            width: 300,
-            height: 200,
-            hasMask: true,
-            hasClose: true,
-            hasBtn: true,
-            confirm: function () {
-                var orderId = sessionStorage.getItem("exportOrderId");
-                var url = "/trans/api/export/order/"+ orderId + "/sending";
-
-                // 发送下单请求
-                $http.post(url, "", {
-                    headers: {"userName": $.cookie("userName"), "token": $.cookie("token")}
-                }).success(function(data) {
-                    if(data.success){
-                        alert("下单成功");
-                        console.log(data);
-                        $scope.exportDetailOrderStateDec = data.orderVo.orderStateDesc;
-                        $scope.exportDetailOrderState = data.orderVo.orderState;
-                        $scope.detailData1 = data.containerVoList;
-                        $scope.detailData3 = data.addressVoList;
-                        $('.list-input').attr("readonly", "readonly");
-                        $('#_eDetailRemark').attr("readonly", "readonly");
-                        $('.list-input').attr("disabled");
-                        $('.red-btn').attr("disabled", "disabled");
-                        $('.blue-btn').attr("disabled", "disabled");
-                        $('.second-table-top-operate').attr("disabled", "disabled");
-                    }else{
-                        errorAdminMsgHint(data.errorCode, data.errorMsg);
-                    }
-                });
-            },
-            effect: 'sign',
-            title: '提示',
-            content: '是否确定下单？'
-        });
     }
 
     /******************** 出口订单维护表格操作 ************************/
@@ -882,13 +844,13 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
     $scope.delExportBoxes = function () {
         var box = $("input[name=export-box]:checked");
         if(box.size()==0){
-            alert("要删除指定行，需选中要删除的行！");
+            Dialog.alert("要删除指定行，需选中要删除的行");
             return;
         }
         var containerIdArr = new Array();
         box.each(function(){
             var delId = $(this).parent().parent().find('.exportContainerId').val();
-            console.log(delId);
+            // console.log(delId);
             if (delId == "") {
                 $(this).parent().parent().remove();
             } else {
@@ -914,7 +876,7 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                     $scope.exportDetailTotalCase = data.containerVoList.length;
                     sessionStorage.setItem("exportFirstContainerId", data.firstContainerId);
                     $scope.detailData3 = data.addressVoList;
-                    alert("删除成功");
+                    Dialog.alert("删除成功");
                 }else{
                     errorAdminMsgHint(data.errorCode, data.errorMsg);
                 }
@@ -939,14 +901,14 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
     $scope.delExportBoxInfo = function () {
         var boxInfo = $("input[name=export-boxInfo]:checked");
         if(boxInfo.size()==0){
-            alert("要删除指定行，需选中要删除的行！");
+            Dialog.alert("要删除指定行，需选中要删除的行");
             return;
         }
 
         var addressIdArr = new Array();
         boxInfo.each(function(){
             var delId = $(this).parent().parent().find('.exportAddressId').val();
-            console.log(delId);
+            // console.log(delId);
             if (delId == "") {
                 $(this).parent().parent().remove();
             } else {
@@ -968,7 +930,7 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                     "authType": $.cookie("authType")}}).success(function(data) {
                 if(data.success){
                     $scope.detailData3 = data.data;
-                    alert("删除成功");
+                    Dialog.alert("删除成功");
                 }else{
                     errorAdminMsgHint(data.errorCode, data.errorMsg);
                 }
@@ -1055,7 +1017,7 @@ function getExportContainerAddress(item) {
 
                 // alert("data.crms    "+data);
             } else {
-                errorMsgHint(data.errorCode, data.errorMsg);
+                errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
         }
     });
@@ -1133,7 +1095,7 @@ function getExportOrderWharf(item) {
                 $(item).siblings('ul').show();
                 // alert("data.crms    "+data);
             } else {
-                errorMsgHint(data.errorCode, data.errorMsg);
+                errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
         }
     });
@@ -1175,7 +1137,7 @@ function getExportOrderPort(item) {
                 $(item).siblings('ul').show();
                 // alert("data.crms    "+data);
             } else {
-                errorMsgHint(data.errorCode, data.errorMsg);
+                errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
         }
     });
@@ -1211,7 +1173,7 @@ function getExportOrderBoat(item) {
                 $('#exportOrderBoat').show();
                 // alert("data.crms    "+data);
             } else {
-                errorMsgHint(data.errorCode, data.errorMsg);
+                errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
         }
     });
@@ -1248,7 +1210,7 @@ function getExportOrderSail(item) {
                 $('#exportOrderSail').show();
                 // alert("data.crms    "+data);
             } else {
-                errorMsgHint(data.errorCode, data.errorMsg);
+                errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
         }
     });
@@ -1287,7 +1249,7 @@ function getExportMultiOrderDepot(item) {
 
                 // alert("data.crms    "+data);
             } else {
-                errorMsgHint(data.errorCode, data.errorMsg);
+                errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
         }
     });

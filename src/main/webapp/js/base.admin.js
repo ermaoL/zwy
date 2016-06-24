@@ -18,96 +18,45 @@
         $('body').css("overflow", "hidden");
     });
 
-    var url = window.location.hash;
-    if (url == "#/import/detail") {
-        changeMenuType('#import-list-menu');
-        sessionStorage.setItem("menuStatus", 1);
-    } else if (url == "#/export/list") {
-        changeMenuType('#export-list-menu');
-        sessionStorage.setItem("menuStatus", 3);
-    } else if (url == "#/export/detail") {
-        changeMenuType('#export-list-menu');
-        sessionStorage.setItem("menuStatus", 3);
-    } else if (url == "#/ticket/follow" || url == "#/single/ticket/follow") {
-        changeMenuType('#ticket-follow-menu');
-        sessionStorage.setItem("menuStatus", 5);
-    } else if (url == "#/transit/order") {
-        changeMenuType('#transit-order-menu');
-        sessionStorage.setItem("menuStatus", 6);
-    } else if (url == "#/bill/inquiry") {
-        changeMenuType('#bill-inquiry-menu');
-        sessionStorage.setItem("menuStatus", 7);
-    } else if (url == "#/user/manage") {
-        changeMenuType('#user-manage-menu');
-        sessionStorage.setItem("menuStatus", 8);
-    } else {
-        changeMenuType('#import-list-menu');
-        sessionStorage.setItem("menuStatus", 1);
-    }
+    
 
     // 监听浏览器前进回退按钮
     window.onhashchange = function () {
         var url1 = window.location.hash;
-        if (url1 == "#/import/detail") {
+        if (url1 == "#/admin/main/import/detail") {
             changeMenuType('#import-list-menu');
             sessionStorage.setItem("menuStatus", 1);
-        } else if (url1 == "#/export/list") {
+        } else if (url1 == "#/admin/main/export/list") {
             changeMenuType('#export-list-menu');
             sessionStorage.setItem("menuStatus", 3);
-        } else if (url1 == "#/export/detail") {
+        } else if (url1 == "#/admin/main/export/detail") {
             changeMenuType('#export-list-menu');
             sessionStorage.setItem("menuStatus", 3);
-        } else if (url1 == "#/ticket/follow" || url1 == "#/single/ticket/follow") {
+        } else if (url1 == "#/admin/main/ticket/follow" || url1 == "#/admin/main/single/ticket/follow") {
             changeMenuType('#ticket-follow-menu');
             sessionStorage.setItem("menuStatus", 5);
-        } else if (url1 == "#/transit/order") {
+        } else if (url1 == "#/admin/main/transit/order") {
             changeMenuType('#transit-order-menu');
             sessionStorage.setItem("menuStatus", 6);
-        } else if (url1 == "#/bill/inquiry") {
+        } else if (url1 == "#/admin/main/bill/inquiry") {
             changeMenuType('#bill-inquiry-menu');
             sessionStorage.setItem("menuStatus", 7);
-        } else if (url1 == "#/user/manage") {
+        } else if (url1 == "#/admin/main/user/manage") {
             changeMenuType('#user-manage-menu');
             sessionStorage.setItem("menuStatus", 8);
-        } else if (url == "#/import/list") {
+        } else if (url1 == "#/admin/main/import/list") {
             changeMenuType('#import-list-menu');
             sessionStorage.setItem("menuStatus", 1);
         }
     }
-
-    //alert(location.href);
-    $('#import-list-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 1);
-    });
-    $('#export-list-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 3);
-    });
-    $('#ticket-follow-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 5);
-    });
-    $('#transit-order-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 6);
-    });
-    $('#bill-inquiry-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 7);
-    });
-    $('#user-manage-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 8);
-    });
-
-    function changeMenuType(item) {
-        $(item).addClass('menu-active');
-        $(item).find('.home-arrow').css("display", "block");
-        $(item).siblings().removeClass('menu-active');
-        $(item).siblings().find('.home-arrow').css("display", "none");
-    }
 })();
+
+function changeMenuType(item) {
+    $(item).addClass('menu-active');
+    $(item).find('.home-arrow').css("display", "block");
+    $(item).siblings().removeClass('menu-active');
+    $(item).siblings().find('.home-arrow').css("display", "none");
+}
 
 function showQuit() {
     $('.show-quit').css("display", "block");
@@ -120,10 +69,10 @@ function hideQuit() {
 // 公共方法——错误提示
 function errorAdminMsgHint(errorCode, errorMsg) {
     if (errorCode >= 100101&&errorCode <= 100107) {
-        alert(errorMsg);
+        Dialog.alert(errorMsg);
         window.location.href = "login-admin.html";
     } else {
-        alert(errorMsg);
+        Dialog.alert(errorMsg);
     }
 }
 

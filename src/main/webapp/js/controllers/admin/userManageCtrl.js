@@ -53,7 +53,7 @@ myAdminApp.controller('userManageCtrl', ['$scope', '$http', 'UserManageService',
                     transformRequest: transform
                 }).success(function(data) {
                     if (data.success) {
-                        alert("审核不通过");
+                        Dialog.alert("审核不通过");
                         getAllUserInfoList();
                     }else{
                         errorAdminMsgHint(data.errorCode, data.errorMsg);
@@ -104,7 +104,7 @@ myAdminApp.controller('userManageCtrl', ['$scope', '$http', 'UserManageService',
                     transformRequest: transform
                 }).success(function(data) {
                     if (data.success) {
-                        alert("审核通过");
+                        Dialog.alert("审核通过");
                         getAllUserInfoList();
                     }else{
                         errorAdminMsgHint(data.errorCode, data.errorMsg);
@@ -166,10 +166,10 @@ myAdminApp.controller('userManageCtrl', ['$scope', '$http', 'UserManageService',
         var userCompanyId = $('#_userCompanyName').attr("companyId");
 
         if (userCompany == "" || userCompany == null || userCompany == undefined) {
-            alert("用户所属公司不能为空！");
+            Dialog.alert("用户所属公司不能为空");
             return false;
         } else if (userCompany != ""&&(userCompanyId == "" || userCompanyId == null || userCompanyId == undefined)) {
-            alert("用户所属公司信息错误！");
+            Dialog.alert("用户所属公司信息错误");
             return false;
         }
 
@@ -192,7 +192,7 @@ myAdminApp.controller('userManageCtrl', ['$scope', '$http', 'UserManageService',
         }).success(function(data) {
             if (data.success) {
                 $('#passModal').modal('hide');
-                alert("审核通过");
+                Dialog.alert("审核通过");
                 getAllUserInfoList();
             }else{
                 errorAdminMsgHint(data.errorCode, data.errorMsg);
@@ -226,7 +226,7 @@ myAdminApp.controller('userManageCtrl', ['$scope', '$http', 'UserManageService',
                 $scope.paginationConf.totalItems = data.pagingInfo.totalRows;
                 $scope.listData = data.data;
             } else {
-                alert(data.errorMsg);
+                errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
 
         });
@@ -294,10 +294,7 @@ function getRegisterCompany(item) {
                 $('#reg-company').html(result);
                 // alert("data.crms    "+data);
             } else {
-                alert(data.errorMsg);
-                if (data.errorCode == 100102) {
-                    window.location.href = "login.html";
-                }
+                errorAdminMsgHint(data.errorCode, data.errorMsg);
             }
         }
     });

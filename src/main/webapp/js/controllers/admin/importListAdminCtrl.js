@@ -21,9 +21,9 @@ myAdminApp.controller('importListAdminCtrl', ['$scope', '$state', '$http', 'Impo
         // var importOrderId = $(item).find('span').text();
         sessionStorage.setItem("operate", "1");
         sessionStorage.setItem("importOrderId", orderId);
-        console.log("list:  "+orderId);
-        // window.location.href = "admin-home.html#/import/detail";
-        $state.go('import/detail');
+        // console.log("list:  "+orderId);
+        // window.location.href = "main-admin.html#/import/detail";
+        $state.go('mainAdmin.importDetail');
     }
 
     $scope.selectImportListAll = function () {
@@ -97,7 +97,7 @@ myAdminApp.controller('importListAdminCtrl', ['$scope', '$state', '$http', 'Impo
 
             });
         } else {
-            alert("请正确选择抵港时间");
+            Dialog.alert("请正确选择抵港时间");
         }
 
 

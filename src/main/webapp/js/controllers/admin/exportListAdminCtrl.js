@@ -40,9 +40,9 @@ myAdminApp.controller('exportListAdminCtrl', ['$scope', '$state', '$http', 'Expo
         // var exportOrderId = $(item).find('span').text();
         sessionStorage.setItem("eOperate", "1");
         sessionStorage.setItem("exportOrderId", orderId);
-        console.log("list:  "+orderId);
-        // window.location.href = "admin-home.html#/export/detail";
-        $state.go('export/detail');
+        // console.log("list:  "+orderId);
+        // window.location.href = "main-admin.html#/export/detail";
+        $state.go('mainAdmin.exportDetail');
     }
 
 
@@ -108,7 +108,7 @@ myAdminApp.controller('exportListAdminCtrl', ['$scope', '$state', '$http', 'Expo
 
             });
         } else {
-            alert("请正确选择开航时间");
+            Dialog.alert("请正确选择开航时间");
         }
 
 
