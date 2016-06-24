@@ -1,8 +1,8 @@
 <div class="import-list-content" ng-controller="billInquiryCtrl">
     <div class="container search-content">
         <div class="row">
-            <div class="col-lg-9 col-md-9 col-sm-9">
-                <div class="container">
+            <div class="col-lg-9 col-md-9 col-sm-9" style="display:inline-block;">
+                <div class="container col-lg-12">
                     <div class="row">
                         <div class="col-lg-5 col-md-5 col-sm-5">
                             <div class="list-input-container">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="arrive-time-container">
+                <div class="arrive-time-container col-lg-12">
                     <div style="font-weight: bold; height: 35px; line-height: 35px;">统计时间：</div>
                     <div class="date-input-container nice-select" name="nice-select" style="left: 95px; width: 80px;">
                         <input type="text" class="select-time-input" ng-model="billSailingDateFrom" id="billSailingYear" readonly/>
@@ -99,7 +99,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3" style="position: relative;">
                 <button class="btn-search" ng-click="billSearch()">查询</button>

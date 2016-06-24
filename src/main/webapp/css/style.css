@@ -120,6 +120,7 @@ table > tbody > tr > td {
     padding: 0;
     margin: 0;
     width: 230px;
+    float: left;
 }
 
 .default-pic {
