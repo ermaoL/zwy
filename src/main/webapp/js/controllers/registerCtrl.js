@@ -2,11 +2,7 @@
  * Created by cookie on 2016/5/12.
  */
 
-
-var registerApp = angular.module('registerApp', [
-    'ui.router']);
-
-registerApp.controller('registerCtrl', ['$scope', '$http', '$state', function($scope, $http, $state) {
+myApp.controller('registerCtrl', ['$scope', '$http', '$state', function($scope, $http, $state) {
     var height = $(window).height();
     $('.reg-content').css("height", height);
     $('.reg-input-container').css("height", height-120);
@@ -50,13 +46,14 @@ registerApp.controller('registerCtrl', ['$scope', '$http', '$state', function($s
                 url: "/trans/api/user/register",
                 data: {"userName": $scope.registerUser, "userTel": $scope.registerPhone, "userPass": $scope.registerPwd, "userPassConfirm": $scope.registerPwd, "userCompany": $('#_regCompanyName').val()},
                 success: function(data) {
-                    var status = $.parseJSON(data);
-                    if(status.success){
-                        console.log(status.token);
-                        sessionStorage.setItem("token", status.token);
-                        window.location.href = "/login.html";
+                    var data = $.parseJSON(data);
+                    if(data.success){
+                        // console.log(data.token);
+                        // sessionStorage.setItem("token", data.token);
+                        $state.go('login');
                     }else{
-                        alert(status.errorMsg);
+                        // alert(status.errorMsg);
+                        Dialog.alert(data.errorMsg);
                     }
                 }
             });

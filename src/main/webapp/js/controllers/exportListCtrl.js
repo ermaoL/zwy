@@ -54,9 +54,9 @@ myApp.controller('exportListCtrl', ['$scope', '$state', '$http', 'ExportListServ
         // var exportOrderId = $(item).find('span').text();
         sessionStorage.setItem("eOperate", "1");
         sessionStorage.setItem("exportOrderId", orderId);
-        console.log("list:  "+orderId);
+        // console.log("list:  "+orderId);
         // window.location.href = "index.html#/export/detail";
-        $state.go('export/detail');
+        $state.go('index.exportDetail');
     }
 
 

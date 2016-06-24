@@ -2,9 +2,9 @@
  * Created by cookie on 2016/5/13.
  */
 
-var loginApp = angular.module('loginApp', [
-    'ui.router']);
-loginApp.controller('loginCtrl', ['$scope', '$http', '$state', function($scope, $http, $state) {
+
+myApp.controller('loginCtrl', ['$scope', '$http', '$state', function($scope, $http, $state) {
+
     var height = $(window).height();
     $('.reg-content').css("height", height);
     $('.reg-input-container').css("height", height-120);
@@ -68,8 +68,9 @@ loginApp.controller('loginCtrl', ['$scope', '$http', '$state', function($scope, 
                     $.cookie('userConnects', data.userConnects);
                     $.cookie('userConnectPhone', data.userConnectPhone);
                     $.cookie('userConnectEmail', data.userConnectEmail);
-                    window.location.href = "/index.html";
+                    // window.location.href = "/index.html";
                     // window.location.href = "/admin-home.html";
+                    $state.go('index.importList');
                 }else{
                     alert(data.errorMsg);
                 }

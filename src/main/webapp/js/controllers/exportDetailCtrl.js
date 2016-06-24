@@ -79,7 +79,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     var eOperate = sessionStorage.getItem("eOperate");
     var exportOrderId = sessionStorage.getItem("exportOrderId");
 
-    console.log("detail:  "+exportOrderId);
+    // console.log("detail:  "+exportOrderId);
 
     var myDate = new Date();
     var _year=myDate.getYear();        //获取当前年份(2位)
@@ -633,7 +633,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         var item = $event.target;
         $(item).parents('tr').css("background", "#d7f1f2");
         $(item).parents('tr').siblings('tr').css("background", "#ffffff");
-        console.log("containerId:   "+ id);
+        // console.log("containerId:   "+ id);
         sessionStorage.setItem("exportFirstContainerId", id);
         var url = "/trans/api/export/container/" + id + "/address";
         $http({
@@ -670,7 +670,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                 }).success(function(data) {
                     if(data.success){
                         alert("下单成功");
-                        console.log(data);
+                        // console.log(data);
                         $scope.exportDetailOrderStateDec = data.orderVo.orderStateDesc;
                         $scope.exportDetailOrderState = data.orderVo.orderState;
                         $scope.detailData1 = data.containerVoList;
@@ -693,7 +693,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     
 // 跳转到整票跟踪
     $scope.toTicketFollow = function () {
-        $state.go('ticket/follow');
+        $state.go('index.ticketFollow');
         sessionStorage.setItem("menuStatus", 4);
         sessionStorage.setItem("isImOrEx", 2);
     }
@@ -742,13 +742,13 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     // 初始化批量新增
     $scope.exportMultiContainerType = "";
     $scope.exportMultiContainerSize = "";
-    $scope.exportMultiContainerDynamo = '是';
+    $scope.exportMultiContainerDynamo = '否';
     $scope.exportMultiContainerTemperUnit = '0';
-    $scope.exportMultiContainerIsOverWeight = '是';
-    $scope.exportMultiContainerIsCheck = '是';
-    $scope.exportMultiContainerIsCheckliest = '是';
-    $scope.exportMultiContainerIsReplace = '是';
-    $scope.exportMultiUpload = '是';
+    $scope.exportMultiContainerIsOverWeight = '否';
+    $scope.exportMultiContainerIsCheck = '否';
+    $scope.exportMultiContainerIsCheckliest = '否';
+    $scope.exportMultiContainerIsReplace = '否';
+    $scope.exportMultiUpload = '否';
 
     // 批量新增
     $scope.addExportBoxes = function () {
@@ -827,7 +827,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         var containerIdArr = new Array();
         box.each(function(){
             var delId = $(this).parent().parent().find('.exportContainerId').val();
-            console.log(delId);
+            // console.log(delId);
             if (delId == "") {
                 $(this).parent().parent().remove();
             } else {
@@ -884,7 +884,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         var addressIdArr = new Array();
         boxInfo.each(function(){
             var delId = $(this).parent().parent().find('.exportAddressId').val();
-            console.log(delId);
+            // console.log(delId);
             if (delId == "") {
                 $(this).parent().parent().remove();
             } else {

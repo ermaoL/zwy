@@ -1,6 +1,6 @@
 <div class="import-list-content" ng-controller="exportDetailCtrl">
     <div style="margin-top: 10px; position: relative;">
-        <div class="detail-back-list"><a id="export-detail-back" ui-sref="export/list" style="color: #ffffff;"><  返回中心</a></div>
+        <div class="detail-back-list"><a id="export-detail-back" ui-sref="index.exportList" style="color: #ffffff;"><  返回中心</a></div>
         <span class="detail-back">出口订单中心 > 出口订单维护</span>
     </div>
     <div class="import-table-title" style="background: #ffffff; color: #333;">
@@ -382,7 +382,7 @@
                                 </div>
                             </td>
                             <td>
-                                <input class="table-input" type="text" ng-model="container.containerCaseNo" onblur="chkcntrno(this,0);">
+                                <input class="table-input" type="text" ng-model="container.containerCaseNo" onkeyup="this.value = this.value.toUpperCase();" onblur="chkcntrno(this,0);">
                                 <div class="table-div">{{container.containerCaseNo}}</div>
                             </td>
                             <td>
