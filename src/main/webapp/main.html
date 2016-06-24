@@ -1,0 +1,135 @@
+<div id="main" ng-controller="mainCtrl">
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <div style="font-size: 16px; padding-left: 8px; padding-top: 5px;">
+                OMS
+            </div>
+            <div style="padding-left: 8px;">
+                order management system
+            </div>
+        </div>
+        <div class="top-bar-right">
+            <img src="images/home-logo.png" width="87px" height="44px">
+            <span style="font-size: 14px; margin-left: 20px;">福建外运无车承运平台</span>
+            <div class="top-operate-bg" style="right: 291px;" onmouseover="showChange()" onmouseout="hideChange()" ng-click="toChangePwd()" data-toggle="modal" data-target="#pwdModal">
+                <img src="images/change-pwd.png" style="width: 60px; height: 60px;"/>
+            </div>
+            <img src="images/divider.png" class="top-divider">
+            <div class="top-operate-bg" style="right: 230px;" onmouseover="showQuit()" onmouseout="hideQuit()">
+                <img src="images/quit.png" class="quit-login">
+            </div>
+
+        </div>
+
+        <div class="top-bar-hint show-quit">退出登录</div>
+        <div class="top-bar-hint show-change" style="right: 60px;">修改密码</div>
+    </header>
+    <div id="type-dialogBox"></div>
+    <div id="pwd-dialogBox"></div>
+    <div id="home-content" style="position: relative;">
+        <div class="aside">
+            <aside>
+                <div style="width: 100%; height: 180px; text-align: center;">
+                    <img src="images/default_pic.png" class="default-pic">
+                    <div style="color: #ffffff;font-size: 14px;">
+                        <div>{{homeUserName}}</div>
+                        <div class="main-user-company">{{userCompanyName}}</div>
+                    </div>
+                </div>
+                <a id="import-list-menu" ui-sref="index.importList" class="menu-item menu-active">
+                    <span>进口订单中心</span>
+                    <div class="home-arrow" style="display: block;"></div>
+                </a>
+                <a id="import-detail-menu" ui-sref="index.importDetail" class="menu-item" style="margin-top: 2px">
+                    <span>进口订单维护</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a id="export-list-menu" ui-sref="index.exportList" class="menu-item" style="margin-top: 2px">
+                    <span>出口订单中心</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a id="export-detail-menu" ui-sref="index.exportDetail" class="menu-item" style="margin-top: 2px">
+                    <span>出口订单维护</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a id="ticket-follow-menu" ui-sref="index.ticketFollow" class="menu-item" style="margin-top: 20px; display: none;">
+                    <span>整票跟踪</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a ui-sref="single/ticket/follow">
+
+                </a>
+                <a id="transit-order-menu" ui-sref="index.transitOrder" class="menu-item" style="margin-top: 20px">
+                    <span>在途订单跟踪</span>
+                    <div class="home-arrow"></div>
+                </a>
+                <a id="bill-inquiry-menu" ui-sref="index.billInquiry" class="menu-item" style="margin-top: 2px">
+                    <span>账单查询</span>
+                    <div class="home-arrow"></div>
+                </a>
+
+            </aside>
+        </div>
+        <div class="section" style="position: absolute; left: 230px; top: 0; bottom: 0; right: 0;">
+            <section>
+                <div ui-view>
+
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="modal fade" id="pwdModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改密码
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="changePwdForm"  novalidate="novalidate" ng-submit="sendChangePwd()" class="form-horizontal">
+                        <div class="form-group" style="margin-bottom: 5px;">
+                            <label for="_regUserName" class="col-lg-3 col-md-3 control-label">原密码：</label>
+                            <div class="col-lg-9 col-md-9">
+                                <input id="_regUserName" type="password" name="oldPwd" ng-model="oldPwd" class="form-control" placeholder="请输入原密码"  required>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-offset-3 col-md-offset-3" style="color: #ff0000;font-size: 12px; padding-left: 10px; padding-bottom: 5px;">
+                                    <span ng-show="changePwdForm.oldPwd.$dirty &amp;&amp; changePwdForm.oldPwd.$error.required">*原密码不能为空</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 5px;">
+                            <label for="_regUserPhone" class="col-lg-3 col-md-3 control-label">新密码：</label>
+                            <div class="col-lg-9 col-md-9">
+                                <input id="_regUserPhone" type="password" name="newPwd" ng-model="newPwd" class="form-control" placeholder="请输入新密码" required>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-offset-3 col-md-offset-3" style="color: #ff0000;font-size: 12px; padding-left: 10px; padding-bottom: 10px;">
+                                    <span ng-show="changePwdForm.newPwd.$dirty &amp;&amp; changePwdForm.newPwd.$error.required">*新密码不能为空</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width: 100%; text-align: right;">
+                            <button type="submit" class="btn btn-primary">
+                                修改密码
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+
+        </div>
+</div>

@@ -10,7 +10,7 @@
     $('.section').css("height", height - 40);
 
     sessionStorage.setItem("menuStatus", 1);
-    
+
     $(window).resize(function() {
         var height = $(window).height();
         $('.aside').css("height", height - 60);
@@ -19,52 +19,24 @@
         $('body').css("overflow", "hidden");
     });
 
-    var url = window.location.hash;
-    if (url == "#/import/detail") {
-        changeMenuType('#import-detail-menu');
-        sessionStorage.setItem("menuStatus", 2);
-    } else if (url == "#/export/list") {
-        changeMenuType('#export-list-menu');
-        sessionStorage.setItem("menuStatus", 3);
-    } else if (url == "#/export/detail") {
-        changeMenuType('#export-detail-menu');
-        sessionStorage.setItem("menuStatus", 4);
-    } else if (url == "#/ticket/follow" || url == "#/single/ticket/follow") {
-        var state = sessionStorage.getItem("isImOrEx");
-        if (state == "1") {
-            changeMenuType('#import-detail-menu');
-            sessionStorage.setItem("menuStatus", 2);
-        } else {
-            changeMenuType('#export-detail-menu');
-            sessionStorage.setItem("menuStatus", 4);
-        }
-    } else if (url == "#/transit/order") {
-        changeMenuType('#transit-order-menu');
-        sessionStorage.setItem("menuStatus", 6);
-    } else if (url == "#/bill/inquiry") {
-        changeMenuType('#bill-inquiry-menu');
-        sessionStorage.setItem("menuStatus", 7);
-    } else if (url == "#/user/manage") {
-        changeMenuType('#user-manage-menu');
-        sessionStorage.setItem("menuStatus", 8);
-    } else {
-        changeMenuType('#import-list-menu');
-        sessionStorage.setItem("menuStatus", 1);
+    var isLoginUrl = window.location.href;
+    if (isLoginUrl.indexOf('login.html') > 0) {
+        window.location.href = "index.html#/login";
     }
 
     // 监听浏览器前进回退按钮
     window.onhashchange = function () {
         var url1 = window.location.hash;
-        if (url1 == "#/import/detail") {
+        if (url1 == "#/main/import/detail") {
             changeMenuType('#import-detail-menu');
             sessionStorage.setItem("menuStatus", 2);
-        } else if (url1 == "#/export/list") {
+        } else if (url1 == "#/main/export/list") {
             changeMenuType('#export-list-menu');
             sessionStorage.setItem("menuStatus", 3);
-        } else if (url1 == "#/export/detail") {
+        } else if (url1 == "#/main/export/detail") {
             changeMenuType('#export-detail-menu');
             sessionStorage.setItem("menuStatus", 4);
-        } else if (url1 == "#/ticket/follow" || url1 == "#/single/ticket/follow") {
+        } else if (url1 == "#/main/ticket/follow" || url1 == "#/main/single/ticket/follow") {
             var state = sessionStorage.getItem("isImOrEx");
             if (state == "1") {
                 changeMenuType('#import-detail-menu');
@@ -73,72 +45,31 @@
                 changeMenuType('#export-detail-menu');
                 sessionStorage.setItem("menuStatus", 4);
             }
-        } else if (url1 == "#/transit/order") {
+        } else if (url1 == "#/main/transit/order") {
             changeMenuType('#transit-order-menu');
             sessionStorage.setItem("menuStatus", 6);
-        } else if (url1 == "#/bill/inquiry") {
+        } else if (url1 == "#/main/bill/inquiry") {
             changeMenuType('#bill-inquiry-menu');
             sessionStorage.setItem("menuStatus", 7);
-        } else if (url1 == "#/user/manage") {
+        } else if (url1 == "#/main/user/manage") {
             changeMenuType('#user-manage-menu');
             sessionStorage.setItem("menuStatus", 8);
-        } else if (url == "#/import/list") {
+        } else if (url1 == "#/main/import/list") {
             var loginStatus = $.cookie("loginStatus");
-            if (loginStatus == 1) {
-                changeMenuType('#import-list-menu');
-                sessionStorage.setItem("menuStatus", 1);
-            } else {
-                window.location.href = "login.html";
-            }
+            changeMenuType('#import-list-menu');
+            sessionStorage.setItem("menuStatus", 1);
 
         }
     }
 
-    //alert(location.href);
-    $('#import-list-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 1);
-    });
-    $('#import-detail-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 2);
-        sessionStorage.setItem("operate", "0");
-        sessionStorage.setItem("importOrderId", "");
-    });
-    $('#export-list-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 3);
-    });
-    $('#export-detail-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 4);
-        sessionStorage.setItem("eOperate", "0");
-        sessionStorage.setItem("exportOrderId", "");
-    });
-    $('#ticket-follow-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 5);
-    });
-    $('#transit-order-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 6);
-    });
-    $('#bill-inquiry-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 7);
-    });
-    $('#user-manage-menu').click(function () {
-        changeMenuType(this);
-        sessionStorage.setItem("menuStatus", 8);
-    });
-
-    function changeMenuType(item) {
-        $(item).addClass('menu-active');
-        $(item).find('.home-arrow').css("display", "block");
-        $(item).siblings().removeClass('menu-active');
-        $(item).siblings().find('.home-arrow').css("display", "none");
-    }
 })();
+
+function changeMenuType(item) {
+    $(item).addClass('menu-active');
+    $(item).find('.home-arrow').css("display", "block");
+    $(item).siblings().removeClass('menu-active');
+    $(item).siblings().find('.home-arrow').css("display", "none");
+}
 
 function showChange() {
     $('.show-change').css("display", "block");
@@ -159,10 +90,10 @@ function hideQuit() {
 // 公共方法——错误提示
 function errorMsgHint(errorCode, errorMsg) {
     if (errorCode >= 100101&&errorCode <= 100107) {
-        alert(errorMsg);
-        window.location.href = "login.html";
+        Dialog.alert(errorMsg);
+        window.location.href = "index.html#/login";
     } else {
-        alert(errorMsg);
+        Dialog.alert(errorMsg);
     }
 }
 

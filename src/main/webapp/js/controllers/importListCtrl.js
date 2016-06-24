@@ -11,6 +11,8 @@ myApp.controller('importListCtrl', ['$scope', '$state', '$http', 'ImportListServ
         elem: '#importArriveTime2'
     });*/
 
+    // alert($.cookie("userName"));
+
     $('#laydate_box').css("display", "none");
     /*$('tr').dblclick(function () {
         window.location.href = "index.html#/import/detail";
@@ -34,9 +36,9 @@ myApp.controller('importListCtrl', ['$scope', '$state', '$http', 'ImportListServ
         // var importOrderId = $(item).find('span').text();
         sessionStorage.setItem("operate", "1");
         sessionStorage.setItem("importOrderId", orderId);
-        console.log("list:  "+orderId);
+        // console.log("list:  "+orderId);
         // window.location.href = "index.html#/import/detail";
-        $state.go("import/detail");
+        $state.go("index.importDetail");
     }
 
     $scope.selectImportListAll = function () {
@@ -59,17 +61,6 @@ myApp.controller('importListCtrl', ['$scope', '$state', '$http', 'ImportListServ
         sessionStorage.setItem("importOrderId", "");
         // window.location.href = "index.html#/import/detail";
     }
-
-/*
-    $scope.paginationConf = {
-        currentPage: 1,
-        totalItems: 8000,
-        itemsPerPage: 15,
-        pagesLength: 15,
-        perPageOptions: [10, 20, 50, 100],
-        onChange: function(){
-        }
-    };*/
 
     /** 查询 */
     $scope.importListSearch = function () {
@@ -123,7 +114,8 @@ myApp.controller('importListCtrl', ['$scope', '$state', '$http', 'ImportListServ
 
             });
         } else {
-            alert("请正确选择抵港时间");
+            // alert("请正确选择抵港时间");
+            Dialog.alert("请正确选择抵港时间");
         }
 
 

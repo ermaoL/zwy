@@ -10,6 +10,8 @@ myApp.controller('ticketFollowCtrl',['$scope', '$state', '$http', 'TicketFollowS
         $('.follow-msg-container').css("width", width-360);
     });
     
+    $('#swipebox-container').css("width", 415);
+    
     $scope.conStatus = true;
 
     var where = sessionStorage.getItem("isImOrEx");
@@ -24,11 +26,11 @@ myApp.controller('ticketFollowCtrl',['$scope', '$state', '$http', 'TicketFollowS
 
     $scope.backList = function () {
         if (where == "1") {
-            $state.go('import/list');
+            $state.go('index.importList');
             changeMenuType('#import-list-menu');
             sessionStorage.setItem("menuStatus", 1);
         } else {
-            $state.go('export/list');
+            $state.go('index.exportList');
             changeMenuType('#export-list-menu');
             sessionStorage.setItem("menuStatus", 3);
         }
@@ -36,16 +38,16 @@ myApp.controller('ticketFollowCtrl',['$scope', '$state', '$http', 'TicketFollowS
 
     $scope.backDetail = function () {
         if (where == "1") {
-            $state.go('import/detail');
+            $state.go('index.importDetail');
             sessionStorage.setItem("menuStatus", 2);
         } else {
-            $state.go('export/detail');
+            $state.go('index.exportDetail');
             sessionStorage.setItem("menuStatus", 4);
         }
     }
 
     $scope.toSingleTicket = function () {
-        $state.go('single/ticket/follow');
+        $state.go('index.singleTicketFollow');
     }
 
     $scope.getContainerMsg = function ($event, id) {

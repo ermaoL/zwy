@@ -1,79 +1,65 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="registerApp">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>福建外运无车承运平台</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/user.info.css">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <div class="reg-content">
-        <div class="reg-top-bar">
-            <div style="padding-top: 10px; margin-left: 20px;">OMS</div>
-            <div style="margin-left: 20px;">order management system</div>
+<script>
+    var isLoginUrl = window.location.href;
+    if (isLoginUrl.indexOf('register.html') > 0) {
+        window.location.href = "index.html#/register";
+    }
+</script>
+<div class="reg-content" ng-controller="registerCtrl">
+    <div class="reg-top-bar">
+        <div style="padding-top: 10px; margin-left: 20px;">OMS</div>
+        <div style="margin-left: 20px;">order management system</div>
+    </div>
+    <div class="reg-input-container">
+        <div class="reg-logo">
+            <img src="images/user-logo.png" style="width: 150px; height: 80px;">
         </div>
-        <div class="reg-input-container">
-            <div class="reg-logo">
-                <img src="images/user-logo.png" style="width: 150px; height: 80px;">
-            </div>
-            <div class="reg-info" ng-controller="registerCtrl">
-                <form role="form" name="registerForm"  novalidate="novalidate" ng-submit="sendRegister()">
-                    <div class="has-feedback">
-                        <div class="reg-input-content">
-                            <label for="_regUserName" class="reg-label">用户名：</label>
-                            <input id="_regUserName" type="text" name="registerUser" ng-model="registerUser" class="reg-input" placeholder="请输入用户名"  required>
-                        </div>
-                        <div class="user-hint">
-                            <span ng-show="registerForm.registerUser.$dirty &amp;&amp; registerForm.registerUser.$error.required">*用户名不能为空</span>
-                        </div>
+        <div class="reg-info">
+            <form role="form" name="registerForm"  novalidate="novalidate" ng-submit="sendRegister()">
+                <div class="has-feedback">
+                    <div class="reg-input-content">
+                        <label for="_regUserName" class="reg-label">用户名：</label>
+                        <input id="_regUserName" type="text" name="registerUser" ng-model="registerUser" class="reg-input" placeholder="请输入用户名"  required>
                     </div>
-                    <div class="has-feedback">
-                        <div class="reg-input-content">
-                            <label for="_regUserPhone" class="reg-label">手机号：</label>
-                            <input id="_regUserPhone" type="tel" maxlength="11" name="registerPhone" ng-model="registerPhone" class="reg-input" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" placeholder="请输入手机号" required>
-                        </div>
-                        <div class="user-hint">
-                            <span ng-show="registerForm.registerPhone.$dirty &amp;&amp; registerForm.registerPhone.$error.required">*手机号不能为空</span>
-                        </div>
+                    <div class="user-hint">
+                        <span ng-show="registerForm.registerUser.$dirty &amp;&amp; registerForm.registerUser.$error.required">*用户名不能为空</span>
                     </div>
-                    <input style="position: absolute; top: 0; border: none; z-index: -10;" type="password">
-                    <div class="has-feedback">
-                        <div class="reg-input-content">
-                            <label for="_regUserPwd" class="reg-label">密&nbsp;&nbsp;&nbsp;码：</label>
-                            <input id="_regUserPwd" type="password" name="registerPwd" ng-model="registerPwd" class="reg-input" placeholder="请输入密码" required>
-                        </div>
-                        <div class="user-hint">
-                            <span ng-show="registerForm.registerPwd.$dirty &amp;&amp; registerForm.registerPwd.$error.required">*密码不能为空</span>
-                        </div>
+                </div>
+                <div class="has-feedback">
+                    <div class="reg-input-content">
+                        <label for="_regUserPhone" class="reg-label">手机号：</label>
+                        <input id="_regUserPhone" type="tel" maxlength="11" name="registerPhone" ng-model="registerPhone" class="reg-input" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" onkeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" placeholder="请输入手机号" required>
                     </div>
+                    <div class="user-hint">
+                        <span ng-show="registerForm.registerPhone.$dirty &amp;&amp; registerForm.registerPhone.$error.required">*手机号不能为空</span>
+                    </div>
+                </div>
+                <input style="position: absolute; top: 0; border: none; z-index: -10;" type="password">
+                <div class="has-feedback">
+                    <div class="reg-input-content">
+                        <label for="_regUserPwd" class="reg-label">密&nbsp;&nbsp;&nbsp;码：</label>
+                        <input id="_regUserPwd" type="password" name="registerPwd" ng-model="registerPwd" class="reg-input" placeholder="请输入密码" required>
+                    </div>
+                    <div class="user-hint">
+                        <span ng-show="registerForm.registerPwd.$dirty &amp;&amp; registerForm.registerPwd.$error.required">*密码不能为空</span>
+                    </div>
+                </div>
 
-                    <div class="has-feedback">
-                        <div class="reg-input-content">
-                            <label for="_regCompanyName" class="reg-label">公司名称：</label>
-                            <input id="_regCompanyName" type="text" name="registerCompany" class="reg-input" ng-model="registerCompany" style="position: absolute; top: 0; left: 75px; height: 40px; width: 150px; padding-left: 10px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;" placeholder="请输入公司名称" required>
-                        </div>
-                        <div class="user-hint">
-                            <span ng-show="registerForm.registerCompany.$dirty &amp;&amp; registerForm.registerCompany.$error.required">*公司名称不能为空</span>
-                        </div>
+                <div class="has-feedback">
+                    <div class="reg-input-content">
+                        <label for="_regCompanyName" class="reg-label">公司名称：</label>
+                        <input id="_regCompanyName" type="text" name="registerCompany" class="reg-input" ng-model="registerCompany" style="position: absolute; top: 0; left: 75px; height: 40px; width: 150px; padding-left: 10px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap;" placeholder="请输入公司名称" required>
                     </div>
+                    <div class="user-hint">
+                        <span ng-show="registerForm.registerCompany.$dirty &amp;&amp; registerForm.registerCompany.$error.required">*公司名称不能为空</span>
+                    </div>
+                </div>
 
-                    <button class="reg-btn" type="submit">注册</button>
-                </form>
+                <button class="reg-btn" type="submit">注册</button>
+            </form>
 
-            </div>
-        </div>
-        <div class="reg-bottom">
-            <span>版权所有@Cloud Top Information Technologies Co., Ltd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright©福建中外运</span>
         </div>
     </div>
-    <script src="js/vendor/jquery-1.12.2.min.js"></script>
-    <script type="text/javascript" src="js/vendor/angular.js"></script>
-    <script type="text/javascript" src="js/vendor/angular-ui-router.js"></script>
-    <script src="js/vendor/bootstrap.js"></script>
-    <script src="js/controllers/registerCtrl.js"></script>
-</body>
-</html>
+    <div class="reg-bottom">
+        <span>版权所有@Cloud Top Information Technologies Co., Ltd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright©福建中外运</span>
+    </div>
+</div>

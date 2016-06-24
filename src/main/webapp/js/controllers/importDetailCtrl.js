@@ -74,7 +74,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         var item = $event.target;
         $(item).parents('tr').css("background", "#d7f1f2");
         $(item).parents('tr').siblings('tr').css("background", "#ffffff");
-        console.log("containerId:   "+ id);
+        // console.log("containerId:   "+ id);
         sessionStorage.setItem("importFirstContainerId", id);
         var url = "/trans/api/import/container/" + id + "/address";
         $http({
@@ -106,7 +106,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     var operate = sessionStorage.getItem("operate");
     var importOrderId = sessionStorage.getItem("importOrderId");
 
-    console.log("detail:  "+importOrderId);
+    // console.log("detail:  "+importOrderId);
     var myDate = new Date();
     var _year=myDate.getYear();        //获取当前年份(2位)
     var _fullyear=myDate.getFullYear();    //获取完整的年份(4位,1970-????)
@@ -178,7 +178,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
             // 把第一个箱子Id存进session以便地址加载
             sessionStorage.setItem("importFirstContainerId", getImportDetail.firstContainerId);
 
-            console.log(getImportDetail.firstContainerId);
+            // console.log(getImportDetail.firstContainerId);
 
             $scope.detailData = getImportDetail.containerVoList;
             $scope.detailData2 = getImportDetail.addressVoList;
@@ -381,7 +381,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
             transformRequest: transform
         }).success(function(data) {
             if (data.success) {
-                alert("单据主信息保存成功");
+                // alert("单据主信息保存成功");
+                Dialog.alert("单据主信息保存成功");
                 sessionStorage.setItem("importOrderId", data.orderId);
                 $scope.importDetailOrderSystemNo = data.orderSystemNo;
             }else{
@@ -515,7 +516,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                 $scope.detailData = data.data;
                 sessionStorage.setItem("importFirstContainerId", data.data[0].containerId);
                 $scope.importDetailOrderTotalCase = data.data.length;
-                alert("箱信息保存成功");
+                // alert("箱信息保存成功");
+                Dialog.alert("箱信息保存成功");
             }else{
                 errorMsgHint(data.errorCode, data.errorMsg);
             }
@@ -596,7 +598,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         }).success(function(data) {
             if(data.success){
                 $scope.detailData2 = data.data;
-                alert("地址信息保存成功");
+                // alert("地址信息保存成功");
+                Dialog.alert("地址信息保存成功");
             }else{
                 errorMsgHint(data.errorCode, data.errorMsg);
             }
@@ -636,8 +639,9 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                     headers: {"userName": $.cookie("userName"), "token": $.cookie("token")}
                 }).success(function(data) {
                     if(data.success){
-                        alert("下单成功");
-                        console.log(data);
+                        // alert("下单成功");
+                        Dialog.alert("下单成功");
+                        // console.log(data);
                         $scope.importDetailOrderStateDec = data.orderVo.orderStateDesc;
                         $scope.importDetailOrderState = data.orderVo.orderState;
                         $scope.detailData = data.containerVoList;
@@ -660,7 +664,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     
     // 跳转到整票跟踪
     $scope.toTicketFollow = function () {
-        $state.go('ticket/follow');
+        $state.go('index.ticketFollow');
         sessionStorage.setItem("menuStatus", 2);
         sessionStorage.setItem("isImOrEx", 1);
     }
@@ -710,8 +714,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     // 初始化批量新增
     $scope.importMultiContainerType = "";
     $scope.importMultiContainerSize = "";
-    $scope.importMultiContainerIsMoreUnload = "是";
-    $scope.importMultiContainerDynamo = "是";
+    $scope.importMultiContainerIsMoreUnload = "否";
+    $scope.importMultiContainerDynamo = "否";
     $scope.importMultiContainerTemperUnit = "0";
 
     // 批量新增箱子
@@ -785,7 +789,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     $scope.delImportBoxes = function () {
         var box = $("input[name=box]:checked");
         if(box.size()==0){
-            alert("要删除指定行，需选中要删除的行！");
+            // alert("要删除指定行，需选中要删除的行！");
+            Dialog.alert("要删除指定行，需选中要删除的行");
             return;
         }
         var containerIdArr = new Array();
@@ -813,7 +818,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                     $scope.importDetailOrderTotalCase = data.containerVoList.length;
                     sessionStorage.setItem("importFirstContainerId", data.firstContainerId);
                     $scope.detailData2 = data.addressVoList;
-                    alert("删除成功");
+                    // alert("删除成功");
+                    Dialog.alert("删除成功");
                 }else{
                     errorMsgHint(data.errorCode, data.errorMsg);
                 }
@@ -824,7 +830,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     $scope.delImportBoxInfo = function () {
         var boxInfo = $("input[name=boxInfo]:checked");
         if(boxInfo.size()==0){
-            alert("要删除指定行，需选中要删除的行！");
+            // alert("要删除指定行，需选中要删除的行！");
+            Dialog.alert("要删除指定行，需选中要删除的行");
             return;
         }
         var addressIdArr = new Array();
@@ -848,7 +855,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
             }).success(function(data) {
                 if(data.success){
                     $scope.detailData2 = data.data;
-                    alert("删除成功");
+                    // alert("删除成功");
+                    Dialog.alert("删除成功");
                 }else{
                     errorMsgHint(data.errorCode, data.errorMsg);
                 }
@@ -1021,7 +1029,7 @@ function setImportWharfItem(item) {
     var enName = $(item).find('.boat-item-name').text();
     $('#_detailWharf').val(enName);
     $('#_detailWharf').attr("wharfCode", $(item).find('.boat-item').text());
-    console.log($(item).find('.boat-item').text());
+    // console.log($(item).find('.boat-item').text());
     $(item).parent().css("display", "none");
     event.stopPropagation();
 }
