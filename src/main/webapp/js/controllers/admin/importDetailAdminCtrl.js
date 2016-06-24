@@ -121,7 +121,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                 }).success(function(data) {
                     if (data.success) {
                         Dialog.alert("订单审核通过");
-                        window.location.href = "main-admin.html#/import/list";
+                        window.location.href = "admin.html#/admin/main/import/list";
                     }else{
                         errorAdminMsgHint(data.errorCode, data.errorMsg);
                     }
@@ -160,7 +160,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                             }).success(function(data) {
                                 if (data.success) {
                                     Dialog.alert("订单审核不通过");
-                                    window.location.href = "main-admin.html#/import/list";
+                                    window.location.href = "admin.html#/admin/main/import/list";
                                 }else{
                                     errorAdminMsgHint(data.errorCode, data.errorMsg);
                                 }
@@ -491,6 +491,21 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                     data[i][4] = $('#_iDetailOwner').val();
                     data[i][20] = $('#_iDetailOwner').attr("ownerCode");
                 }
+
+                if (j == 8) {
+                    var val = $(this).children().val();
+                    if (val.length > 2) {
+                        data[i][8] = "";
+                    }
+
+                }
+                if (j == 9) {
+                    var val = $(this).children().val();
+                    if (val.length > 2) {
+                        data[i][9] = "";
+                    }
+
+                }
                 /*if (j == 8) {
                  var val = parseInt($(this).children().val());
                  var typeCode = $scope.containerCaseType[val].typeCode;
@@ -623,22 +638,19 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                 }
                 data[i][j]= $(this).children().val();
                 if (j == 7) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][7] = addr;
+                    var addr1 = $.trim($(this).children().val());
+                    if (addr1.indexOf('?') > -1) {
+                        data[i][7] = "";
                     }
                 } else if (j == 8) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][8] = addr;
+                    var addr2 = $.trim($(this).children().val());
+                    if (addr2.indexOf('?') > -1) {
+                        data[i][8] = "";
                     }
                 } else if (j == 9) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][9] = addr;
+                    var addr3 = $.trim($(this).children().val());
+                    if (addr3.indexOf('?') > -1) {
+                        data[i][9] = "";
                     }
                 }
             });

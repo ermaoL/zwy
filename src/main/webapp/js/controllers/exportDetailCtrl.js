@@ -425,6 +425,20 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                     data[i][4] = $('#_eDetailOwner').val();
                     data[i][22] = $.trim($('#_eDetailOwner').attr("ownerCode"));
                 }
+                if (j == 6) {
+                    var val = $(this).children().val();
+                    if (val.length > 2) {
+                        data[i][6] = "";
+                    }
+
+                }
+                if (j == 7) {
+                    var val = $(this).children().val();
+                    if (val.length > 2) {
+                        data[i][7] = "";
+                    }
+
+                }
                 /*if (j == 5) {
                     var val = parseInt($(this).children().val());
                     var typeCode = $scope.containerExportType[val].typeCode;
@@ -512,8 +526,8 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                 "containerRfTemp": data[i][14],
                 "containerTemperUnit": "1",
                 "containerIsCheck": data[i][16],
-                "containerIsCheckliest": data[i][17],
-                "containerIsReplace": data[i][18],
+                "containerIsCheckliest": "",
+                "containerIsReplace": "",
                 "containerIsMoreUnload": data[i][19],
                 "containerOwnerCode": data[i][22],
                 "containerDrayageDepotCode": data[i][20],
@@ -574,22 +588,21 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                 }
                 data[i][j]= $(this).children().val();
                 if (j == 7) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
+                    var addr = $.trim($(this).children().val());
+                    if (addr.indexOf('?') > -1) {
                         addr = "";
                         data[i][7] = addr;
                     }
                 } else if (j == 8) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
+                    var addr = $.trim($(this).children().val());
+                    if (addr.indexOf('?') > -1) {
                         addr = "";
                         data[i][8] = addr;
                     }
                 } else if (j == 9) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][9] = addr;
+                    var addr3 = $.trim($(this).children().val());
+                    if (addr3.indexOf('?') > -1) {
+                        data[i][9] = "";
                     }
                 }
 

@@ -5,14 +5,14 @@ var myApp = angular.module('myApp', [
     'ui.router',
     'tm.pagination']);
 
-myApp.config(['$stateProvider', '$locationProvider', '$urlRouterProvider',
-    function ($stateProvider, $locationProvider, $urlRouterProvider) {
+myApp.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', '$httpProvider',
+    function ($stateProvider, $locationProvider, $urlRouterProvider, $httpProvider) {
         'use strict';
 
         // Set the following to true to enable the HTML5 Mode
         // You may have to set <base> tag in index and a routing configuration in your server
         $locationProvider.html5Mode(false);
-
+        // $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
         // defaults to import.list
         $urlRouterProvider.otherwise('login');
 

@@ -56,11 +56,11 @@ myAdminApp.config(['$stateProvider', '$locationProvider', '$urlRouterProvider',
                 url: '/transit/order',
                 templateUrl: 'views/admin/transit-order-admin.html'
             })
-            .state('main.billInquiry', {
+            .state('mainAdmin.billInquiry', {
                 url: '/bill/inquiry',
                 templateUrl: 'views/admin/bill-inquiry-admin.html'
             })
-            .state('main.userManage', {
+            .state('mainAdmin.userManage', {
                 url: '/user/manage',
                 templateUrl: 'views/admin/user-manage-admin.html'
             })

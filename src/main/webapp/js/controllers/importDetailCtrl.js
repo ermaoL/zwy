@@ -421,11 +421,20 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                     data[i][4] = $('#_iDetailOwner').val();
                     data[i][20] = $('#_iDetailOwner').attr("ownerCode");
                 }
-                /*if (j == 8) {
-                    var val = parseInt($(this).children().val());
-                    var typeCode = $scope.containerCaseType[val].typeCode;
-                    data[i][8] = typeCode;
-                }*/
+                if (j == 8) {
+                    var val = $(this).children().val();
+                    if (val.length > 2) {
+                        data[i][8] = "";
+                    }
+
+                }
+                if (j == 9) {
+                    var val = $(this).children().val();
+                    if (val.length > 2) {
+                        data[i][9] = "";
+                    }
+
+                }
                 /*if (j == 13) {
                     if ($(this).children().val() == null || $(this).children().val() == "" || $(this).children().val() == undefined || $(this).children().val() == "? string:null ?") {
                         data[i][13]= "0";
@@ -552,22 +561,21 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                 }
                 data[i][j]= $(this).children().val();
                 if (j == 7) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][7] = addr;
+                    var addr1 = $.trim($(this).children().val());
+                    if (addr1.indexOf('?')  > -1) {
+                        addr1 = "";
+                        data[i][7] = addr1;
                     }
                 } else if (j == 8) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][8] = addr;
+                    var addr2 = $.trim($(this).children().val());
+                    if (addr2.indexOf('?')  > -1) {
+                        data[i][8] = "";
                     }
                 } else if (j == 9) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][9] = addr;
+                    var addr3 = $.trim($(this).children().val());
+                    if (addr3.indexOf('?')  > -1) {
+                        addr3 = "";
+                        data[i][9] = addr3;
                     }
                 }
             });

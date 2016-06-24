@@ -87,7 +87,7 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                 }).success(function(data) {
                     if (data.success) {
                         Dialog.alert("订单审核通过");
-                        window.location.href = "main-admin.html#/export/list";
+                        window.location.href = "admin.html#/admin/main/export/list";
                     }else{
                         errorAdminMsgHint(data.errorCode, data.errorMsg);
                     }
@@ -126,7 +126,7 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                                 }).success(function(data) {
                                     if (data.success) {
                                         Dialog.alert("订单审核不通过");
-                                        window.location.href = "main-admin.html#/export/list";
+                                        window.location.href = "admin.html#/admin/main/export/list";
                                     }else{
                                         errorAdminMsgHint(data.errorCode, data.errorMsg);
                                     }
@@ -524,6 +524,20 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                  data[i][11]= $(this).children().val();
                  }
                  }*/
+                if (j == 6) {
+                    var val = $(this).children().val();
+                    if (val.length > 2) {
+                        data[i][6] = "";
+                    }
+
+                }
+                if (j == 7) {
+                    var val = $(this).children().val();
+                    if (val.length > 2) {
+                        data[i][7] = "";
+                    }
+
+                }
                 if (j == 8) {
                     var draDepot = $.trim($(this).children().attr("containerAddressCode"));
                     data[i][20] = draDepot;
@@ -599,8 +613,8 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                 "containerRfTemp": data[i][14],
                 "containerTemperUnit": "1",
                 "containerIsCheck": data[i][16],
-                "containerIsCheckliest": data[i][17],
-                "containerIsReplace": data[i][18],
+                "containerIsCheckliest": "",
+                "containerIsReplace": "",
                 "containerIsMoreUnload": data[i][19],
                 "containerOwnerCode": data[i][22],
                 "containerDrayageDepotCode": data[i][20],
@@ -663,22 +677,19 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                 }
                 data[i][j]= $(this).children().val();
                 if (j == 7) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][7] = addr;
+                    var addr = $.trim($(this).children().val());
+                    if (addr.indexOf('?') > -1) {
+                        data[i][7] = "";
                     }
                 } else if (j == 8) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][8] = addr;
+                    var addr = $.trim($(this).children().val());
+                    if (addr.indexOf('?') > -1) {
+                        data[i][8] = "";
                     }
                 } else if (j == 9) {
-                    var addr = $(this).children().val();
-                    if (addr == "?" || addr == "? string: ?") {
-                        addr = "";
-                        data[i][9] = addr;
+                    var addr = $.trim($(this).children().val());
+                    if (addr.indexOf('?') > -1) {
+                        data[i][9] = "";
                     }
                 }
 
