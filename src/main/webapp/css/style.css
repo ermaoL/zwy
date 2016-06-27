@@ -576,21 +576,21 @@ th, td {
 }
 
 .second-table-top-operate {
-    position: absolute;
-    width: 70px;
     text-align: center;
     font-size: 14px;
     color: #3e3e3e;
     background: none;
     border: none;
+    float: left;
+    padding: 0 10px;
 }
 
 .second-table-top-divider {
-    position: absolute;
     width: 1px;
     height: 16px;
     margin-top: 12px;
     border-left: 1px solid #3e3e3e;
+    float: left;
 }
 
 td > input {
