@@ -125,13 +125,13 @@
                         <span>序号</span>
                     </th>
                     <th>
+                        <span>提单号</span>
+                    </th>
+                    <th>
                         <span>开航日期</span>
                     </th>
                     <th>
                         <span>操作日期</span>
-                    </th>
-                    <th>
-                        <span>提单号</span>
                     </th>
                     <th>
                         <span>箱号</span>
@@ -177,8 +177,8 @@
                     </th>
                 </tr>
                 </thead>
-                <tbody id="billListTable" ng-repeat="item in billList">
-                <tr>
+                <tbody id="billListTable">
+                    <!--<tr ng-repeat="item in billList">
                     <td>
                         <input name="billListCheck" type="checkbox"/>
                     </td>
@@ -189,13 +189,13 @@
                         {{item.index}}
                     </td>
                     <td>
-                        {{item.kaiHangDate}}
-                    </td>
-                    <td>
-                        {{item.kaiHangDate}}
-                    </td>
-                    <td>
                         {{item.tiDanHao}}
+                    </td>
+                    <td>
+                        {{item.kaiHangDate}}
+                    </td>
+                    <td>
+                        {{item.kaiHangDate}}
                     </td>
                     <td>
                         {{item.xiangHao}}
@@ -239,14 +239,14 @@
                     <td>
                         {{item.heji}}
                     </td>
-                </tr>
+                </tr>-->
                 </tbody>
             </table>
         </div>
 
     </div>
     <tm-pagination conf="paginationConf"></tm-pagination>
-    <div class="bill-total-cost"><label>总计：</label><span>18654</span></div>
+    <div class="bill-total-cost"><label>总计：￥</label><span id="total"></span></div>
 
 
 </div>
