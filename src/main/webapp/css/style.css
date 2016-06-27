@@ -347,9 +347,18 @@ table > tbody > tr > td {
 
 .table-list {
     width: 100%;
-    min-width: 1040px;
     font-size: 13px;
     overflow-x: auto;
+    Max-Height:390px;
+    Min-Height:0px;
+    _height:expression(this.scrollHeight > 390 ? "390px" : (this.scrollHeight < 0 ? "0px" : "auto"));
+}
+
+.container-list {
+    width: 100%;
+    min-width: 1000px;
+    overflow:auto;
+    margin-bottom: 0;
 }
 
 .table > tbody > tr > td {
@@ -541,6 +550,7 @@ th, td {
     text-align: left;
     top: -20px;
     color: transparent;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
 }
 
 .owner-container {

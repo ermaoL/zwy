@@ -5,15 +5,21 @@ var myAdminApp = angular.module('myAdminApp', [
     'ui.router',
     'tm.pagination']);
 
-myAdminApp.config(['$stateProvider', '$locationProvider', '$urlRouterProvider',
-    function ($stateProvider, $locationProvider, $urlRouterProvider) {
+myAdminApp.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', '$httpProvider',
+    function ($stateProvider, $locationProvider, $urlRouterProvider, $httpProvider) {
         'use strict';
 
         // Set the following to true to enable the HTML5 Mode
         // You may have to set <base> tag in index and a routing configuration in your server
         $locationProvider.html5Mode(false);
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+        }
 
-        // defaults to import.list
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
+        // defaults to loginAdmin
         $urlRouterProvider.otherwise('loginAdmin');
 
         //

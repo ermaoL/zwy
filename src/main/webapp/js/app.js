@@ -13,7 +13,14 @@ myApp.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', '$htt
         // You may have to set <base> tag in index and a routing configuration in your server
         $locationProvider.html5Mode(false);
         // $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
-        // defaults to import.list
+        if (!$httpProvider.defaults.headers.get) {
+            $httpProvider.defaults.headers.get = {};
+        }
+
+        $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+        $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+
+        // defaults to login
         $urlRouterProvider.otherwise('login');
 
         //

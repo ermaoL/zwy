@@ -10,12 +10,6 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     
     $scope.iDetailBindCompany = $.cookie("userCompany");
 
-    // 日期控件
-    /*laydate({
-        elem: '#_detailArriveTime'/!*,
-        istime: true,
-        format: 'YYYY-MM-DD hh:mm:ss'*!/
-    });*/
     $('#_detailLadingBillNum').focus();
 
     $('#laydate_box').css("display", "none");
@@ -34,11 +28,6 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
             return false;
         }
     });
-
-    /*$('form').on('submit', function(event) {
-        event.preventDefault();
-        $(this).validate('submitValidate'); //return boolean;
-    });*/
 
     // 下拉框显示隐藏
     $('[name="nice-select"]').click(function(e){
@@ -199,15 +188,6 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                 $('.second-table-top-operate').removeAttr("disabled");
             }
         });
-
-        /* $.ajax({
-         type: "GET",
-         url: url,
-         params: {orderId: importOrderId},
-         success: function (data) {
-         sessionStorage.setItem("importDetail", data);
-         }
-         });*/
     } else if (operate == "0") {
         $scope.importDetailOrderBillNo = "";
         $scope.importDetailOrderStateDec = "未下单";
@@ -237,24 +217,10 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         }
     }
 
-    /*// 回车键
-     $scope.enterImport = function (ev) {
-     if (ev.keyCode !== 13) {
-     return;
-     } else {
-     alert("enter import");
-     }
-     }
-
-     $('#_detailLadingBillNum').blur(function () {
-     alert("search import");
-     });*/
-
     // 箱子和地址的个数超过10个，则显示滚动条
-    $('#import-detail-first-table').css("max-height", 450);
-    $('#import-detail-first-table').css("overflow-y", "auto");
-    $('#import-detail-second-table').css("max-height", 450);
-    $('#import-detail-second-table').css("overflow-y", "auto");
+    //$('#import-detail-first-table').css({"overflow-y": "auto","max-height":"450px","_height":"100%"});
+    //$('#import-detail-second-table').css("max-height", 450);
+    // $('#import-detail-second-table').css("overflow-y", "auto");
 
     $scope.saveImportOrder = function () {
         $('form').validate('submitValidate'); //return boolean;
@@ -412,36 +378,28 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                 if(!data[i]){
                     data[i] = new Array();
                 }
-                /*data[i][j]= $(this).children().val();
-                if (j == 3) {
-                    data[i][17] = $(this).children().attr("ownerCode");
-                }*/
                 data[i][j]= $(this).children().val();
                 if (j == 4) {
                     data[i][4] = $('#_iDetailOwner').val();
                     data[i][20] = $('#_iDetailOwner').attr("ownerCode");
                 }
                 if (j == 8) {
-                    var val = $(this).children().val();
-                    if (val.length > 2) {
+                    var val1 = $(this).children().find('option:selected').text();
+                    if (val1.indexOf('?') > -1) {
                         data[i][8] = "";
+                    } else {
+                        data[i][8] = val1;
                     }
-
                 }
                 if (j == 9) {
-                    var val = $(this).children().val();
-                    if (val.length > 2) {
+                    var val = $(this).children().find('option:selected').text();
+                    if (val.indexOf('?') > -1) {
                         data[i][9] = "";
+                    } else {
+                        data[i][9] = val;
                     }
 
                 }
-                /*if (j == 13) {
-                    if ($(this).children().val() == null || $(this).children().val() == "" || $(this).children().val() == undefined || $(this).children().val() == "? string:null ?") {
-                        data[i][13]= "0";
-                    } else {
-                        data[i][13]= $(this).children().val();
-                    }
-                }*/
                 if (j == 10) {
                     var draDepot = $.trim($(this).children().attr("containerAddressCode"));
                     data[i][21] = draDepot;
@@ -473,21 +431,6 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         var alterContainer = new Array();
         for (var i = 0; i < data.length; i++) {
             var containerInfo = {
-                /*"containerId": data[i][2],
-                "containerOwner": data[i][3],
-                "containerCaseNo": data[i][4],
-                "containerCount": data[i][5],
-                "containerSealNo": data[i][6],
-                "containerTradeName": data[i][7],
-                "containerType": data[i][8],
-                "containerCartonSize": data[i][9],
-                "containerGrossWeight": data[i][10],
-                "containerDynamo": data[i][11],
-                "containerRfTemp": data[i][12],
-                "containerTemperUnit": data[i][13],
-                "containerIsMoreUnload": data[i][14],
-                "containerCost": data[i][15],
-                "containerOwnerCode": data[i][17]*/
                 "containerId": data[i][2],
                 "containerOwner": data[i][4],// 没有
                 "containerCaseNo": data[i][5],
@@ -533,22 +476,6 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                 errorMsgHint(data.errorCode, data.errorMsg);
             }
         });
-
-        /*$.ajax({
-         type: "POST",
-         url: "/trans/api/import/container",
-         contentType:'application/json; charset=UTF-8',
-         dataType:'json',
-         data: addData,
-         success: function(data1) {
-         if (data1.success) {
-         alert("箱信息保存成功");
-         }else{
-         console.log(data1.errorMsg);
-         }
-         }
-         });*/
-
     }
 
     // 保存地址
@@ -572,9 +499,10 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                         data[i][8] = "";
                     }
                 } else if (j == 9) {
-                    var addr3 = $.trim($(this).children().val());
+                    var addr3 = $.trim($(this).children().find('option:selected').text());
                     if (addr3.indexOf('?')  > -1) {
-                        addr3 = "";
+                        data[i][9] = "";
+                    } else {
                         data[i][9] = addr3;
                     }
                 }
@@ -799,15 +727,14 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     $scope.delImportBoxes = function () {
         var box = $("input[name=box]:checked");
         if(box.size()==0){
-            // alert("要删除指定行，需选中要删除的行！");
             Dialog.alert("要删除指定行，需选中要删除的行");
             return;
         }
         var containerIdArr = new Array();
         box.each(function(){
             var delId = $(this).parent().parent().find('.importContainerId').val();
-            // console.log($(this).parent().parent().find('.importContainerId').val());
             if (delId == "") {
+                var index = $(this).parent().parent().find('.del-index').text();
                 $(this).parent().parent().remove();
             } else {
                 containerIdArr.push(delId);
@@ -828,7 +755,6 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                     $scope.importDetailOrderTotalCase = data.containerVoList.length;
                     sessionStorage.setItem("importFirstContainerId", data.firstContainerId);
                     $scope.detailData2 = data.addressVoList;
-                    // alert("删除成功");
                     Dialog.alert("删除成功");
                 }else{
                     errorMsgHint(data.errorCode, data.errorMsg);
@@ -1004,7 +930,7 @@ function setImportOrderOwner(item) {
     $(item).parent().siblings('.exportOwnerInfo').val(owner);
     $(item).parent().siblings('.exportOwnerInfo').attr("ownerCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取订单的码头下拉列表
@@ -1041,7 +967,7 @@ function setImportWharfItem(item) {
     $('#_detailWharf').attr("wharfCode", $(item).find('.boat-item').text());
     // console.log($(item).find('.boat-item').text());
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取订单的船名下拉列表
@@ -1079,7 +1005,7 @@ function setImportBoatItem(item) {
     $('#_detailBoatName').val(boat);
     $('#_detailBoatName').attr("boatCode", $(item).find('.boat-item-code').text());
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取订单的航次下拉列表
@@ -1118,7 +1044,7 @@ function setImportSailItem(item) {
     $('#_detailVoyage').val(sail);
     $('#_detailVoyage').attr("sailCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取批量新增的箱主列表
@@ -1154,7 +1080,7 @@ function setImportMultiOrderOwner(item) {
     $(item).parent().siblings('#_iBoxOwners').val(owner);
     $(item).parent().siblings('#_iBoxOwners').attr("ownerCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取批量新增的提箱点和返箱点的列表
@@ -1192,6 +1118,6 @@ function setImportMultiOrderDepot(item) {
     $(item).parent().siblings('.importDepot').val(owner);
     $(item).parent().siblings('.importDepot').attr("containerAddressCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 

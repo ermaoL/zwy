@@ -426,31 +426,23 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                     data[i][22] = $.trim($('#_eDetailOwner').attr("ownerCode"));
                 }
                 if (j == 6) {
-                    var val = $(this).children().val();
-                    if (val.length > 2) {
+                    var val1 = $(this).children().find('option:selected').text();
+                    if (val1.indexOf('?') > -1) {
                         data[i][6] = "";
+                    } else {
+                        data[i][6] = val1;
                     }
 
                 }
                 if (j == 7) {
-                    var val = $(this).children().val();
-                    if (val.length > 2) {
+                    var val = $(this).children().find('option:selected').text();
+                    if (val.indexOf('?') > -1) {
                         data[i][7] = "";
+                    } else {
+                        data[i][7] = val;
                     }
 
                 }
-                /*if (j == 5) {
-                    var val = parseInt($(this).children().val());
-                    var typeCode = $scope.containerExportType[val].typeCode;
-                    data[i][5] = typeCode;
-                }*/
-                /*if (j == 11) {
-                    if ($(this).children().val() == null || $(this).children().val() == "" || $(this).children().val() == undefined || $(this).children().val() == "? string:null ?") {
-                        data[i][11]= "0";
-                    } else {
-                        data[i][11]= $(this).children().val();
-                    }
-                }*/
                 if (j == 8) {
                     var draDepot = $.trim($(this).children().attr("containerAddressCode"));
                     data[i][20] = draDepot;
@@ -497,21 +489,6 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         var alterContainer = new Array();
         for (var i = 0; i < data.length; i++) {
             var containerInfo = {
-                /*"containerId": data[i][2],
-                "containerOwner": data[i][3],
-                "containerCaseNo": data[i][4],
-                "containerType": data[i][5],
-                "containerCartonSize": data[i][6],
-                "containerCount": data[i][7],
-                "containerGrossWeight": data[i][8],
-                "containerDynamo": data[i][9],
-                "containerRfTemp": data[i][10],
-                "containerTemperUnit": data[i][11],
-                "containerIsOverWeight": data[i][12],
-                "containerIsCheck": data[i][13],
-                "containerIsCheckliest": data[i][14],
-                "containerIsReplace": data[i][15],
-                "containerOwnerCode": data[i][17]*/
                 "containerId": data[i][2],
                 "containerOwner": data[i][4],
                 "containerCaseNo": data[i][5],
@@ -600,9 +577,11 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                         data[i][8] = addr;
                     }
                 } else if (j == 9) {
-                    var addr3 = $.trim($(this).children().val());
+                    var addr3 = $.trim($(this).children().find('option:selected').text());
                     if (addr3.indexOf('?') > -1) {
                         data[i][9] = "";
+                    } else {
+                        data[i][9] = addr3;
                     }
                 }
 
@@ -872,20 +851,6 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                     errorMsgHint(data.errorCode, data.errorMsg);
                 }
             });
-            /*$.ajax({
-             type: "POST",
-             url: "/trans/api/export/container/drop",
-             contentType:'application/json; charset=UTF-8',
-             dataType:'json',
-             data: delInfo,
-             success: function(data) {
-             if (data.success) {
-             alert("删除成功");
-             }else{
-             console.log(data.errorMsg);
-             }
-             }
-             });*/
         }
     }
 
@@ -1071,7 +1036,7 @@ function setExportOrderOwner(item) {
     $(item).parent().siblings('.exportOwnerInfo').val(owner);
     $(item).parent().siblings('.exportOwnerInfo').attr("ownerCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取订单中的码头列表
@@ -1106,7 +1071,7 @@ function setExportWharfItem(item) {
     $(item).parent().siblings('.importWharfEnName').val(enName);
     $(item).parent().siblings('.importWharfEnName').attr("wharfCode", $(item).find('.boat-item').text());
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取订单中的港口列表
@@ -1141,7 +1106,7 @@ function setExportPortItem(item) {
     $(item).parent().siblings('.importWharfEnName').val(enName);
     $(item).parent().siblings('.importWharfEnName').attr("wharfCode", $(item).find('.boat-item').text());
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取订单中的船名列表
@@ -1178,7 +1143,7 @@ function setExportBoatItem(item) {
     $('#_eDetailBoatName').val(owner);
     $('#_eDetailBoatName').attr("boatCode", $.trim($(item).find('.boat-item-code').text()));
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取订单中的航次列表
@@ -1217,7 +1182,7 @@ function setExportSailItem(item) {
     $('#_eDetailVoyage').val(sail);
     $('#_eDetailVoyage').attr("sailCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 function getExportMultiOrderOwner(item) {
@@ -1252,7 +1217,7 @@ function setExportMultiOrderOwner(item) {
     $(item).parent().siblings('#_eBoxOwners').val(owner);
     $(item).parent().siblings('#_eBoxOwners').attr("ownerCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取批量新增的提箱点和返箱点的列表
@@ -1291,5 +1256,5 @@ function setExportMultiOrderDepot(item) {
     $(item).parent().siblings('.exportDepot').val(owner);
     $(item).parent().siblings('.exportDepot').attr("containerAddressCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }

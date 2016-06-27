@@ -58,6 +58,7 @@ myApp.controller('importListCtrl', ['$scope', '$state', '$http', 'ImportListServ
         sessionStorage.setItem("operate", "0");
         sessionStorage.setItem("importOrderId", "");
         // window.location.href = "index.html#/import/detail";
+        $state.go('index.importDetail');
     }
 
     /** 查询 */

@@ -213,7 +213,7 @@
             </div>
             <div class="form-group" style="color: #ff0000; font-weight: bold; margin-top: 10px; padding-left: 15px;" ng-show="importDetailOrderState==3?true:false">
                 <span>拒绝理由：</span>
-                <span>{{importDetailVerifierContent}}</span>
+                <span id="importDetailVerifierContent"></span>
             </div>
         </form>
 <!--
@@ -226,7 +226,7 @@
         </div>-->
 
         <div class="detail-first-table">
-            <div style="border: 1px solid #bfbfbf;">
+            <div style="border: 1px solid #bfbfbf;min-width: 1030px">
                 <div class="detail-second-table-top">
                     <button ng-click="addImportBox()" class="second-table-top-operate" style="left: 0;">新增</button>
                     <div class="second-table-top-divider" style="left: 69px;"></div>
@@ -236,8 +236,8 @@
                     <div class="second-table-top-divider" style="left: 209px;"></div>
                     <button class="second-table-top-operate" style="left: 210px;" ng-click="saveImportContainer()">保存</button>
                 </div>
-                <div id="import-detail-first-table">
-                    <table id="importContainerTable" class="table table-bordered table-hover table-list" style="overflow-x: auto; margin-bottom: 0;" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?true:false">
+                <div id="import-detail-first-table" class="table-list">
+                    <table id="importContainerTable" class="table table-bordered table-hover container-list" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?true:false">
                         <thead style="background: #e5e5e5;">
                         <tr>
                             <th>
@@ -300,7 +300,7 @@
                                 <input class="checkbox-first" type="checkbox" name="box">
                             </td>
                             <td>
-                                <span>{{container.index}}</span>
+                                <span class="del-index">{{container.index}}</span>
                             </td>
                             <td class="id-display">
                                 <input class="table-input importContainerId" type="text" value="{{container.containerId}}">
@@ -333,16 +333,15 @@
                                 <div class="table-div">{{container.containerSealNo}}</div>
                             </td>
                             <td>
-                                <select ng-model="container.containerType">
-                                    <!--<option value=""></option>-->
-                                    <option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>
+                                <select ng-model="container.containerType" ng-options="x.typeCode as x.typeCode for x in containerCaseType">
+                                    <option value=""></option>
+                                    <!--<option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>-->
                                 </select>
-                                <!--<div>containerType:{{container.containerType}}</div>-->
                             </td>
                             <td>
-                                <select ng-model="container.containerCartonSize">
-                                    <!--<option value=""></option>-->
-                                    <option ng-repeat="x in containerSize">{{x.typeCode}}</option>
+                                <select ng-model="container.containerCartonSize" ng-options="x.typeCode as x.typeCode for x in containerSize">
+                                    <option value=""></option>
+                                    <!--<option data-ng-repeat="x in containerSize">{{x.typeCode}}</option>-->
                                 </select>
                             </td>
                             <td>
@@ -403,7 +402,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <table class="table table-bordered table-hover table-list unEditContainerTable" style="overflow-x: auto; margin-bottom: 0;" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?false:true">
+                    <table class="table table-bordered table-hover container-list unEditContainerTable" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?false:true">
                         <thead style="background: #e5e5e5;">
                         <tr>
                             <th style="width: 20px;">
@@ -488,14 +487,15 @@
                                 <span>{{container.containerSealNo}}</span>
                             </td>
                             <td>
-                                <select ng-model="container.containerType" disabled>
-                                    <option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>
+                                <select ng-model="container.containerType" ng-options="x.typeCode as x.typeCode for x in containerCaseType" disabled>
+                                    <option value=""></option>
+                                    <!--<option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>-->
                                 </select>
-                                <!--<div>containerType:{{container.containerType}}</div>-->
                             </td>
                             <td>
-                                <select ng-model="container.containerCartonSize" disabled>
-                                    <option ng-repeat="x in containerSize">{{x.typeCode}}</option>
+                                <select ng-model="container.containerCartonSize" ng-options="x.typeCode as x.typeCode for x in containerSize" disabled>
+                                    <option value=""></option>
+                                    <!--<option data-ng-repeat="x in containerSize">{{x.typeCode}}</option>-->
                                 </select>
                             </td>
                             <td>
@@ -543,8 +543,8 @@
                             <div class="second-table-top-divider" style="left: 139px;"></div>
                             <button ng-click="saveImportAddress()" class="second-table-top-operate" style="left: 140px;">保存</button>
                         </div>
-                        <div id="import-detail-second-table">
-                            <table id="importAddressTable" class="table table-bordered" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?true:false">
+                        <div id="import-detail-second-table" class="table-list">
+                            <table id="importAddressTable" class="table table-bordered container-list" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?true:false">
                                 <thead style="background: #e5e5e5;">
                                 <tr>
                                     <th>
@@ -617,15 +617,16 @@
                                         <!--<input class="table-input" type="text" value="{{address.addressCity}}">-->
                                     </td>
                                     <td>
-                                        <select ng-model="address.addressDistrict">
-                                            <option ng-repeat="value in division[address.addressProvince][address.addressCity]">{{value}}</option>
+                                        <select ng-model="address.addressDistrict" ng-options="value as value for value in division[address.addressProvince][address.addressCity]">
+                                            <option value=""></option>
+                                            <!--<option ng-repeat="value in division[address.addressProvince][address.addressCity]">{{value}}</option>-->
                                         </select>
                                         <!--<input class="table-input" type="text" value="{{address.addressDistrict}}">-->
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <table class="table table-bordered" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?false:true">
+                            <table class="table table-bordered container-list" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?false:true">
                                 <thead style="background: #e5e5e5;">
                                 <tr>
                                     <th style="width: 20px;">

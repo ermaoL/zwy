@@ -33,6 +33,7 @@ myApp.controller('exportListCtrl', ['$scope', '$state', '$http', 'ExportListServ
         sessionStorage.setItem("eOperate", "0");
         sessionStorage.setItem("exportOrderId", "");
         // window.location.href = "index.html#/export/detail";
+        $state.go('index.exportDetail');
     }
 
    /* $scope.toEDetail = function () {

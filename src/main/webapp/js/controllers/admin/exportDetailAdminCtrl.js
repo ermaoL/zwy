@@ -512,31 +512,21 @@ myAdminApp.controller('exportDetailAdminCtrl', function($scope, $http, $timeout)
                     data[i][4] = $('#_eDetailOwner').val();
                     data[i][22] = $.trim($('#_eDetailOwner').attr("ownerCode"));
                 }
-                /*if (j == 5) {
-                 var val = parseInt($(this).children().val());
-                 var typeCode = $scope.containerExportType[val].typeCode;
-                 data[i][5] = typeCode;
-                 }*/
-                /*if (j == 11) {
-                 if ($(this).children().val() == null || $(this).children().val() == "" || $(this).children().val() == undefined || $(this).children().val() == "? string:null ?") {
-                 data[i][11]= "0";
-                 } else {
-                 data[i][11]= $(this).children().val();
-                 }
-                 }*/
                 if (j == 6) {
-                    var val = $(this).children().val();
-                    if (val.length > 2) {
+                    var val1 = $(this).children().find('option:selected').text();
+                    if (val1.indexOf('?') > -1) {
                         data[i][6] = "";
+                    } else {
+                        data[i][6] = val1;
                     }
-
                 }
                 if (j == 7) {
-                    var val = $(this).children().val();
-                    if (val.length > 2) {
+                    var val = $(this).children().find('option:selected').text();
+                    if (val.indexOf('?') > -1) {
                         data[i][7] = "";
+                    } else {
+                        data[i][7] = val;
                     }
-
                 }
                 if (j == 8) {
                     var draDepot = $.trim($(this).children().attr("containerAddressCode"));
@@ -1083,7 +1073,7 @@ function setExportOrderOwner(item) {
     $(item).parent().siblings('.exportOwnerInfo').val(owner);
     $(item).parent().siblings('.exportOwnerInfo').attr("ownerCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 function getExportOrderWharf(item) {
@@ -1124,7 +1114,7 @@ function setExportWharfItem(item) {
     $(item).parent().siblings('.importWharfEnName').val(enName);
     $(item).parent().siblings('.importWharfEnName').attr("wharfCode", $(item).find('.boat-item').text());
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取订单中的港口列表
@@ -1159,7 +1149,7 @@ function setExportPortItem(item) {
     $(item).parent().siblings('.importWharfEnName').val(enName);
     $(item).parent().siblings('.importWharfEnName').attr("wharfCode", $(item).find('.boat-item').text());
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 function getExportOrderBoat(item) {
@@ -1195,7 +1185,7 @@ function setExportBoatItem(item) {
     $('#_eDetailBoatName').val(owner);
     $('#_eDetailBoatName').attr("boatCode", $.trim($(item).find('.boat-item-code').text()));
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 function getExportOrderSail(item) {
@@ -1233,7 +1223,7 @@ function setExportSailItem(item) {
     $('#_eDetailVoyage').val(sail);
     $('#_eDetailVoyage').attr("sailCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取批量新增的提箱点和返箱点的列表
@@ -1272,5 +1262,5 @@ function setExportMultiOrderDepot(item) {
     $(item).parent().siblings('.exportDepot').val(owner);
     $(item).parent().siblings('.exportDepot').attr("containerAddressCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }

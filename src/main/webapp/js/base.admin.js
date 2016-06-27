@@ -182,4 +182,16 @@ function chkcntrno(item,ai_choice) {
         $(item).css("color", "#ff0000");
         return fb_errcntrno;
     }
-} 
+}
+
+// 判断是哪个浏览器冒泡
+function bubbling() {
+    if (event.stopPropagation) {
+// this code is for Mozilla and Opera
+        event.stopPropagation();
+    }
+    else if (window.event) {
+// this code is for IE
+        window.event.cancelBubble = true;
+    }
+}

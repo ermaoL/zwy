@@ -246,7 +246,6 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
             $scope.importDetailOrderFreeUseDay = orderVo.orderFreeUseDay;
             $scope.importDetailOrderTotalCase = orderVo.orderTotalCase;
             $scope.importDetailOrderSurplusTank = orderVo.orderSurplusTank;
-            $scope.importDetailVerifierContent = orderVo.verifierContent;
             $scope.importDetailOrderGoodOwner = orderVo.orderGoodOwner;
             $scope.importDetailRemark = orderVo.orderRemark;
             $('#_iDetailOwner').attr("ownerCode", orderVo.orderOwnerCode);
@@ -254,6 +253,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
             $('#_detailWharf').attr("wharfCode", orderVo.orderWharfCode);
             $('#_detailBoatName').attr("boatCode", orderVo.orderShipNameCode);
             $('#_detailVoyage').attr("sailCode", orderVo.orderSailingCode);
+            $('#importDetailVerifierContent').text(orderVo.verifierContent);
             if (orderVo.orderConnects == "null") {
                 $scope.importDetailOrderContact = "";
             } else {
@@ -493,16 +493,19 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                 }
 
                 if (j == 8) {
-                    var val = $(this).children().val();
-                    if (val.length > 2) {
+                    var val1 = $(this).children().find('option:selected').text();
+                    if (val1.indexOf('?') > -1) {
                         data[i][8] = "";
+                    } else {
+                        data[i][8] = val1;
                     }
-
                 }
                 if (j == 9) {
-                    var val = $(this).children().val();
-                    if (val.length > 2) {
+                    var val = $(this).children().find('option:selected').text();
+                    if (val.indexOf('?') > -1) {
                         data[i][9] = "";
+                    } else {
+                        data[i][9] = val;
                     }
 
                 }
@@ -648,9 +651,11 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                         data[i][8] = "";
                     }
                 } else if (j == 9) {
-                    var addr3 = $.trim($(this).children().val());
-                    if (addr3.indexOf('?') > -1) {
+                    var addr3 = $.trim($(this).children().find('option:selected').text());
+                    if (addr3.indexOf('?')  > -1) {
                         data[i][9] = "";
+                    } else {
+                        data[i][9] = addr3;
                     }
                 }
             });
@@ -936,7 +941,7 @@ function setAdminImportOrderOwner(item) {
     $(item).parent().siblings('.exportOwnerInfo').val(owner);
     $(item).parent().siblings('.exportOwnerInfo').attr("ownerCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取箱列表的提箱点和返箱点
@@ -1013,7 +1018,7 @@ function setAdminImportWharfItem(item) {
     $('#_detailWharf').attr("wharfCode", $(item).find('.boat-item').text());
     // console.log($(item).find('.boat-item').text());
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 function getImportOrderBoat(item) {
@@ -1050,7 +1055,7 @@ function setAdminImportBoatItem(item) {
     $('#_detailBoatName').val(boat);
     $('#_detailBoatName').attr("boatCode", $(item).find('.boat-item-code').text());
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 function getImportOrderSail(item) {
@@ -1088,7 +1093,7 @@ function setAdminImportSailItem(item) {
     $('#_detailVoyage').val(sail);
     $('#_detailVoyage').attr("sailCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 
 // 获取批量新增的提箱点和返箱点的列表
@@ -1127,6 +1132,6 @@ function setImportMultiOrderDepot(item) {
     $(item).parent().siblings('.importDepot').val(owner);
     $(item).parent().siblings('.importDepot').attr("containerAddressCode", code);
     $(item).parent().css("display", "none");
-    event.stopPropagation();
+    bubbling();
 }
 

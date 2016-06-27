@@ -324,14 +324,15 @@
                                 <div class="table-div">{{container.containerSealNo}}</div>
                             </td>
                             <td>
-                                <select ng-model="container.containerType">
-                                    <option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>
+                                <select ng-model="container.containerType" ng-options="x.typeCode as x.typeCode for x in containerCaseType">
+                                    <option value=""></option>
+                                    <!--<option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>-->
                                 </select>
-                                <!--<div>containerType:{{container.containerType}}</div>-->
                             </td>
                             <td>
-                                <select ng-model="container.containerCartonSize">
-                                    <option ng-repeat="x in containerSize">{{x.typeCode}}</option>
+                                <select ng-model="container.containerCartonSize" ng-options="x.typeCode as x.typeCode for x in containerSize">
+                                    <option value=""></option>
+                                    <!--<option data-ng-repeat="x in containerSize">{{x.typeCode}}</option>-->
                                 </select>
                             </td>
                             <td>
@@ -399,7 +400,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <table class="table table-bordered table-hover table-list" style="overflow-x: auto; margin-bottom: 0;" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?false:true">
+                    <table class="table table-bordered table-hover table-list unEditContainerTable" style="overflow-x: auto; margin-bottom: 0;" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?false:true">
                         <thead style="background: #e5e5e5;">
                         <tr>
                             <th style="width: 20px;">
@@ -460,7 +461,7 @@
                         </thead>
                         <tbody>
                         <!--<tr ondblclick="getImportAddressList(this)">-->
-                        <tr ng-repeat="container in detailData" ng-dblclick="getImportAddressList(container.containerId)">
+                        <tr ng-repeat="container in detailData" ng-dblclick="getImportAddressList($event, container.containerId)">
                             <td>
                                 <input class="checkbox-first" type="checkbox" name="box">
                             </td>
@@ -487,14 +488,15 @@
                                 <span>{{container.containerSealNo}}</span>
                             </td>
                             <td>
-                                <select ng-model="container.containerType" disabled>
-                                    <option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>
+                                <select ng-model="container.containerType" ng-options="x.typeCode as x.typeCode for x in containerCaseType" disabled>
+                                    <option value=""></option>
+                                    <!--<option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>-->
                                 </select>
-                                <!--<div>containerType:{{container.containerType}}</div>-->
                             </td>
                             <td>
-                                <select ng-model="container.containerCartonSize" disabled>
-                                    <option ng-repeat="x in containerSize">{{x.typeCode}}</option>
+                                <select ng-model="container.containerCartonSize" ng-options="x.typeCode as x.typeCode for x in containerSize" disabled>
+                                    <option value=""></option>
+                                    <!--<option data-ng-repeat="x in containerSize">{{x.typeCode}}</option>-->
                                 </select>
                             </td>
                             <td>
@@ -616,8 +618,8 @@
                                         <!--<input class="table-input" type="text" value="{{address.addressCity}}">-->
                                     </td>
                                     <td>
-                                        <select ng-model="address.addressDistrict">
-                                            <option ng-repeat="value in division[address.addressProvince][address.addressCity]">{{value}}</option>
+                                        <select ng-model="address.addressDistrict" ng-options="value as value for value in division[address.addressProvince][address.addressCity]">
+                                            <option value=""></option>
                                         </select>
                                         <!--<input class="table-input" type="text" value="{{address.addressDistrict}}">-->
                                     </td>
