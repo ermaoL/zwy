@@ -10,6 +10,21 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
 
     $scope.iDetailBindCompany = $.cookie("userCompany");
 
+    $('form').validate({
+        onFocus: function() {
+            this.parent().addClass('active');
+            return false;
+        },
+        onBlur: function() {
+            var $parent = this.parent();
+            var _status = parseInt(this.attr('data-status'));
+            $parent.removeClass('active');
+            if (!_status) {
+                $parent.addClass('error');
+            }
+            return false;
+        }
+    });
     var admin = $.cookie("adminCode");
     if (admin == 'admin') {
         $scope.isAdmin = false;
@@ -18,16 +33,8 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
     }
     $('#_detailLadingBillNum').focus();
 
-    // 日期控件
-    /*laydate({
-        elem: '#_detailArriveTime'/!*,
-         istime: true,
-         format: 'YYYY-MM-DD hh:mm:ss'*!/
-    });*/
-
     $('#laydate_box').css("display", "none");
-    
-    // $scope.ownerStatus = false;
+
     // 下拉框显示隐藏
     $('[name="nice-select"]').click(function(e){
         $('[name="nice-select"]').find('ul').hide();
@@ -48,7 +55,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         $('[name="nice-select"] ul').hide();
     });
 
-    $('#importOrderWharf li').click(function(e){
+    $('.importOrderWharf li').click(function(e){
         var val = $.trim($(this).find('.boat-item-name').text());
         var code = $.trim($(this).find('.boat-item').text());
         $(this).parents('[name="nice-select"]').find('input').val(val);
@@ -63,7 +70,8 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         $(item).parents('tr').siblings('tr').css("background", "#ffffff");
         // console.log("containerId:   "+ id);
         sessionStorage.setItem("importFirstContainerId", id);
-        var url = "/trans/base/admin/import/" + id + "/address";
+        var timestamp = (new Date()).valueOf();
+        var url = "/trans/base/admin/import/" + id + "/address?" + timestamp;
         $http({
             url: url,
             method:'GET',
@@ -219,10 +227,9 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
     var operate = sessionStorage.getItem("operate");
     var importOrderId = sessionStorage.getItem("importOrderId");
 
-    // console.log("detail:  "+importOrderId);
-
     if (operate == "1" && importOrderId != "") {
-        var url = "/trans/base/admin/import/" + importOrderId + "/all";
+        var timestamp = (new Date()).valueOf();
+        var url = "/trans/base/admin/import/" + importOrderId + "/all?" + timestamp;
 
         $http({
             url: url,
@@ -330,12 +337,9 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         
     }
 
-    $('#import-detail-first-table').css("max-height", 450);
-    $('#import-detail-first-table').css("overflow-y", "auto");
-    $('#import-detail-second-table').css("max-height", 450);
-    $('#import-detail-second-table').css("overflow-y", "auto");
-
     $scope.saveImportOrder = function () {
+        $('form').validate('submitValidate'); //return boolean;
+        var errorHint = "";
         var billNo = $scope.importDetailOrderBillNo;
         var totalCaseNum = $scope.importDetailOrderTotalCase;
         var contact = $scope.importDetailOrderContact;
@@ -352,35 +356,36 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         var orderSailing = $('#_detailVoyage').val();
         var orderSailingCode = $('#_detailVoyage').attr("sailCode");
         if (billNo == "" || billNo == null) {
-            alert("提单号不能为空！");
-            return false;
+            errorHint += "提单号不能为空！";
         } else if (totalCaseNum === "" || totalCaseNum === null) {
-            alert("总箱量不能为空！");
-            return false;
+            errorHint += "总箱量不能为空！";
         } else if (contact === "" || contact === null) {
-            alert("联系人不能为空！");
-            return false;
+            errorHint += "联系人不能为空！";
         } else if (contactPhone === "" || contactPhone === null) {
-            alert("联系电话不能为空！");
-            return false;
+            errorHint += "联系电话不能为空！";
         } else if (contactEmail === "" || contactEmail === null) {
-            alert("联系邮箱不能为空！");
+            errorHint += "联系邮箱不能为空！";
+        }
+        if (orderOwner != "" && (orderOwnerCode == ""||orderOwnerCode == undefined)) {
+            errorHint += "  箱主信息错误！";
+        }
+        if (orderWharf != "" && (orderWharfCode == ""||orderWharfCode == undefined)) {
+            errorHint += "  码头信息错误！";
+        }
+        if (orderShipName != "" && (orderShipNameCode == ""||orderShipNameCode == undefined)) {
+            errorHint += "  船名信息错误！";
+        }
+        if (orderSailing != "" && (orderSailingCode == ""||orderSailingCode == undefined)) {
+            errorHint += "  航次信息错误！";
+        }
+        if (orderGood != "" && (orderGoodCode == ""||orderGoodCode == undefined)) {
+            errorHint += "  货主信息错误！";
+        }
+        if (errorHint != "") {
+            $('#importDetailErrorHint').text(errorHint);
             return false;
-        } else if (orderGood != "" && orderGoodCode == "") {
-            alert("货主信息错误！");
-            return false;
-        } else if (orderOwner != "" && orderOwnerCode == "") {
-            alert("箱主信息错误！");
-            return false;
-        } else if (orderWharf != "" && orderWharfCode == "") {
-            alert("码头信息错误！");
-            return false;
-        } else if (orderShipName != "" && orderShipNameCode == "") {
-            alert("船名信息错误！");
-            return false;
-        } else if (orderSailing != "" && orderSailingCode == "") {
-            alert("航次信息错误！");
-            return false;
+        } else {
+            $('#importDetailErrorHint').text("");
         }
         var datas;
         var orderId = sessionStorage.getItem("importOrderId");
@@ -716,7 +721,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
     // 新增箱子
     $scope.addImportBox = function () {
         $scope.inserted = {
-            "index":$scope.detailData.length+1,
+            "index":"",
             "containerId":"",
             "containerOwner":"",
             "containerDrayageDepot":"",
@@ -741,7 +746,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
     // 新增某个箱子信息
     $scope.addImportBoxInfo = function () {
         $scope.inserted = {
-            "index": $scope.detailData2.length+1,
+            "index": "",
             "addressId":"",
             "addressPlace":"",
             "addressDeliveryTime":"",
@@ -766,7 +771,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         var num = $scope.importMultiAdd.numbers;
         for (var i = 0; i < num; i++) {
             $scope.inserted = {
-                "index": $scope.detailData.length+1,
+                "index": "",
                 "containerId": "",
                 "containerOwner": "",
                 "containerOwnerCode": "",
@@ -838,8 +843,9 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         var containerIdArr = new Array();
         box.each(function(){
             var delId = $(this).parent().parent().find('.importContainerId').val();
-            // console.log($(this).parent().parent().find('.importContainerId').val());
             if (delId == "") {
+                var index = $(this).parent().parent()[0].rowIndex;
+                $scope.detailData.splice(index - 1, 1);
                 $(this).parent().parent().remove();
             } else {
                 containerIdArr.push(delId);
@@ -868,6 +874,7 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                 }
             });
         }
+        $('#import-select-all1').prop('checked', false);
     }
 
     $scope.delImportBoxInfo = function () {
@@ -880,6 +887,8 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
         boxInfo.each(function(){
             var delId = $(this).parent().parent().find('.importAddressId').val();
             if (delId == "") {
+                var index = $(this).parent().parent()[0].rowIndex;
+                $scope.detailData2.splice(index - 1, 1);
                 $(this).parent().parent().remove();
             } else {
                 addressIdArr.push(delId);
@@ -905,12 +914,14 @@ myAdminApp.controller('importDetailAdminCtrl', function($scope, $http,$timeout) 
                 }
             });
         }
+        $('#import-select-all2').prop('checked', false);
     }
 
 });
 
 function getAdminImportOrderOwner(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryCrmTypeIdIsCW?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -947,6 +958,7 @@ function setAdminImportOrderOwner(item) {
 // 获取箱列表的提箱点和返箱点
 function getImportContainerAddress(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryDepot?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -987,6 +999,7 @@ function setImportContainerAddress(item) {
 // 获取订单的码头下拉列表
 function getImportOrderWharf(item) {
     var wharf = $(item).val();
+    wharf = encodeURI(wharf);
     var url = '/trans/api/queryDepot?codeOrName='+wharf;
     $.ajax({
         url:url,
@@ -1023,6 +1036,7 @@ function setAdminImportWharfItem(item) {
 
 function getImportOrderBoat(item) {
     var boat = $(item).val();
+    boat = encodeURI(boat);
     var url = '/trans/api/queryVessel?codeOrEnname='+boat;
     $.ajax({
         url:url,
@@ -1061,7 +1075,9 @@ function setAdminImportBoatItem(item) {
 function getImportOrderSail(item) {
     var boat = $('#_detailBoatName').attr("boatCode");
     boat = $.trim(boat);
+    boat = encodeURI(boat);
     var sail = $(item).val();
+    sail = encodeURI(sail);
     var url = '/trans/api/queryVesselEtd?vesselCode='+boat+'&voyage='+sail;
     $.ajax({
         url:url,
@@ -1099,6 +1115,7 @@ function setAdminImportSailItem(item) {
 // 获取批量新增的提箱点和返箱点的列表
 function getImportMultiOrderDepot(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryDepot?codeOrName='+owner;
     $.ajax({
         url:url,

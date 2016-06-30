@@ -5,6 +5,7 @@
     </div>
     <div class="import-table-title" style="background: #ffffff; color: #333;">
         <div style="margin-left: 20px; font-weight: bold;">单据主信息（<span>{{importDetailOrderStateDec}}</span>）</div>
+        <div id="importDetailErrorHint" class="detail-error-hint" style="width: 560px; text-align: left;"></div>
         <button class="red-btn" style="position: absolute; right: 150px;" ng-click="examImportOrder()" ng-show="isAdmin">审核</button>
         <!--<div class="list-title-divider" style="right: 160px;"></div>-->
         <button class="red-btn" style="position: absolute; right: 62px;">整票跟踪</button>
@@ -14,28 +15,28 @@
         <button class="blue-btn" tabindex="14" style="position: absolute; right: 0;" ng-click="saveImportOrder()">暂存</button>
     </div>
     <div class="import-detail-content">
-        <div class="container" style="padding: 20px;">
-            <div class="row">
+        <form id="importDetailOrderForm" class="form-horizontal" style="padding: 20px;">
+            <div class="form-group">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <div class="list-input-container">
+                    <div class="list-input-container form_control">
                         <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
                         <label for="_detailLadingBillNum" class="list-label">提单号：</label>
-                        <input id="_detailLadingBillNum" tabindex="1" class="list-input" ng-model="importDetailOrderBillNo" style="width: 68%; left: 70px;" ng-keypress="enterImport($event)"/>
+                        <input id="_detailLadingBillNum" tabindex="1" class="list-input required" ng-model="importDetailOrderBillNo" data-valid="isNonEmpty" data-error="   " style="width: 68%; left: 70px;" onkeyup="this.value = this.value.toUpperCase();"/>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <div class="list-input-container">
+                    <div class="list-input-container form_control">
                         <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
                         <label for="_detailTotalNum" class="list-label">总箱量：</label>
-                        <input id="_detailTotalNum" tabindex="2" class="list-input" style="width: 68%; left: 70px;" ng-model="importDetailOrderTotalCase">
+                        <input id="_detailTotalNum" tabindex="2" class="list-input required" style="width: 68%; left: 70px;" data-valid="isNonEmpty" data-error="   " ng-model="importDetailOrderTotalCase">
                     </div>
 
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="position: relative;">
-                    <div class="list-input-container nice-select" name="nice-select">
+                    <div class="list-input-container form_control nice-select" name="nice-select">
                         <label for="_iDetailOwner" class="list-label">箱主：</label>
-                        <input id="_iDetailOwner" tabindex="3" class="list-input exportOwnerInfo" ownerCode="" ng-model="importDetailOwner" style="width: 78%; left: 50px; padding-left: 0;" onfocus="getAdminImportOrderOwner(this)" onkeyup="getAdminImportOrderOwner(this)"/>
-                        <ul class="importOrderOwner" ng-show="importDetailOrderState==2?true:false">
+                        <input id="_iDetailOwner" tabindex="3" class="list-input exportOwnerInfo" ownerCode="" data-valid="isNonEmpty" data-error="   " ng-model="importDetailOwner" style="width: 78%; left: 50px; padding-left: 0;" onfocus="getImportOrderOwner(this)" onkeyup="getImportOrderOwner(this)"/>
+                        <ul id="importOrderOwner" ng-show="importDetailOrderState==2?true:false">
 
                         </ul>
                     </div>
@@ -59,8 +60,8 @@
                     </div>
                     <div class="list-input-container nice-select" name="nice-select">
                         <label for="_detailBoatAgent" class="list-label">船代：</label>
-                        <input id="_detailBoatAgent" tabindex="4" ng-model="importDetailOrderShipAgency"  style="width: 78%; position: absolute; top: 0; height: 33px; left: 50px; padding-left: 0;" readonly/>
-                        <ul ng-show="iDetailBindCompany=='1'&&(importDetailOrderState==2?true:false)?true:false">
+                        <input id="_detailBoatAgent" tabindex="4" ng-model="importDetailOrderShipAgency" style="width: 78%; position: absolute; top: 0; height: 33px; left: 50px; padding-left: 0;" readonly/>
+                        <ul ng-show="iDetailBindCompany=='1'&&(importDetailOrderState==2)?true:false">
                             <li>外代</li>
                             <li>中外运</li>
                             <li>联代</li>
@@ -72,7 +73,7 @@
                             <li>协通</li>
                             <li>华联通</li>
                         </ul>
-                        <ul ng-show="iDetailBindCompany=='2'&&(importDetailOrderState==2?true:false)?true:false">
+                        <ul ng-show="iDetailBindCompany=='2'&&(importDetailOrderState==2)?true:false">
                             <li>外运船代</li>
                             <li>福州外代</li>
                             <li>嘉航船代</li>
@@ -83,12 +84,12 @@
                 </div>
 
             </div>
-            <div class="row" style="margin-top: 10px;">
+            <div class="form-group" style="margin-top: 10px;">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                     <div class="list-input-container nice-select" name="nice-select">
                         <label for="_detailBoatName" class="list-label">船名：</label>
                         <input id="_detailBoatName" tabindex="5" class="list-input importBoatEnName" boatCode="" ng-model="importDetailOrderShipName" style="width: 78%; left: 50px; padding-left: 0;" onfocus="getImportOrderBoat(this)" onkeyup="getImportOrderBoat(this)"/>
-                        <ul class="order-ul" id="importOrderBoat" ng-show="importDetailOrderState==2?true:false?true:false">
+                        <ul class="order-ul" id="importOrderBoat" ng-show="importDetailOrderState==2?true:false">
 
                         </ul>
                     </div>
@@ -97,7 +98,7 @@
                     <div class="list-input-container nice-select" name="nice-select">
                         <label for="_detailVoyage" class="list-label">航次：</label>
                         <input id="_detailVoyage" tabindex="6" class="list-input" sailCode="" ng-model="importDetailOrderSailing" style="width: 78%; left: 50px; padding-left: 0;" onfocus="getImportOrderSail(this)" onkeyup="getImportOrderSail(this)"/>
-                        <ul class="order-ul" id="importOrderSail" ng-show="importDetailOrderState==2?true:false?true:false">
+                        <ul class="order-ul" id="importOrderSail" ng-show="importDetailOrderState==2?true:false">
 
                         </ul>
                     </div>
@@ -106,10 +107,24 @@
                     <div class="list-input-container nice-select" name="nice-select">
                         <label for="_detailWharf" class="list-label">码头：</label>
                         <input id="_detailWharf" tabindex="7" wharfCode="" ng-model="importDetailOrderWharf" style="width: 78%; position: absolute; top: 0; height: 33px; left: 50px; padding-left: 0;" readonly/>
-                        <!--<ul class="order-ul" id="importOrderWharf" ng-show="importDetailOrderState==2?true:false?true:false">
+                        <!--<ul class="order-ul" id="importOrderWharf" ng-show="importDetailOrderState==2?true:false">
 
                         </ul>-->
-                        <ul id="importOrderWharf" ng-show="importDetailOrderState==2?true:false?true:false">
+                        <ul class="importOrderWharf" ng-show="importDetailOrderState==2?true:false">
+                            <li>
+                                <span class="boat-item">ZY</span>
+                                <span class="boat-item-name" style="width: 100px;">海盈码头</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">QZ</span>
+                                <span class="boat-item-name" style="width: 100px;">青洲港区</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">JYG</span>
+                                <span class="boat-item-name" style="width: 100px;">福清新港</span>
+                            </li>
+                        </ul>
+                        <ul class="importOrderWharf" ng-show="false">
                             <li>
                                 <span class="boat-item">HTD</span>
                                 <span class="boat-item-name" style="width: 100px;">海天码头</span>
@@ -136,32 +151,56 @@
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                     <div class="list-input-container">
                         <label for="_detailArriveTime" class="list-label">抵港日期：</label>
-                        <input id="_detailArriveTime" tabindex="8" class="detail-date" style="width: 98%;" ng-model="importDetailOrderArrivalDate" ng-show="importDetailOrderState==2||importDetailOrderState==undefined?true:false" onfocus="laydate()"/>
-                        <span class="detail-date" ng-show="importDetailOrderState==2?true:false?false:true">{{importDetailOrderArrivalDate}}</span>
+                        <input id="_detailArriveTime" tabindex="8" class="detail-date" style="width: 98%;" ng-model="importDetailOrderArrivalDate" ng-show="importDetailOrderState==2?true:false" onfocus="laydate()"/>
+                        <span class="detail-date" ng-show="importDetailOrderState==2?false:true">{{importDetailOrderArrivalDate}}</span>
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 10px; position: relative; height: 80px;">
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    <div class="list-input-container nice-select" name="nice-select">
-                        <label for="_detailGoodOwner" class="list-label">货主：</label>
-                        <input id="_detailGoodOwner" tabindex="9" class="list-input exportOwnerInfo" ownerCode="" ng-model="importDetailOrderGoodOwner"  style="width: 78%; left: 50px; padding-left: 0;" onfocus="getAdminImportOrderOwner(this)" onkeyup="getAdminImportOrderOwner(this)"/>
-                        <ul class="importOrderOwner" ng-show="importDetailOrderState==2?true:false">
+            <div class="form-group" style="margin-top: 10px; position: relative; height: 80px;">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="list-input-container nice-select" name="nice-select">
+                                <label for="_detailGoodOwner" class="list-label">货主：</label>
+                                <input id="_detailGoodOwner" tabindex="9" class="list-input exportOwnerInfo" ownerCode="" ng-model="importDetailOrderGoodOwner"  style="width: 78%; left: 50px; padding-left: 0;" onfocus="getAdminImportOrderOwner(this)" onkeyup="getAdminImportOrderOwner(this)"/>
+                                <ul class="importOrderOwner" ng-show="importDetailOrderState==2?true:false">
 
-                        </ul>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="list-input-container form_control">
+                                <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
+                                <label for="_detailContact" class="list-label">联系人：</label>
+                                <input id="_detailContact" tabindex="10" class="list-input required" ng-model="importDetailOrderContact" data-valid="isNonEmpty" data-error="   " style="width: 68%; left: 70px;"/>
+                            </div>
+                        </div>
                     </div>
-                    <div class="list-input-container" style="margin-top: 10px;">
-                        <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
-                        <label for="_detailContactPhone" class="list-label">联系电话：</label>
-                        <input id="_detailContactPhone" tabindex="11" class="list-input" ng-model="importDetailOrderContactPhone" style="width: 65%; left: 80px;" onblur="checkTel(this)"/>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="list-input-container form_control">
+                                <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
+                                <label for="_detailContactPhone" class="list-label">联系电话：</label>
+                                <input id="_detailContactPhone" tabindex="11" class="list-input required" ng-model="importDetailOrderContactPhone" data-valid="isNonEmpty" data-error="   " style="width: 65%; left: 80px;" onblur="checkTel(this)"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="list-input-container form_control">
+                                <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
+                                <label for="_detailContactEmail" class="list-label">联系邮箱：</label>
+                                <input id="_detailContactEmail" tabindex="12" class="list-input required" ng-model="importDetailOrderContactEmail" data-valid="isNonEmpty" data-error="   " style="width: 65%; left: 80px;" onblur="isEmail(this);"/>
+                            </div>
+                            <div style="display: none;">{{importDetailOrderState}}</div>
+                        </div>
                     </div>
+
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                <!--<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                     <div class="list-input-container" style="display: none;">
                         <label for="_detailFreeUseTime" class="list-label">免费使用期：</label>
                         <input id="_detailFreeUseTime" class="list-input" ng-model="importDetailOrderFreeUseDay" style="width: 60%"/>
                     </div>
-                    <!--<label class="list-label" style="height: 35px; line-height: 35px;">单据状态：</label>
+                    &lt;!&ndash;<label class="list-label" style="height: 35px; line-height: 35px;">单据状态：</label>
                     <div class="detail-bill-status">
                         <span style="margin-left: 15px;">{{importDetailOrderStateDec}}</span>
                         &lt;!&ndash;<select ng-model="importDetailOrderState">
@@ -169,24 +208,15 @@
                             <option>2</option>
                             <option>3</option>
                         </select>&ndash;&gt;
-                    </div>-->
-                    <div class="list-input-container">
-                        <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
-                        <label for="_detailContact" class="list-label">联系人：</label>
-                        <input id="_detailContact" tabindex="10" class="list-input" ng-model="importDetailOrderContact" style="width: 68%; position: absolute; left: 70px; height: 33px;"/>
-                    </div>
-                    <div class="list-input-container" style="margin-top: 10px;">
-                        <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
-                        <label for="_detailContactEmail" class="list-label">联系邮箱：</label>
-                        <input id="_detailContactEmail" tabindex="12" class="list-input" ng-model="importDetailOrderContactEmail" style="width: 65%; left: 80px;" onblur="isEmail(this);"/>
-                    </div>
-                    <div style="display: none;">{{importDetailOrderState}}</div>
+                    </div>&ndash;&gt;
 
-                </div>
+
+
+                </div>-->
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <div class="list-input-container" style="height: 80px; padding-top: 3px;">
                         <label for="_detailRemark" class="list-label">备注：</label>
-                        <textarea id="_detailRemark" rows="4" tabindex="13" maxlength="2000" style="position: absolute; top: 0; left: 50px; width: 89%; border: none; background: transparent;" ng-model="importDetailRemark"></textarea>
+                        <textarea id="_detailRemark" tabindex="13" rows="4" maxlength="2000" style="position: absolute; top: 0; left: 50px; width: 89%; border: none; background: transparent;" ng-model="importDetailRemark"></textarea>
                     </div>
 
                 </div>
@@ -197,11 +227,11 @@
                     </div>
                 </div>-->
             </div>
-            <div class="row" style="color: #ff0000; font-weight: bold; margin-top: 10px; padding-left: 15px;" ng-show="importDetailOrderState==3?true:false">
+            <div class="form-group" style="color: #ff0000; font-weight: bold; margin-top: 10px; padding-left: 15px;" ng-show="importDetailOrderState==3?true:false">
                 <span>拒绝理由：</span>
-                <span>{{importDetailVerifierContent}}</span>
+                <span id="importDetailVerifierContent"></span>
             </div>
-        </div>
+        </form>
         <!--
                 <div class="detail-btn-content">
                     <button class="red-btn" ng-click="addImportBox()" >新增</button>
@@ -224,8 +254,8 @@
                     <div class="second-table-top-divider" style="left: 209px;"></div>
                     <button class="second-table-top-operate" style="left: 210px;" ng-click="saveImportContainer()">保存</button>
                 </div>
-                <div id="import-detail-first-table">
-                    <table id="importContainerTable" class="table table-bordered table-hover table-list" style="overflow-x: auto; margin-bottom: 0;" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?true:false">
+                <div id="import-detail-first-table" class="table-detail">
+                    <table id="importContainerTable" class="table table-bordered table-hover container-list" style="overflow-x: auto; margin-bottom: 0;" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?true:false">
                         <thead style="background: #e5e5e5;">
                         <tr>
                             <th>
@@ -400,7 +430,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <table class="table table-bordered table-hover table-list unEditContainerTable" style="overflow-x: auto; margin-bottom: 0;" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?false:true">
+                    <table class="table table-bordered table-hover container-list unEditContainerTable" style="overflow-x: auto; margin-bottom: 0;" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?false:true">
                         <thead style="background: #e5e5e5;">
                         <tr>
                             <th style="width: 20px;">
@@ -544,8 +574,8 @@
                             <div class="second-table-top-divider" style="left: 139px;"></div>
                             <button ng-click="saveImportAddress()" class="second-table-top-operate" style="left: 140px;">保存</button>
                         </div>
-                        <div id="import-detail-second-table">
-                            <table id="importAddressTable" class="table table-bordered" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?true:false">
+                        <div id="import-detail-second-table" class="table-detail">
+                            <table id="importAddressTable" class="table table-bordered table-hover container-list" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?true:false">
                                 <thead style="background: #e5e5e5;">
                                 <tr>
                                     <th>
@@ -626,7 +656,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <table class="table table-bordered" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?false:true">
+                            <table class="table table-bordered table-hover container-list" ng-show="importDetailOrderState==undefined||importDetailOrderState==2?false:true">
                                 <thead style="background: #e5e5e5;">
                                 <tr>
                                     <th style="width: 20px;">
@@ -730,11 +760,11 @@
                                 </div>-->
                                 <label for="_iBoxNos" class="col-lg-2 col-md-2 col-sm-2 control-label">箱号：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iBoxNos" type="text" class="form-control" ng-model="importMultiContainerCaseNo" onblur="chkcntrno(this,0);">
+                                    <input id="_iBoxNos" type="text" class="form-control" ng-model="importMultiContainerCaseNo" style="border: 1px solid #ccc;" onblur="chkcntrno(this,0);">
                                 </div>
                                 <label for="_iSealNums" class="col-lg-2 col-md-2 col-sm-2 control-label">铅封号：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iSealNums" type="text" class="form-control" ng-model="importMultiContainerSealNo">
+                                    <input id="_iSealNums" type="text" class="form-control" ng-model="importMultiContainerSealNo" style="border: 1px solid #ccc;">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -745,13 +775,13 @@
                                 -->
                                 <label for="_iBoxTypes" class="col-lg-2 col-md-2 col-sm-2 control-label">箱型：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <select id="_iBoxTypes" class="form-control" ng-model="importMultiContainerType">
+                                    <select id="_iBoxTypes" class="form-control" ng-model="importMultiContainerType" style="border: 1px solid #ccc;">
                                         <option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>
                                     </select>
                                 </div>
                                 <label for="_iBoxSizes" class="col-lg-2 col-md-2 col-sm-2 control-label">尺寸：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <select id="_iBoxSizes" class="form-control" ng-model="importMultiContainerSize">
+                                    <select id="_iBoxSizes" class="form-control" ng-model="importMultiContainerSize" style="border: 1px solid #ccc;">
                                         <option ng-repeat="x in containerSize">{{x.typeCode}}</option>
                                     </select>
                                 </div>
@@ -775,24 +805,24 @@
                             <div class="form-group">
                                 <label for="_iProductNames" class="col-lg-2 col-md-2 col-sm-2 control-label">品名：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iProductNames" type="text" class="form-control" ng-model="importMultiContainerTradeName">
+                                    <input id="_iProductNames" type="text" class="form-control" ng-model="importMultiContainerTradeName" style="border: 1px solid #ccc;">
                                 </div>
                                 <label for="_iRoughWeight" class="col-lg-2 col-md-2 col-sm-2 control-label">货重（KG）：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iRoughWeight" type="text" class="form-control" ng-model="importMultiContainerGrossWeight">
+                                    <input id="_iRoughWeight" type="text" class="form-control" ng-model="importMultiContainerGrossWeight" style="border: 1px solid #ccc;">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="_iIsTakes" class="col-lg-2 col-md-2 col-sm-2 control-label">是否带电机：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <select id="_iIsTakes" class="form-control" ng-model="importMultiContainerDynamo">
+                                    <select id="_iIsTakes" class="form-control" ng-model="importMultiContainerDynamo" style="border: 1px solid #ccc;">
                                         <option value="是">是</option>
                                         <option value="否">否</option>
                                     </select>
                                 </div>
                                 <label for="_iIsMultis" class="col-lg-2 col-md-2 col-sm-2 control-label">是否多地卸：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <select id="_iIsMultis" class="form-control" ng-model="importMultiContainerIsMoreUnload">
+                                    <select id="_iIsMultis" class="form-control" ng-model="importMultiContainerIsMoreUnload" style="border: 1px solid #ccc;">
                                         <option value="是">是</option>
                                         <option value="否">否</option>
                                     </select>
@@ -818,7 +848,7 @@
                                 </div>-->
                                 <label for="_iNumbers" class="col-lg-2 col-md-2 col-sm-2 control-label">数量：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iNumbers" type="text" class="form-control" ng-model="importMultiAdd.numbers">
+                                    <input id="_iNumbers" type="text" class="form-control" ng-model="importMultiAdd.numbers" style="border: 1px solid #ccc;">
                                 </div>
                             </div>
                         </form>

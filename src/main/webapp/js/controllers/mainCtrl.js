@@ -10,6 +10,14 @@ myApp.controller('mainCtrl', ['$scope', '$state', '$http', function ($scope, $st
     $('.aside').css("height", height - 60);
     $('.section').css("height", height - 60);
 
+    $(window).resize(function() {
+        var height = $(window).height();
+        $('#main').css("height", height);
+        $('#home-content').css("height", height-60);
+        $('.aside').css("height", height - 60);
+        $('.section').css("height", height - 60);
+    });
+
     var userName = $.cookie('userName');
     $scope.homeUserName = "hello, " + userName;
     $scope.userCompanyName = $.cookie("userCompanyName");
@@ -20,7 +28,7 @@ myApp.controller('mainCtrl', ['$scope', '$state', '$http', function ($scope, $st
         if (data.success) {
             sessionStorage.setItem("queryContainerType", JSON.stringify(data.typeCodes));
         } else {
-            alert(data.errorMsg);
+            Dialog.alert(data.errorMsg);
         }
     });
 
@@ -32,7 +40,7 @@ myApp.controller('mainCtrl', ['$scope', '$state', '$http', function ($scope, $st
         if (data.success) {
             sessionStorage.setItem("queryContainerSize", JSON.stringify(data.typeCodes));
         } else {
-            alert(data.errorMsg);
+            Dialog.alert(data.errorMsg);
         }
     });
 

@@ -55,7 +55,7 @@ public class OrderImportAlterRequest {
     private String orderConnects;//订单联系人
 
     @NotEmpty
-    @Email(message = "邮箱格式错误")
+//    @Email(message = "邮箱格式错误")
     private String orderConnectEmail;//联系人邮箱
 
     @NotEmpty

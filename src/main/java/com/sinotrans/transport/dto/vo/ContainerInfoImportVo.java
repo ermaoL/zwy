@@ -5,8 +5,9 @@ import java.util.Date;
 
 /**
  * Created by emi on 2016/6/15.
+ * 目前没用到
  */
-public class ContainerInfoImportVo implements ContainerInfoVo {
+public class ContainerInfoImportVo extends ContainerInfoRespVo {
 
     //15重箱移场
     private String orderWharf;//码头  来源gbs todo:where

@@ -72,7 +72,7 @@ myApp.controller('loginCtrl', ['$scope', '$http', '$state', function($scope, $ht
                     // window.location.href = "/main-admin.html";
                     $state.go('index.importList');
                 }else{
-                    alert(data.errorMsg);
+                    Dialog.alert(data.errorMsg);
                 }
             });
 
@@ -96,7 +96,7 @@ myApp.controller('loginCtrl', ['$scope', '$http', '$state', function($scope, $ht
              });*/
         }
         else {
-            alert("用户名或密码不能为空");
+            Dialog.alert("用户名或密码不能为空");
         }
     };
 

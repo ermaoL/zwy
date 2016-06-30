@@ -35,6 +35,9 @@ myApp.controller('billInquiryCtrl', ['$scope', '$http', 'BillInquiryService', fu
                     day = "28";
                 }
             }
+            if (month < 10) {
+                month = '0' + month;
+            }
 
             $('#billSailingTime1').val(year + "-" + month + "-" + "01");
             $('#billSailingTime2').val(year + "-" + month + "-" + day);
@@ -392,13 +395,14 @@ myApp.controller('billInquiryCtrl', ['$scope', '$http', 'BillInquiryService', fu
                         +'<td>'+listData[n].bills[i].returnLocation+'</td>'//返箱地点
                         +'<td>'+listData[n].bills[i].custAdd+'</td>'//地点
                         +'<td>'+listData[n].bills[i].importExport+'</td>'//进出口
-                        +'<td>外运</td>'//船代
+                        +'<td></td>'//船代
                         +'<td>'+listData[n].bills[i].w15Price+'</td>'//包干费
                         +'<td>'+listData[n].bills[i].w06Price+'</td>'//陆路托运费
                         +'<td>'+listData[n].bills[i].w22Price+'</td>'//充电费
                         +'<td>'+listData[n].bills[i].w21Price+'</td>'//堆存费
                         +'<td>'+listData[n].bills[i].w11Price+'</td>'//移动费
                         +'<td>'+listData[n].bills[i].w02Price+'</td>'//柜检费
+                        +'<td>'+listData[n].bills[i].totalPrice+'</td>'//总计
                         +'</tr>';
                 }else {
                     list += '<tr class="parent" id="row'+n+'">'
@@ -414,13 +418,14 @@ myApp.controller('billInquiryCtrl', ['$scope', '$http', 'BillInquiryService', fu
                         +'<td>'+listData[n].bills[i].returnLocation+'</td>'//返箱地点
                         +'<td>'+listData[n].bills[i].custAdd+'</td>'//地点
                         +'<td>'+listData[n].bills[i].importExport+'</td>'//进出口
-                        +'<td>外运</td>'//船代
+                        +'<td></td>'//船代
                         +'<td>'+listData[n].bills[i].w15Price+'</td>'//包干费
                         +'<td>'+listData[n].bills[i].w06Price+'</td>'//陆路托运费
                         +'<td>'+listData[n].bills[i].w22Price+'</td>'//充电费
                         +'<td>'+listData[n].bills[i].w21Price+'</td>'//堆存费
                         +'<td>'+listData[n].bills[i].w11Price+'</td>'//移动费
                         +'<td>'+listData[n].bills[i].w02Price+'</td>'//柜检费
+                        +'<td>'+listData[n].bills[i].totalPrice+'</td>'//总计
                         +'</tr>';
                 }
 
@@ -438,13 +443,14 @@ myApp.controller('billInquiryCtrl', ['$scope', '$http', 'BillInquiryService', fu
                     +'<td>'+listData[n].bills[i].returnLocation+'</td>'//返箱地点
                     +'<td>'+listData[n].bills[i].custAdd+'</td>'//地点
                     +'<td>'+listData[n].bills[i].importExport+'</td>'//进出口
-                    +'<td>外运</td>'//船代
+                    +'<td></td>'//船代
                     +'<td>'+listData[n].bills[i].w15Price+'</td>'//包干费
                     +'<td>'+listData[n].bills[i].w06Price+'</td>'//陆路托运费
                     +'<td>'+listData[n].bills[i].w22Price+'</td>'//充电费
                     +'<td>'+listData[n].bills[i].w21Price+'</td>'//堆存费
                     +'<td>'+listData[n].bills[i].w11Price+'</td>'//移动费
                     +'<td>'+listData[n].bills[i].w02Price+'</td>'//柜检费
+                    +'<td>'+listData[n].bills[i].totalPrice+'</td>'//总计
                     +'</tr>';
             }
 
@@ -468,144 +474,6 @@ myApp.controller('billInquiryCtrl', ['$scope', '$http', 'BillInquiryService', fu
                 $(this).find("button").removeClass().addClass("add");
             }
         });
-
-    /*var billList = [
-        {
-            "index":1,
-            "kaiHangDate": "2015/11/7",
-            "tiDanHao": "EGLV146500654560",
-            "xiangHao": "EMCU5230955 ",
-            "xiangXing": "40RH",
-            "tiXiangDiDian": "海沧裕丰堆场",
-            "fangXiangDiDian": "海天码头",
-            "baoGanFei": "2150",
-            "luyuntuoyunfei":"0",
-            "chongdianfei":"1330",
-            "duicunfei":"18",
-            "yindongfei":"0",
-            "guijianfei":"0",
-            "heji":"3498",
-            "jinChuKou": "进口",
-            "diDian": "永春蓬壶",
-            "chuangDai": "外运"
-        },
-        {
-            "index":2,
-            "kaiHangDate": "2015/12/1",
-            "tiDanHao": "EGLV146500698371",
-            "xiangHao": "TRIU8881560 ",
-            "xiangXing": "40RH",
-            "tiXiangDiDian": "胜狮货柜",
-            "fangXiangDiDian": "海天码头",
-            "baoGanFei": "2250",
-            "luyuntuoyunfei":"0",
-            "chongdianfei":"570",
-            "duicunfei":"72",
-            "yindongfei":"0",
-            "guijianfei":"0",
-            "heji":"2892",
-            "jinChuKou": "进口",
-            "diDian": "永春",
-            "chuangDai": "外运"
-        },
-        {
-            "index":3,
-            "kaiHangDate": "2015/12/1",
-            "tiDanHao": "EGLV146500698371",
-            "xiangHao": "EGSU5021764 ",
-            "xiangXing": "20RF",
-            "tiXiangDiDian": "胜狮货柜",
-            "fangXiangDiDian": "海天码头",
-            "baoGanFei": "2200",
-            "luyuntuoyunfei":"0",
-            "chongdianfei":"380",
-            "duicunfei":"54",
-            "yindongfei":"0",
-            "guijianfei":"0",
-            "heji":"2634",
-            "jinChuKou": "出口",
-            "diDian": "永春",
-            "chuangDai": "外运"
-        },
-        {
-            "index":4,
-            "kaiHangDate": "2015/12/4",
-            "tiDanHao": "NYKS2401578270",
-            "xiangHao": "NYKU7167350 ",
-            "xiangXing": "40RH",
-            "tiXiangDiDian": "裕利象屿",
-            "fangXiangDiDian": "海天码头",
-            "baoGanFei": "2150",
-            "luyuntuoyunfei":"100",
-            "chongdianfei":"350",
-            "duicunfei":"0",
-            "yindongfei":"0",
-            "guijianfei":"0",
-            "heji":"2600",
-            "jinChuKou": "出口",
-            "diDian": "永春",
-            "chuangDai": "外运"
-        },
-        {
-            "index":5,
-            "kaiHangDate": "2015/12/4",
-            "tiDanHao": "OOLU2021881590",
-            "xiangHao": "OOLU6427255 ",
-            "xiangXing": "40RH",
-            "tiXiangDiDian": "海天货柜",
-            "fangXiangDiDian": "海天码头",
-            "baoGanFei": "2150",
-            "luyuntuoyunfei":"0",
-            "chongdianfei":"0",
-            "duicunfei":"50",
-            "yindongfei":"0",
-            "guijianfei":"0",
-            "heji":"2200",
-            "jinChuKou": "进口",
-            "diDian": "永春",
-            "chuangDai": "外运"
-        },
-        {
-            "index":6,
-            "kaiHangDate": "2015/12/5",
-            "tiDanHao": "EGLV146500703781",
-            "xiangHao": "EMCU5349780 ",
-            "xiangXing": "30RH",
-            "tiXiangDiDian": "胜狮货柜",
-            "fangXiangDiDian": "海天码头",
-            "baoGanFei": "2300",
-            "luyuntuoyunfei":"0",
-            "chongdianfei":"0",
-            "duicunfei":"0",
-            "yindongfei":"0",
-            "guijianfei":"0",
-            "heji":"2300",
-            "jinChuKou": "进口",
-            "diDian": "永春蓬壶",
-            "chuangDai": "外运"
-        },
-        {
-            "index":7,
-            "kaiHangDate": "2015/12/5",
-            "tiDanHao": "EGLV146500708121",
-            "xiangHao": "TCLU1217703 ",
-            "xiangXing": "20GP",
-            "tiXiangDiDian": "裕利象屿",
-            "fangXiangDiDian": "海天码头",
-            "baoGanFei": "2150",
-            "luyuntuoyunfei":"0",
-            "chongdianfei":"380",
-            "duicunfei":"0",
-            "yindongfei":"0",
-            "guijianfei":"0",
-            "heji":"2530",
-            "jinChuKou": "出口",
-            "diDian": "永春",
-            "chuangDai": "外运"
-        }
-    ];
-
-    $scope.billList = billList;*/
 
     $scope.selectBillListAll = function () {
         var temp = $('#bill-inquiry-select-all').prop('checked');
@@ -641,32 +509,32 @@ myApp.controller('billInquiryCtrl', ['$scope', '$http', 'BillInquiryService', fu
      var sailingDateTo = billSailingDateTo.split('-');
      var isCorrectDate = true;
      for (var i = 0; i < sailingDateFrom.length; i++) {
-     if (sailingDateFrom[i] > sailingDateTo[i]) {
-     isCorrectDate = false;
-     }
+         if (sailingDateFrom[i] > sailingDateTo[i]) {
+            isCorrectDate = false;
+         }
      }
 
      if (isCorrectDate) {
-     var billInquiryData = {
-     orderBillNo: $scope.importOrderBillNo,
-     orderShipName: $scope.importOrderShipName,
-     orderSailing: $scope.importOrderSailing,
-     orderArrivalDateFrom: billSailingDateFrom,
-     orderArrivalDateTo: billSailingDateTo,
-     currentPage: $scope.paginationConf.currentPage,
-     pageSize: $scope.paginationConf.itemsPerPage
+         var billInquiryData = {
+         orderBillNo: $scope.importOrderBillNo,
+         orderShipName: $scope.importOrderShipName,
+         orderSailing: $scope.importOrderSailing,
+         orderArrivalDateFrom: billSailingDateFrom,
+         orderArrivalDateTo: billSailingDateTo,
+         currentPage: $scope.paginationConf.currentPage,
+         pageSize: $scope.paginationConf.itemsPerPage
      }
      BillInquiryService.list(billInquiryData).success(function (data) {
      if (data.success) {
      $scope.paginationConf.totalItems = data.pagingInfo.totalRows;
      // $scope.billList = data.data;
      } else {
-     alert(data.errorMsg);
+         errorMsgHint(data.errorCode, data.errorMsg);
      }
 
      });
      } else {
-     alert("请正确选择开航时间");
+         Dialog.alert("请正确选择开航时间");
      }
 
 

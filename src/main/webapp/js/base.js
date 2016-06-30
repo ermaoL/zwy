@@ -101,7 +101,7 @@ function errorMsgHint(errorCode, errorMsg) {
 function checkTel(item){
     var isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
     var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-    var value=item.value.trim();
+    var value=$.trim(item.value);
     if(isMob.test(value)||isPhone.test(value)){
         $(item).css("color", "#333");
         return true;
@@ -127,7 +127,7 @@ function checkNum(item) {
 
 // 判断是否为正确邮箱
 function isEmail(item){
-    var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    var reg =  /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
     if (reg.test(item.value)) {
         $(item).css("color", "#333");
         return true;

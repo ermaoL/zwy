@@ -48,15 +48,24 @@ public class PositionListRequest extends CommonListRequest {
     }
 
     @Override
-    public List fetchFilter(Long userId, CompanyType companyType) throws ParseException {
+    public List fetchFilter(Long userId, CompanyType companyType) {
         return null;
+    }
+
+    @Override
+    public Map<String, Object> fetchCondition() {
+        Map<String, Object> condition = new HashMap<String,Object>();
+        condition.put("orderBillNo", this.orderBillNo);
+        condition.put("containerCaseNo", this.containerCaseNo);
+        condition.put("orderType", this.orderType);
+        return condition;
     }
 
     public Map<String, Object> fetchMapCondition() {
         Map<String, Object> condition = new HashMap<String,Object>();
-        condition.put("ordeBillNo", StringUtils.isEmpty(this.orderBillNo) ? "" : this.orderBillNo);
-        condition.put("contCaseNo", StringUtils.isEmpty(this.containerCaseNo) ? "" : this.containerCaseNo);
-        condition.put("ordeType", StringUtils.isEmpty(this.orderType) ? "" : this.orderType);
+        condition.put("orderBillNo", StringUtils.isEmpty(this.orderBillNo) ? "" : this.orderBillNo);
+        condition.put("containerCaseNo", StringUtils.isEmpty(this.containerCaseNo) ? "" : this.containerCaseNo);
+        condition.put("orderType", StringUtils.isEmpty(this.orderType) ? "" : this.orderType);
         return condition;
     }
 

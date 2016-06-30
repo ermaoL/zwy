@@ -52,6 +52,7 @@ myApp.config(['$stateProvider', '$locationProvider', '$urlRouterProvider', '$htt
             templateUrl: 'views/ticket-follow.html'
         }).state('index.singleTicketFollow', {
             url: '/single/ticket/follow',
+            params: {containerId: null},
             templateUrl: 'views/single-ticket-follow.html'
         }).state('index.transitOrder', {
             url: '/transit/order',

@@ -5,10 +5,7 @@ import com.sinotrans.framework.orm.model.BaseModel;
 import com.sinotrans.framework.orm.support.PagingInfo;
 import com.sinotrans.framework.service.mybatis.base.impl.MybatisManagerImpl;
 import com.sinotrans.transport.common.ErrorCode;
-import com.sinotrans.transport.common.enums.ContainerStateType;
-import com.sinotrans.transport.common.enums.DomainStatus;
-import com.sinotrans.transport.common.enums.DomainType;
-import com.sinotrans.transport.common.enums.OrderStateType;
+import com.sinotrans.transport.common.enums.*;
 import com.sinotrans.transport.common.exception.*;
 import com.sinotrans.transport.common.util.CommonUtils;
 import com.sinotrans.transport.dto.*;
@@ -56,12 +53,14 @@ public class OrderImportServiceImpl extends MybatisManagerImpl implements OrderI
     public CommonListResponse search(Long userId, OrderImportSearchRequest searchRequest) {
 
         String orderBy = "ordeId desc";//
-        PagingInfo pagingInfo = this.fetchPagingInfo(searchRequest, userId);
+        PagingInfo pagingInfo;
         List<OrderImportSearchRespVo> importSearchVoList;
         if (StringUtils.isEmpty(searchRequest.getContainerCaseNo())) {
+            pagingInfo = this.fetchPagingInfo(searchRequest, userId, true);
             List<Order> orderList = this.myBatisDao.findByCondition(Order.class, orderBy, pagingInfo, searchRequest.fetchFilter(userId, null));
             importSearchVoList = this.toImportVoList(orderList);
         } else {
+            pagingInfo = this.fetchPagingInfo(searchRequest, userId, false);
             List<Map<String,Object>> result = this.myBatisDao.queryByCondition("SearchImportOrderList", searchRequest.fetchCondition(), orderBy, pagingInfo, null);
             importSearchVoList = this.mapToImportVoList(result);
         }
@@ -128,10 +127,14 @@ public class OrderImportServiceImpl extends MybatisManagerImpl implements OrderI
         order.checkBelongCreator(userId, logger);
 
         List<Container> containerList = myBatisDao.findByCondition(Container.class, null, null, this.fetchContainerOrderIdFilter(orderId, null));
+        PositionTimeLog positionTimeLog;
         for (Container c : containerList) {
             c.setContState(ContainerStateType.ImportSend.getValue());
             c.setModifier(String.valueOf(userId));
             myBatisDao.update(c);
+
+            positionTimeLog = new PositionTimeLog(c.getContId(), PositionLogType.ImSet, PositionLogType.ImSet.getDesc());
+            myBatisDao.save(positionTimeLog);
         }
         order.setOrdeState(OrderStateType.Send.getValue());
         order.setModifier(String.valueOf(userId));
@@ -357,10 +360,15 @@ public class OrderImportServiceImpl extends MybatisManagerImpl implements OrderI
         return filter;
     }
 
-    private PagingInfo fetchPagingInfo(OrderImportSearchRequest searchRequest, Long userId) {
+    private PagingInfo fetchPagingInfo(OrderImportSearchRequest searchRequest, Long userId, boolean ifFind) {
         PagingInfo pagingInfo = searchRequest.fetchPagingInfo();
         if(pagingInfo != null) {
-            int counts = this.myBatisDao.getRowCountByCondition(Order.class, searchRequest.fetchFilter(userId, null));
+            int counts = 0;
+            if (ifFind) {
+                counts = this.myBatisDao.getRowCountByCondition(Order.class, searchRequest.fetchFilter(userId, null));
+            } else {
+                counts = this.myBatisDao.getQueryCountByCondition("SearchImportOrderList", searchRequest.fetchCondition(), null);//Order.class, searchRequest.fetchFilter(userId, null));
+            }
             pagingInfo.setTotalRows(counts);
         }
         return pagingInfo;

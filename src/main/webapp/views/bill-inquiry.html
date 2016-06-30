@@ -4,99 +4,105 @@
             <div class="col-lg-9 col-md-9 col-sm-9" style="display:inline-block;">
                 <div class="container col-lg-12">
                     <div class="row">
-                        <div class="col-lg-5 col-md-5 col-sm-5">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="list-input-container">
                                 <label for="_ladingBillNum" class="list-label">提单号：</label>
-                                <input id="_ladingBillNum" class="list-input" ng-model="billOrderBillNo" style="width: 73%"/>
+                                <input id="_ladingBillNum" class="list-input" ng-model="billOrderBillNo" style="width: 68%; left: 65px;"/>
                             </div>
 
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <label class="list-label" style="height: 35px; line-height: 35px; margin-bottom: 0;">进出口：</label>
-                            <div class="detail-bill-status">
-                                <select ng-model="billImExport" id="billImExport">
-                                    <option value="1">进口</option>
-                                    <option value="2">出口</option>
-                                </select>
-                                <img src="../images/down-arrow.png" class="detail-down-arrow">
-                            </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <div class="list-input-container">
                                 <label for="_containerNo" class="list-label">箱号：</label>
-                                <input id="_containerNo" class="list-input" ng-model="containerNo" style="width: 80%"/>
+                                <input id="_containerNo" class="list-input" ng-model="containerNo" style="width: 78%; left: 50px; padding-left: 0;"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="list-input-container nice-select" name="nice-select">
+                                <label for="billImExport" class="list-label">进出口：</label>
+                                <input id="billImExport" type="text" class="list-input" ng-bind="billImExport" style="width: 68%; left: 65px; padding-left: 0;" readonly>
+                                <ul class="order-ul">
+                                    <li data-value="1">进口</li>
+                                    <li data-value="2">出口</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="arrive-time-container col-lg-12">
-                    <div style="font-weight: bold; height: 35px; line-height: 35px;">统计时间：</div>
-                    <div class="date-input-container nice-select" name="nice-select" style="left: 95px; width: 80px;">
-                        <input type="text" class="select-time-input" ng-model="billSailingDateFrom" id="billSailingYear" readonly/>
-                        <ul>
-                            <li>2000</li>
-                            <li>2001</li>
-                            <li>2002</li>
-                            <li>2003</li>
-                            <li>2004</li>
-                            <li>2005</li>
-                            <li>2006</li>
-                            <li>2007</li>
-                            <li>2008</li>
-                            <li>2009</li>
-                            <li>2010</li>
-                            <li>2011</li>
-                            <li>2012</li>
-                            <li>2013</li>
-                            <li>2014</li>
-                            <li>2015</li>
-                            <li>2016</li>
-                            <li>2017</li>
-                            <li>2018</li>
-                            <li>2019</li>
-                            <li>2020</li>
-                            <li>2021</li>
-                            <li>2022</li>
-                            <li>2023</li>
-                            <li>2024</li>
-                            <li>2025</li>
-                        </ul>
-                        <img src="../images/down-arrow.png" class="detail-down-arrow">
-                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="list-input-container">
+                                <label for="_ladingBillNum" class="list-label">统计时间：</label>
+                                <div class="date-input-container nice-select" name="nice-select" style="left: 75px; width: 60px; padding-left: 0;">
+                                    <input type="text" class="select-time-input" ng-model="billSailingDateFrom" id="billSailingYear" readonly/>
+                                    <ul>
+                                        <li>2000</li>
+                                        <li>2001</li>
+                                        <li>2002</li>
+                                        <li>2003</li>
+                                        <li>2004</li>
+                                        <li>2005</li>
+                                        <li>2006</li>
+                                        <li>2007</li>
+                                        <li>2008</li>
+                                        <li>2009</li>
+                                        <li>2010</li>
+                                        <li>2011</li>
+                                        <li>2012</li>
+                                        <li>2013</li>
+                                        <li>2014</li>
+                                        <li>2015</li>
+                                        <li>2016</li>
+                                        <li>2017</li>
+                                        <li>2018</li>
+                                        <li>2019</li>
+                                        <li>2020</li>
+                                        <li>2021</li>
+                                        <li>2022</li>
+                                        <li>2023</li>
+                                        <li>2024</li>
+                                        <li>2025</li>
+                                    </ul>
+                                </div>
 
-                    <div style="position: absolute; left: 185px; top: 0; height: 35px; line-height: 35px; font-weight: bold;">年</div>
+                                <div style="position: absolute; left: 125px; top: 0; height: 35px; line-height: 35px; font-weight: bold;">年</div>
 
-                    <div class="date-input-container nice-select" name="nice-select" style="left: 210px; width: 80px;">
-                        <input type="text" class="select-time-input" ng-model="billSailingDateTo" id="billSailingMonth" readonly/>
-                        <ul>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                            <li>4</li>
-                            <li>5</li>
-                            <li>6</li>
-                            <li>7</li>
-                            <li>8</li>
-                            <li>9</li>
-                            <li>10</li>
-                            <li>11</li>
-                            <li>12</li>
-                        </ul>
-                        <img src="../images/down-arrow.png" class="detail-down-arrow">
-                    </div>
-                    <div style="position: absolute; left: 300px; top: 0; height: 35px; line-height: 35px; font-weight: bold;">月</div>
+                                <div class="date-input-container nice-select" name="nice-select" style="left: 145px; width: 47px; padding-left: 0;">
+                                    <input type="text" class="select-time-input" ng-model="billSailingDateTo" id="billSailingMonth" readonly/>
+                                    <ul>
+                                        <li>1</li>
+                                        <li>2</li>
+                                        <li>3</li>
+                                        <li>4</li>
+                                        <li>5</li>
+                                        <li>6</li>
+                                        <li>7</li>
+                                        <li>8</li>
+                                        <li>9</li>
+                                        <li>10</li>
+                                        <li>11</li>
+                                        <li>12</li>
+                                    </ul>
+                                </div>
+                                <div style="position: absolute; left: 190px; top: 0; height: 35px; line-height: 35px; font-weight: bold;">月</div>
+                            </div>
 
-                    <div style="position: absolute; left: 330px; top: 0;">
-                        <div class="date-input-container" style="width: 200px;">
-                            <input type="text" class="select-time-input" ng-model="importOrderArrivalDateFrom" id="billSailingTime1" onclick="laydate();" onblur="cleanBillYearAndMonth()"/>
-                            <img src="../images/down-arrow.png" class="detail-down-arrow">
                         </div>
-                        <div style="position: absolute; left: 210px; top: 0; height: 35px; line-height: 35px; font-weight: bold;">至</div>
-
-                        <div class="date-input-container" style="left: 235px; width: 200px;">
-                            <input type="text" class="select-time-input" ng-model="importOrderArrivalDateTo" id="billSailingTime2" onclick="laydate();" onblur="cleanBillYearAndMonth()"/>
-                            <img src="../images/down-arrow.png" class="detail-down-arrow">
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="list-input-container">
+                                <label for="billSailingTime1" class="list-label">开航日期起：</label>
+                                <input id="billSailingTime1" class="detail-date" ng-bind="importOrderArrivalDateFrom" onclick="laydate();" style="width: 98%; padding-left: 88px;" onblur="cleanBillYearAndMonth()"/>
+                            </div>
                         </div>
+                        <div style="font-weight: bold; line-height: 35px; position: absolute; left: 66%;">
+                            —
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="list-input-container">
+                                <label for="billSailingTime2" class="list-label">开航日期止：</label>
+                                <input id="billSailingTime2" class="detail-date" ng-bind="importOrderArrivalDateTo" onclick="laydate();" style="width: 98%; padding-left: 88px;" onblur="cleanBillYearAndMonth()"/>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

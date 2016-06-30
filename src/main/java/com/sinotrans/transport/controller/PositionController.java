@@ -25,26 +25,33 @@ public class PositionController extends ExceptionController {
     private PositionService positionService;
 
     /** 整票跟踪坐标点 */
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/search/order/{orderId}", method = RequestMethod.GET)
     @ResponseBody
-    public PositionListResponse positionList(PositionListRequest positionRequest, HttpServletRequest request) {
+    public PositionListResponse positionList(@PathVariable("orderId") Long orderId, HttpServletRequest request) {
 
         Long userId = (Long)request.getAttribute("userId");
-        return positionService.positionList(userId, positionRequest);
+        return positionService.positionList(userId, orderId);
     }
 
-    @RequestMapping(value = "/container/{containerGbsId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/search/container/{containerId}/{containerGbsId}", method = RequestMethod.GET)
     @ResponseBody
-    public PositionContainerResponse containerPosition(@PathVariable("containerGbsId") String containerGbsId, HttpServletRequest request) {
+    public PositionListResponse positionContainerInfo(@PathVariable("containerId") Long containerId, @PathVariable("containerGbsId") String containerGbsId, HttpServletRequest request) {
+        Long userId = (Long)request.getAttribute("userId");
+        return positionService.positionContainerInfo(userId, containerId, containerGbsId);
+    }
+
+    @RequestMapping(value = "/container/{containerId}", method = RequestMethod.GET)
+    @ResponseBody
+    public PositionContainerResponse singleContainerPosition(@PathVariable("containerId") Long containerId, HttpServletRequest request) {
 
         Long userId = (Long)request.getAttribute("userId");
-        return positionService.containerPosition(userId, containerGbsId);
+        return positionService.singleContainerPosition(userId, containerId);
     }
+
 
 //    @RequestMapping(value = "/search/current", method = RequestMethod.GET)
 //    @ResponseBody
 //    public PositionCurrentResponse current() {
 //
 //    }
-
 }

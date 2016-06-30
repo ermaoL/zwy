@@ -6,15 +6,21 @@
 <mapper namespace="com.sinotrans.transport.mapper">
 	<select id="SearchPositionList" parameterType="map" resultType="hashmap">
 		<include refid="util.PRE_SQL"></include>
-		 select o.ORDE_ID, o.ORDE_BILL_NO, o.ORDE_TYPE, o.ORDE_WHARF, ct.CONT_ID, ct.CONT_CASE_NO, ct.CONT_STATE, ct.CONT_GBS_ID
-		  from ORDERD o, CONTAINER ct
-		  where 1=1
-		  and o.ORDE_BILL_NO like '%'||#{condition.ordeBillNo}||'%'
-		  and o.ORDE_TYPE like '%'||#{condition.ordeType}||'%'
-		  and ct.CONT_CASE_NO like '%'||#{condition.contCaseNo}||'%'
-		  and o.ORDE_ID = ct.CONT_ORDE_ID
-		  and <include refid="util.COMMON_DYN_SQL" />
-		  and <include refid="util.DATA_AUTH" />
+		select o.ORDE_ID, o.ORDE_BILL_NO, o.ORDE_TYPE, o.ORDE_WHARF, ct.CONT_ID, ct.CONT_CASE_NO, ct.CONT_STATE, ct.CONT_GBS_ID
+		from ORDERD o, CONTAINER ct
+		where o.ORDE_ID = ct.CONT_ORDE_ID
+		<if test="null != condition.orderBillNo and '' != condition.orderBillNo">
+			and o.ORDE_BILL_NO like '%'||#{condition.orderBillNo}||'%'
+		</if>
+		<if test="null != condition.orderType and '' != condition.orderType">
+			and o.ORDE_TYPE = #{condition.orderType}
+		</if>
+		<if test="null != condition.containerCaseNo and '' != condition.containerCaseNo">
+			and ct.CONT_CASE_NO like '%'||#{condition.containerCaseNo}||'%'
+		</if>
+
+		and <include refid="util.COMMON_DYN_SQL" />
+		and <include refid="util.DATA_AUTH" />
 		<include refid="util.POST_SQL"></include>
 	</select>
 </mapper>

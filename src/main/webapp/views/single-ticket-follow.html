@@ -1,38 +1,43 @@
 <div class="import-list-content" ng-controller="singleTicketFollowCtrl">
-    <div class="container search-content">
-        <div class="row">
+    <div style="margin-top: 10px; position: relative;">
+        <div class="detail-back-list"><a id="import-back" ui-sref="index.ticketFollow" style="color: #ffffff;"><  返回整票</a></div>
+        <span class="detail-back">整票跟踪 > 单票跟踪</span>
+    </div>
+    <div class="container search-content"  style="margin-top: 20px;">
+        <div class="row col-lg-12">
             <div class="col-lg-9 col-md-9 col-sm-9">
                 <div class="container">
-                    <div class="row" style="margin-top: 2px">
-                        <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="row col-lg-12" style="margin-top: 2px">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                             <div style="height: 40px; line-height: 40px; vertical-align: bottom">
                                 <label>当前操作状态：</label>
-                                <span class="search-span">进码头</span>
+                                <span class="search-span" ng-bind="containerVo.containerStateDesc"></span>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
                             <span class="search-span">当前车速：</span>
-                            <span class="search-span-red">0</span>
+                            <span class="search-span-red" ng-bind="speedOfCar"></span>
                             <span class="search-span">km/h</span>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        </div>
+                    </div>
+                    <div class="row col-lg-12">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                            <span class="search-span">预计到达时间：</span>
+                            <span class="search-span" ng-bind="containerVo.expectArriveDate"></span>
+                            <span class="search-span-red" ng-bind="containerVo.expectArriveTime"></span>
+                        </div>
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                            <span class="search-span">实际到达时间：</span>
+                            <span class="search-span" ng-bind="containerVo.realArriveDate"></span>
+                            <span class="search-span-red" ng-bind="containerVo.realArriveTime"></span>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
                         </div>
                     </div>
                 </div>
-                <div class="row" style="margin-left: 2px; margin-top: 5px;">
-                    <div class="col-lg-5 col-md-5 col-sm-5">
-                        <span class="search-span">预计到达时间：</span>
-                        <span class="search-span">2016-05-27</span>
-                        <span class="search-span-red">16:00</span>
-                    </div>
-                    <div class="col-lg-5 col-md-5 col-sm-5">
-                        <span class="search-span">实际到达时间：</span>
-                        <span class="search-span">2016-05-27</span>
-                        <span class="search-span-red">16:03</span>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-sm-2">
-                    </div>
-                </div>
+
 
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3" style="position: relative;">
@@ -43,9 +48,6 @@
     </div>
     <div style="min-width: 1040px; padding: 5px; border: 1px solid #bfbfbf; margin-top: 10px;">
         <div id="single-map">
-            <!--<div id="panel" class="map-style">
-
-            </div>-->
 
         </div>
     </div>

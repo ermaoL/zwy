@@ -9,7 +9,7 @@ public enum DomainType {
     Order(2,"订单"),
     Container(3,"容器"),
     Address(4,"地址"),
-    Customer(5,"运输客户"),
+    Customer(5,"运输客户")
     ;
 
     private int value;

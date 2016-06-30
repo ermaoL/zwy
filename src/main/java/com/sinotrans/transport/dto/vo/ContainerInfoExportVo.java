@@ -2,8 +2,9 @@ package com.sinotrans.transport.dto.vo;
 
 /**
  * Created by emi on 2016/6/15.
+ * 目前没用到
  */
-public class ContainerInfoExportVo implements ContainerInfoVo {
+public class ContainerInfoExportVo extends ContainerInfoRespVo {
 
     private String beginTime;//开始操作时间
 

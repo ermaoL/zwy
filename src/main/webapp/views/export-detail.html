@@ -21,7 +21,7 @@
                     <div class="list-input-container form_control">
                         <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
                         <label for="_eDetailLadingBillNum" class="list-label">提单号：</label>
-                        <input id="_eDetailLadingBillNum" tabindex="1" class="list-input required" ng-model="exportDetailOrderBillNo" data-valid="isNonEmpty" data-error="   " style="width: 68%; left: 70px;"ng-keypress="enterExport($event)"/>
+                        <input id="_eDetailLadingBillNum" tabindex="1" class="list-input required" ng-model="exportDetailOrderBillNo" data-valid="isNonEmpty" data-error="   " style="width: 68%; left: 70px;" onkeyup="this.value = this.value.toUpperCase();"/>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
@@ -113,7 +113,21 @@
                         <!--<ul id="exportOrderWharf" ng-show="exportDetailOrderState==1||exportDetailOrderState==3||exportDetailOrderState==undefined?true:false">
 
                         </ul>-->
-                        <ul id="exportOrderWharf" ng-show="exportDetailOrderState==1||exportDetailOrderState==3||exportDetailOrderState==undefined?true:false">
+                        <ul class="exportOrderWharf" ng-show="exportDetailOrderState==1||exportDetailOrderState==3||exportDetailOrderState==undefined?true:false">
+                            <li>
+                                <span class="boat-item">ZY</span>
+                                <span class="boat-item-name" style="width: 100px;">海盈码头</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">QZ</span>
+                                <span class="boat-item-name" style="width: 100px;">青洲港区</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">JYG</span>
+                                <span class="boat-item-name" style="width: 100px;">福清新港</span>
+                            </li>
+                        </ul>
+                        <ul class="exportOrderWharf" ng-show="false">
                             <li>
                                 <span class="boat-item">HTD</span>
                                 <span class="boat-item-name" style="width: 100px;">海天码头</span>
@@ -273,7 +287,7 @@
 
             <div class="row" style="color: #ff0000; font-weight: bold; margin-top: 10px; padding-left: 15px;" ng-show="exportDetailOrderState==3?true:false">
                 <span>拒绝理由：</span>
-                <span>{{exportDetailVerifierContent}}</span>
+                <span id="exportDetailVerifierContent"></span>
             </div>
         </form>
 
@@ -296,8 +310,8 @@
                     <div class="second-table-top-divider" style="left: 209px;"></div>
                     <button class="second-table-top-operate" style="left: 210px;" ng-click="saveExportContainer()">保存</button>
                 </div>
-                <div id="export-detail-first-table" style="clear:both;">
-                    <table id="exportContainerTable" class="table table-bordered table-hover table-list" style="overflow-x: auto; margin-bottom: 0;" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==1||exportDetailOrderState==3?true:false">
+                <div id="export-detail-first-table" class="table-detail" style="clear:both;">
+                    <table id="exportContainerTable" class="table table-bordered table-hover container-list" style="overflow-x: auto; margin-bottom: 0;" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==1||exportDetailOrderState==3?true:false">
                         <thead style="background: #e5e5e5;">
                         <tr>
                             <th style="width: 20px;">
@@ -468,7 +482,7 @@
                         </tr>
                         </tbody>
                     </table>
-                    <table class="table table-bordered table-hover table-list unEditContainerTable" style="overflow-x: auto; margin-bottom: 0;" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==1||exportDetailOrderState==3?false:true">
+                    <table class="table table-bordered table-hover container-list unEditContainerTable" style="overflow-x: auto; margin-bottom: 0;" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==1||exportDetailOrderState==3?false:true">
                         <thead style="background: #e5e5e5;">
                         <tr>
                             <th style="width: 20px;">
@@ -610,8 +624,8 @@
                             <div class="second-table-top-divider" style="left: 139px;"></div>
                             <button class="second-table-top-operate" style="left: 140px;" ng-click="saveExportAddress()">保存</button>
                         </div>
-                        <div id="export-detail-second-table">
-                            <table id="exportAddressTable" class="table table-bordered table-hover" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==1||exportDetailOrderState==3?true:false">
+                        <div id="export-detail-second-table" class="table-detail">
+                            <table id="exportAddressTable" class="table table-bordered table-hover container-list" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==1||exportDetailOrderState==3?true:false">
                                 <thead style="background: #e5e5e5;">
                                 <tr>
                                     <th style="width: 20px;">
@@ -692,7 +706,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <table class="table table-bordered table-hover" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==1||exportDetailOrderState==3?false:true">
+                            <table class="table table-bordered table-hover container-list" ng-show="exportDetailOrderState==undefined||exportDetailOrderState==1||exportDetailOrderState==3?false:true">
                                 <thead style="background: #e5e5e5;">
                                 <tr>
                                     <th style="width: 20px;">
@@ -799,11 +813,11 @@
                             </div>-->
                             <label for="_eBoxNos" class="col-lg-2 col-md-2 col-sm-2 control-label">箱号：</label>
                             <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                <input id="_eBoxNos" type="text" class="form-control" ng-model="exportMultiContainerNo" onblur="chkcntrno(this,0);">
+                                <input id="_eBoxNos" type="text" class="form-control" ng-model="exportMultiContainerNo" style="border: 1px solid #ccc;" onkeyup="this.value = this.value.toUpperCase();" onblur="chkcntrno(this,0);">
                             </div>
                             <label for="_iBoxTypes" class="col-lg-2 col-md-2 col-sm-2 control-label">箱型：</label>
                             <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                <select id="_iBoxTypes" class="form-control" ng-model="exportMultiContainerType">
+                                <select id="_iBoxTypes" class="form-control" ng-model="exportMultiContainerType" style="border: 1px solid #ccc;">
                                     <option ng-repeat="x in containerExportType">{{x.typeCode}}</option>
                                 </select>
                             </div>
@@ -811,7 +825,7 @@
                         <div class="form-group">
                             <label for="_iBoxSizes" class="col-lg-2 col-md-2 col-sm-2 control-label">尺寸：</label>
                             <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                <select id="_iBoxSizes" class="form-control" ng-model="exportMultiContainerSize">
+                                <select id="_iBoxSizes" class="form-control" ng-model="exportMultiContainerSize" style="border: 1px solid #ccc;">
                                     <option ng-repeat="x in containerSize" value="{{x.typeCode}}">{{x.typeCode}}</option>
                                 </select>
                             </div>
@@ -833,7 +847,7 @@
                             </div>
                             <label for="_iRoughWeight" class="col-lg-2 col-md-2 col-sm-2 control-label">货重（KG）：</label>
                             <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                <input id="_iRoughWeight" type="text" class="form-control" ng-model="exportMultiContainerGrossWeight">
+                                <input id="_iRoughWeight" type="text" class="form-control" ng-model="exportMultiContainerGrossWeight" style="border: 1px solid #ccc;">
                             </div>
                         </div>
                         <!--<div class="form-group" ng-show="exportMultiContainerDynamo=='否'?false:true">
@@ -852,14 +866,14 @@
                         <div class="form-group">
                             <label for="_iIsMultis" class="col-lg-2 col-md-2 col-sm-2 control-label">是否超重：</label>
                             <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                <select id="_iIsMultis" class="form-control" ng-model="exportMultiContainerIsOverWeight">
+                                <select id="_iIsMultis" class="form-control" ng-model="exportMultiContainerIsOverWeight" style="border: 1px solid #ccc;">
                                     <option value="是">是</option>
                                     <option value="否">否</option>
                                 </select>
                             </div>
                             <label for="_iIsTakes" class="col-lg-2 col-md-2 col-sm-2 control-label">是否带电机：</label>
                             <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                <select id="_iIsTakes" class="form-control" ng-model="exportMultiContainerDynamo">
+                                <select id="_iIsTakes" class="form-control" ng-model="exportMultiContainerDynamo" style="border: 1px solid #ccc;">
                                     <option value="是">是</option>
                                     <option value="否">否</option>
                                 </select>
@@ -868,14 +882,14 @@
                         <div class="form-group">
                             <label for="_iIsCaseChecks" class="col-lg-2 col-md-2 col-sm-2 control-label">是否柜检：</label>
                             <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                <select id="_iIsCaseChecks" class="form-control" ng-model="exportMultiContainerIsCheck">
+                                <select id="_iIsCaseChecks" class="form-control" ng-model="exportMultiContainerIsCheck" style="border: 1px solid #ccc;">
                                     <option value="是">是</option>
                                     <option value="否">否</option>
                                 </select>
                             </div>
                             <label for="_iIsCaseChecks" class="col-lg-2 col-md-2 col-sm-2 control-label">是否多地装：</label>
                             <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                <select id="_iIsMultiUpload" class="form-control" ng-model="exportMultiUpload">
+                                <select id="_iIsMultiUpload" class="form-control" ng-model="exportMultiUpload" style="border: 1px solid #ccc;">
                                     <option value="是">是</option>
                                     <option value="否">否</option>
                                 </select>
@@ -884,7 +898,7 @@
                         <div class="form-group">
                             <label for="_iNumbers" class="col-lg-2 col-md-2 col-sm-2 control-label">数量：</label>
                             <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                <input id="_iNumbers" type="text" class="form-control" ng-model="exportMultiAdd.numbers">
+                                <input id="_iNumbers" type="text" class="form-control" ng-model="exportMultiAdd.numbers" style="border: 1px solid #ccc;">
                             </div>
                         </div>
                         <!--<div class="form-group">

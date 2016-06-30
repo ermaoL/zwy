@@ -103,12 +103,14 @@ public class AdminServiceImpl extends MybatisManagerImpl implements AdminService
     public CommonListResponse searchImport(CompanyType companyType, OrderImportSearchRequest request) {
 
         String orderBy = "ordeId desc";//
-        PagingInfo pagingInfo = this.fetchPagingInfo(request, companyType);
+        PagingInfo pagingInfo;
         List<OrderImportSearchRespVo> importSearchVoList;
         if (StringUtils.isEmpty(request.getContainerCaseNo())) {
+            pagingInfo = this.fetchPagingInfo(request, companyType, null);
             List<Order> orderList = this.myBatisDao.findByCondition(Order.class, orderBy, pagingInfo, request.fetchFilter(null, companyType));
             importSearchVoList = this.toImportOrderVoList(orderList);
         } else {
+            pagingInfo = this.fetchPagingInfo(request, companyType, "SearchImportOrderList");
             List<Map<String,Object>> result = this.myBatisDao.queryByCondition("SearchImportOrderList", request.fetchCondition(), orderBy, pagingInfo, null);
             importSearchVoList = this.mapToImportVoList(result);
         }
@@ -345,12 +347,14 @@ public class AdminServiceImpl extends MybatisManagerImpl implements AdminService
     @Override
     public CommonListResponse searchExport(CompanyType companyType, OrderExportSearchRequest request) {
         String orderBy = "ordeId desc";//
-        PagingInfo pagingInfo = this.fetchPagingInfo(request, companyType);
+        PagingInfo pagingInfo;
         List<OrderExportSearchRespVo> exportSearchVoList;
         if (StringUtils.isEmpty(request.getContainerCaseNo())) {
+            pagingInfo = this.fetchPagingInfo(request, companyType, null);
             List<Order> orderList = this.myBatisDao.findByCondition(Order.class, orderBy, pagingInfo, request.fetchFilter(null, companyType));
             exportSearchVoList = this.toExportOrderVoList(orderList);
         } else {
+            pagingInfo = this.fetchPagingInfo(request, companyType, "SearchExportOrderList");
             List<Map<String,Object>> result = this.myBatisDao.queryByCondition("SearchExportOrderList", request.fetchCondition(), orderBy, pagingInfo, null);
             exportSearchVoList = this.mapToExportVoList(result);
         }
@@ -611,7 +615,7 @@ public class AdminServiceImpl extends MybatisManagerImpl implements AdminService
             OrderGbsSendResponse sendResponse = responseEntity.getBody();
             if (sendResponse.isSuccess()) {
 
-                this.updateContainerGbsList(containerList, sendResponse.getContainerMap(), adminCode, OrderType.valueOf(order.getOrdeType()));
+                this.updateContainerGbsList(containerList, sendResponse.getContainerMap(), adminCode, OrderType.valueOf(order.getOrdeType()), adminName);//add position log
                 String verifier = order.verifySuccess(companyType, adminCode, adminName, sendResponse.getOrderGbsDocCode());
                 OrderCheck orderCheck = new OrderCheck(orderId, verifier, CheckStateType.Pass.getValue(), null, adminCode);
                 myBatisDao.update(order);
@@ -619,7 +623,6 @@ public class AdminServiceImpl extends MybatisManagerImpl implements AdminService
             } else {
                 return new OrderVerifierResponse(sendResponse.getErrorCode(), sendResponse.getErrorMsg());
             }
-
         }
         return new OrderVerifierResponse();
     }
@@ -677,11 +680,13 @@ public class AdminServiceImpl extends MybatisManagerImpl implements AdminService
         }
     }
 
-    private void updateContainerGbsList(List<Container> containerList, Map<String, String> containerMap, String adminCode, OrderType orderType) {
+    private void updateContainerGbsList(List<Container> containerList, Map<String, String> containerMap, String adminCode, OrderType orderType, String adminName) {
 
         String key;
         String containerDocCode;
         ContainerStateType containerStateType = orderType == OrderType.Import ? ContainerStateType.ImportChecked : ContainerStateType.ExportChecked;
+        PositionLogType positionLogType = orderType == OrderType.Import ? PositionLogType.ImVerify : PositionLogType.ExVerify;
+        PositionTimeLog positionTimeLog;
         for (Container c : containerList) {
             key = String.valueOf(c.getContId());
             if (containerMap.containsKey(key)) {
@@ -690,6 +695,9 @@ public class AdminServiceImpl extends MybatisManagerImpl implements AdminService
                 c.setContState(containerStateType.getValue());
                 c.setModifier(adminCode);
                 myBatisDao.update(c);
+                String positionDesc = PositionLogType.checkerServiceDesc(positionLogType, adminName, "");
+                positionTimeLog = new PositionTimeLog(c.getContId(), positionLogType, positionDesc);
+                myBatisDao.save(positionTimeLog);
             } else {
                 throw new CommonException(ErrorCode.REMOTE_DATA_ERROR, "GBS返回数据异常","GBS下发返回数据异常,缺失容器[" + key + "]的gbs主键数据", logger);
             }
@@ -774,14 +782,14 @@ public class AdminServiceImpl extends MybatisManagerImpl implements AdminService
         return pagingInfo;
     }
 
-    private PagingInfo fetchPagingInfo(CommonListRequest request, CompanyType companyType) {
+    private PagingInfo fetchPagingInfo(CommonListRequest request, CompanyType companyType, String queryId) {
         PagingInfo pagingInfo = request.fetchPagingInfo();
         if(pagingInfo != null) {
             int counts = 0;
-            try {
+            if (StringUtils.isEmpty(queryId)) {
                 counts = this.myBatisDao.getRowCountByCondition(Order.class, request.fetchFilter(null, companyType));
-            } catch (ParseException e) {
-                throw new DateFormatException(sdf, logger);
+            } else {
+                counts = this.myBatisDao.getQueryCountByCondition(queryId, request.fetchCondition(), null);//Order.class, searchRequest.fetchFilter(userId, null));
             }
             pagingInfo.setTotalRows(counts);
         }

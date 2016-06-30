@@ -9,7 +9,11 @@ import com.sinotrans.transport.dto.PositionListResponse;
  */
 public interface PositionService {
 
-    PositionListResponse positionList(Long userId, PositionListRequest positionRequest);
+//    PositionListResponse positionList(Long userId, PositionListRequest positionRequest);
 
-    PositionContainerResponse containerPosition(Long userId, String containerGbsId);
+    PositionListResponse positionList(Long userId, Long orderId);
+
+    PositionListResponse positionContainerInfo(Long userId, Long containerId, String containerGbsId);
+
+    PositionContainerResponse singleContainerPosition(Long userId, Long containerId);
 }

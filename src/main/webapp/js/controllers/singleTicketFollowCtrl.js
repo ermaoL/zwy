@@ -1,10 +1,7 @@
 /**
  * Created by Administrator on 2016/5/26.
  */
-myApp.controller('singleTicketFollowCtrl', function ($scope, $http) {
-
-    var height = $(window).height()-260;
-    $('#single-map').css("height", height);
+myApp.controller('singleTicketFollowCtrl', ['$scope', '$http', '$state', '$stateParams', function ($scope, $http, $state, $stateParams) {
 
     var where = sessionStorage.getItem("isImOrEx");
     if (where == "1") {
@@ -15,79 +12,136 @@ myApp.controller('singleTicketFollowCtrl', function ($scope, $http) {
         sessionStorage.setItem("menuStatus", 4);
     }
 
-    var marker, lineArr = [];
-    var map = new AMap.Map("single-map", {
-        resizeEnable: true,
-        center: [117.9903373563, 24.4715940141],
-        zoom: 17
-    });
+    $('#start').removeAttr("disabled");
+    $scope.speedOfCar = "0";
 
-    AMap.service(["AMap.Driving"], function() {
-        var driving = new AMap.Driving({
-            map: map
-        }); //构造路线导航类
-        // 根据起终点坐标规划步行路线
-        driving.search([
-            {keyword: '福建省厦门市裕雄堆场'},
-            {keyword: '福建省南安大霞美滨江机械制造基地宏盛兴机械'},
-            {keyword: '福建省厦门市海天码头'}
-        ]);
-    });   
 
-/*    var marker, lineArr = [];
-    var map = new AMap.Map("single-map", {
-        resizeEnable: true,
-        center: [116.397428, 39.90923],
-        zoom: 17
-    });
-    map.on("complete", completeEventHandler);
-    AMap.event.addDomListener(document.getElementById('start'), 'click', function() {
-        marker.moveAlong(lineArr, 500);
-    }, false);
-    AMap.event.addDomListener(document.getElementById('stop'), 'click', function() {
-        marker.stopMove();
-    }, false);
+    var timestamp = (new Date()).valueOf();
+    var containerId = $stateParams.containerId;
+    if (containerId == "" || containerId == null || containerId == undefined) {
+        singleMapLoad("");
+    } else {
+        var url = '/trans/api/position/container/' + containerId + '?' + timestamp;
+        $http({
+            url: url,
+            method:'GET',
+            params: {containerId: containerId},
+            headers: {"userName": $.cookie("userName"), "token": $.cookie("token")}
+        }).success(function (data) {
+            if (data.success) {
 
-    // 地图图块加载完毕后执行函数
-    function completeEventHandler() {
-        marker = new AMap.Marker({
-            map: map,
-            position: [118.0894534342, 24.4795595205],
-            icon: "http://webapi.amap.com/images/car.png",
-            offset: new AMap.Pixel(-26, -13),
-            autoRotation: true
-        });
-        var lngX = 118.0894534342, latY = 24.4795595205;
-        lineArr.push([lngX, latY]);
-        var lngX1 = 118.1285341528, latY1 = 24.4888381022;
-        lineArr.push([lngX1, latY1]);
-        var lngX2 = 118.1140638886, latY2 = 24.5208065057;
-        lineArr.push([lngX2, latY2]);
-        var lngX3 = 118.1019603587, latY3 = 24.5292338776;
-        lineArr.push([lngX3, latY3]);
-        var lngX4 = 118.0944717371, latY4 = 24.5280179992;
-        lineArr.push([lngX4, latY4]);
-        /!*for (var i = 1; i < 3; i++) {
-            lngX = lngX + Math.random() * 0.05;
-            if (i % 2) {
-                latY = latY + Math.random() * 0.0001;
+                $scope.containerVo = data.containerVo;
+                singleMapLoad(data);
             } else {
-                latY = latY + Math.random() * 0.06;
+                errorMsgHint(data.errorCode, data.errorMsg);
             }
-            lineArr.push([lngX, latY]);
-        }*!/
-        // 绘制轨迹
-        var polyline = new AMap.Polyline({
-            map: map,
-            path: lineArr,
-            strokeColor: "#00A",  //线颜色
-            strokeOpacity: 1,     //线透明度
-            strokeWeight: 3,      //线宽
-            strokeStyle: "solid"  //线样式
         });
-        map.setFitView();
-    }*/
-});
+    }
+
+
+    function singleMapLoad(data) {
+        var firstLongitude = "118.1186274498";
+        var firstLatitude = "24.4714926999";
+        var preLongitude = "", preLatitude = "", nextLongitude = "", nextLatitude = "", twoPointTime = 1;
+
+        var state = data.currentState;
+        if (state == 2 || state == 3) {
+            firstLongitude = data.containerVo.firstLongitude;
+            firstLatitude = data.containerVo.firstLatitude;
+            nextLongitude = data.containerVo.nextLongitude;
+            nextLatitude = data.containerVo.nextLatitude;
+            if (state == 2) {
+                preLongitude = data.containerVo.preLongitude;
+                preLatitude = data.containerVo.preLatitude;
+                twoPointTime = data.containerVo.twoPointTime;
+            }
+        }
+
+        var marker, lineArr = [];
+        //基本地图加载
+        var map = new AMap.Map("single-map", {
+            resizeEnable: true,
+            center: [firstLongitude, firstLatitude],
+            zoom: 12
+        });
+        if (state == 2 || state == 3) {
+            //构造路线导航类
+            var driving = new AMap.Driving({
+                map: map
+            });
+            var driving1 = new AMap.Driving();
+            // 根据起终点经纬度规划驾车导航路线
+            driving.search(new AMap.LngLat(firstLongitude, firstLatitude), new AMap.LngLat(nextLongitude, nextLatitude));
+            $('#start').attr('disabled', 'disabled');
+            if (state == 2) {
+                driving1.search(new AMap.LngLat(preLongitude, preLatitude), new AMap.LngLat(nextLongitude, nextLatitude), function () {
+                    var distance = result.routes[0].distance/1000;
+                    twoPointTime = twoPointTime/3600;
+                    $scope.speedOfCar = distance/twoPointTime;
+                });
+            }
+        } else if (state == 4) {
+            var histVoList = data.histVoList;
+            //构造路线导航类
+            var driving4 = new AMap.Driving({
+                map: map
+            });
+            var lnglatXY = [], tracks;
+            var length = histVoList.length;
+            var start = new AMap.LngLat(histVoList[0].longitude, histVoList[0].latitude);
+            var end = new AMap.LngLat(histVoList[length-1].longitude, histVoList[length-1].latitude);
+            for (var i = 1; i < length - 1; i++) {
+                lnglatXY.push([histVoList[i].longitude, histVoList[i].latitude]);
+            }
+            tracks = {waypoints: lnglatXY};
+
+            var latX = 0, latY = 0;
+            // 根据起终点经纬度规划驾车导航路线
+            driving4.search(start, end, tracks, function(status, result) {
+                var arr = result.routes[0].steps;
+                for (var i = 0; i < arr.length; i++) {
+                    latX = arr[i].path[0].lng;
+                    latY = arr[i].path[0].lat;
+                    lineArr.push([latX, latY]);
+                }
+            });
+            map.on("complete", completeEventHandler);
+            var moveStatus = 0;
+            AMap.event.addDomListener(document.getElementById('start'), 'click', function() {
+                if (moveStatus == 0) {
+                    marker.moveAlong(lineArr, 500);
+                    moveStatus = 1;
+                } else {
+                    marker.stopMove();
+                    moveStatus = 0;
+                }
+            }, false);
+
+            // 地图图块加载完毕后执行函数
+            function completeEventHandler() {
+                marker = new AMap.Marker({
+                    map: map,
+                    position: [117.9903373563, 24.4715940141],
+                    icon: "http://webapi.amap.com/images/car.png",
+                    offset: new AMap.Pixel(-26, -13),
+                    autoRotation: true
+                });
+
+                // 绘制轨迹
+                var polyline = new AMap.Polyline({
+                    map: map,
+                    path: lineArr,
+                    strokeColor: "#00A",  //线颜色
+                    strokeOpacity: 0,     //线透明度
+                    strokeWeight: 0,      //线宽
+                    strokeStyle: "solid"  //线样式
+                });
+                map.setFitView();
+            }
+        }
+
+    }
+}]);
 
 function changeMenuType(item) {
     $(item).addClass('menu-active');

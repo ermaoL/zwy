@@ -15,8 +15,12 @@ public class UserRegisterResponse extends RestResponse {
         super(errorCode, errorMsg);
     }
 
-    public UserRegisterResponse(String userName, String token) {
+    public UserRegisterResponse() {
         super();
+    }
+
+    public UserRegisterResponse(String userName, String token) {
+        this();
         this.userName = userName;
         this.token = token;
     }

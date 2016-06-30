@@ -27,11 +27,6 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         }
     });
 
-    /*$('form').on('submit', function(event) {
-        event.preventDefault();
-        $('form').validate('submitValidate'); //return boolean;
-    });*/
-
     $('[name="nice-select"]').click(function(e){
         $('[name="nice-select"]').find('ul').hide();
         $(this).find('ul').show();
@@ -50,7 +45,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     $(document).click(function(){
         $('[name="nice-select"] ul').hide();
     });
-    $('#exportOrderWharf li').click(function(e){
+    $('.exportOrderWharf li').click(function(e){
         var val = $.trim($(this).find('.boat-item-name').text());
         var code = $.trim($(this).find('.boat-item').text());
         $(this).parents('[name="nice-select"]').find('input').val(val);
@@ -79,8 +74,6 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     var eOperate = sessionStorage.getItem("eOperate");
     var exportOrderId = sessionStorage.getItem("exportOrderId");
 
-    // console.log("detail:  "+exportOrderId);
-
     var myDate = new Date();
     var _year=myDate.getYear();        //获取当前年份(2位)
     var _fullyear=myDate.getFullYear();    //获取完整的年份(4位,1970-????)
@@ -88,7 +81,8 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     var _date=myDate.getDate();        //获取当前日(1-31)
 
     if (eOperate == "1" && exportOrderId != "") {
-        var url = "/trans/api/export/order/" + exportOrderId + "/all";
+        var timestamp = (new Date()).valueOf();
+        var url = "/trans/api/export/order/" + exportOrderId + "/all?" + timestamp;
 
         $http({
             url: url,
@@ -116,7 +110,8 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
             $scope.exportDetailTotalCase = orderVo.orderTotalCase;
             $scope.exportDetailOwner = orderVo.orderOwner;
             $scope.exportDetailOrderFreeUseDay = orderVo.orderFreeUseDay;
-            $scope.exportDetailVerifierContent = orderVo.verifierContent;
+            // $scope.exportDetailVerifierContent = orderVo.verifierContent;
+            $('#exportDetailVerifierContent').text(orderVo.verifierContent);
             $scope.exportDetailOrderGoodOwner = orderVo.orderGoodOwner;
             $scope.exportDetailRemark = orderVo.orderRemark;
             $('#_eDetailOwner').attr("ownerCode", orderVo.orderOwnerCode);
@@ -227,24 +222,6 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         }
         $scope.exportDetailRemark = "";
     }
-
-    /*// 回车键
-     $scope.enterExport = function (ev) {
-     if (ev.keyCode !== 13) {
-     return;
-     } else {
-     alert("enter export");
-     }
-     }
-
-     $('#_eDetailLadingBillNum').blur(function () {
-     alert("search export");
-     });*/
-
-    $('#export-detail-first-table').css("max-height", 450);
-    $('#export-detail-first-table').css("overflow-y", "auto");
-    $('#export-detail-second-table').css("max-height", 450);
-    $('#export-detail-second-table').css("overflow-y", "auto");
 
     $scope.saveExportOrder = function () {
         $('form').validate('submitValidate');
@@ -629,7 +606,8 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         $(item).parents('tr').siblings('tr').css("background", "#ffffff");
         // console.log("containerId:   "+ id);
         sessionStorage.setItem("exportFirstContainerId", id);
-        var url = "/trans/api/export/container/" + id + "/address";
+        var timestamp = (new Date()).valueOf();
+        var url = "/trans/api/export/container/" + id + "/address?" + timestamp;
         $http({
             url: url,
             method:'GET',
@@ -687,6 +665,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     
 // 跳转到整票跟踪
     $scope.toTicketFollow = function () {
+        sessionStorage.setItem("followOrderId", exportOrderId);
         $state.go('index.ticketFollow');
         sessionStorage.setItem("menuStatus", 4);
         sessionStorage.setItem("isImOrEx", 2);
@@ -697,7 +676,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     // 新增
     $scope.addExportBox = function () {
         $scope.inserted = {
-            "index":$scope.detailData1.length+1,
+            "index":"",
             "containerId":"",
             "containerOwner":"",
             "containerType":"",
@@ -720,7 +699,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
     // 新增
     $scope.addExportBoxInfo = function () {
         $scope.inserted = {
-            "index":$scope.detailData3.length+1,
+            "index":"",
             "addressId":"",
             "addressPlace":"",
             "addressDeliveryTime":"",
@@ -749,7 +728,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         var num = $scope.exportMultiAdd.numbers;
         for (var i = 0; i < num; i++) {
             $scope.inserted = {
-                "index":$scope.detailData1.length+1,
+                "index":"",
                 "containerId":"",
                 "containerCaseNo":$scope.exportMultiContainerNo,
                 "containerOwner": "",
@@ -821,8 +800,9 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
         var containerIdArr = new Array();
         box.each(function(){
             var delId = $(this).parent().parent().find('.exportContainerId').val();
-            // console.log(delId);
             if (delId == "") {
+                var index = $(this).parent().parent()[0].rowIndex;
+                $scope.detailData1.splice(index - 1, 1);
                 $(this).parent().parent().remove();
             } else {
                 containerIdArr.push(delId);
@@ -852,6 +832,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
                 }
             });
         }
+        $('#export-select-all1').prop('checked', false);
     }
 
     $scope.delExportBoxInfo = function () {
@@ -866,6 +847,8 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
             var delId = $(this).parent().parent().find('.exportAddressId').val();
             // console.log(delId);
             if (delId == "") {
+                var index = $(this).parent().parent()[0].rowIndex;
+                $scope.detailData3.splice(index - 1, 1);
                 $(this).parent().parent().remove();
             } else {
                 addressIdArr.push(delId);
@@ -905,6 +888,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
              }
              });*/
         }
+        $('#export-select-all2').prop('checked', false);
 
     }
 
@@ -912,6 +896,7 @@ myApp.controller('exportDetailCtrl', ['$scope', '$state', '$http', function($sco
 
 function getContainerOwnerInfo(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryCrmTypeIdIsCW?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -964,6 +949,7 @@ function RndNum(n){
 // 获取箱列表中的提箱点和返箱点列表
 function getExportContainerAddress(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryDepot?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -1005,6 +991,7 @@ function setExportContainerAddress(item) {
 // 获取订单中的箱主列表
 function getExportOrderOwner(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryCrmTypeIdIsCW?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -1042,6 +1029,7 @@ function setExportOrderOwner(item) {
 // 获取订单中的码头列表
 function getExportOrderWharf(item) {
     var wharf = $(item).val();
+    wharf = encodeURI(wharf);
     var url = '/trans/api/queryDepot?codeOrName='+wharf;
     $.ajax({
         url:url,
@@ -1077,6 +1065,7 @@ function setExportWharfItem(item) {
 // 获取订单中的港口列表
 function getExportOrderPort(item) {
     var wharf = $(item).val();
+    wharf = encodeURI(wharf);
     var url = '/trans/api/queryPortCode?codeOrEnname='+wharf;
     $.ajax({
         url:url,
@@ -1112,6 +1101,7 @@ function setExportPortItem(item) {
 // 获取订单中的船名列表
 function getExportOrderBoat(item) {
     var boat = $(item).val();
+    boat = encodeURI(boat);
     var url = '/trans/api/queryVessel?codeOrEnname='+boat;
     $.ajax({
         url:url,
@@ -1150,7 +1140,9 @@ function setExportBoatItem(item) {
 function getExportOrderSail(item) {
     var boat = $('#_eDetailBoatName').attr("boatCode");
     boat = $.trim(boat);
+    boat = encodeURI(boat);
     var sail = $(item).val();
+    sail = encodeURI(sail);
     var url = '/trans/api/queryVesselEtd?vesselCode='+boat+'&voyage='+sail;
     $.ajax({
         url:url,
@@ -1187,6 +1179,7 @@ function setExportSailItem(item) {
 
 function getExportMultiOrderOwner(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryCrmTypeIdIsCW?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -1223,6 +1216,7 @@ function setExportMultiOrderOwner(item) {
 // 获取批量新增的提箱点和返箱点的列表
 function getExportMultiOrderDepot(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryDepot?codeOrName='+owner;
     $.ajax({
         url:url,

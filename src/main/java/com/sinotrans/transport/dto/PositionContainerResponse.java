@@ -12,7 +12,8 @@ import java.util.List;
  */
 public class PositionContainerResponse extends RestResponse {
 
-    private String containerGbsId;//gbs箱主键
+//    private String containerGbsId;//gbs箱主键
+    private String containerId;
 
     private String currentState;//1: 暂无任务   2:任务正在执行中  3:子任务结束  4:整个箱子任务结束
 
@@ -20,9 +21,9 @@ public class PositionContainerResponse extends RestResponse {
 
     private List<PositionHistRespVo> histVoList;//当currentState != 4 时，该字段为空
 
-    public PositionContainerResponse(String containerGbsId, int currentState, PositionContainerRespVo containerVo, List<PositionHistRespVo> histVoList) {
+    public PositionContainerResponse(Long containerId, int currentState, PositionContainerRespVo containerVo, List<PositionHistRespVo> histVoList) {
         this();
-        this.containerGbsId = containerGbsId;
+        this.containerId = containerId + "";
         this.currentState = currentState + "";
         this.containerVo = containerVo;
         this.histVoList = histVoList;
@@ -32,12 +33,12 @@ public class PositionContainerResponse extends RestResponse {
         super();
     }
 
-    public String getContainerGbsId() {
-        return containerGbsId;
+    public String getContainerId() {
+        return containerId;
     }
 
-    public void setContainerGbsId(String containerGbsId) {
-        this.containerGbsId = containerGbsId;
+    public void setContainerId(String containerId) {
+        this.containerId = containerId;
     }
 
     public String getCurrentState() {

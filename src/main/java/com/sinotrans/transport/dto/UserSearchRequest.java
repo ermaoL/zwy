@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by emi on 2016/6/13.
@@ -39,7 +40,7 @@ public class UserSearchRequest extends CommonListRequest {
 
 
     @Override
-    public List fetchFilter(Long userId, CompanyType companyType) throws ParseException {
+    public List fetchFilter(Long userId, CompanyType companyType) {
         return null;
     }
 
@@ -56,5 +57,8 @@ public class UserSearchRequest extends CommonListRequest {
         return filter;
     }
 
-
+    @Override
+    public Map<String, Object> fetchCondition() {
+        return null;
+    }
 }

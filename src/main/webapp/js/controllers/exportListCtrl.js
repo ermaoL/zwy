@@ -147,9 +147,11 @@ myApp.controller('exportListCtrl', ['$scope', '$state', '$http', 'ExportListServ
 
 //业务类
 myApp.factory('ExportListService', ['$http', function ($http) {
+    var timestamp = (new Date()).valueOf();
+    var url = '/trans/api/export?' + timestamp;
     var list = function (exportListData) {
         return $http({
-            url:'/trans/api/export',
+            url:url,
             method:'GET',
             params: exportListData,
             headers: {

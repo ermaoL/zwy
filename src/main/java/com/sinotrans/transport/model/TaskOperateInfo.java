@@ -29,6 +29,8 @@ public class TaskOperateInfo extends BaseModel implements OperationLog {
 
     private Date tkoiActionTime;//下发时间 暂时对应 TaskRemoteFetchRequest-issuedTime     todo:??
 
+    private Double tkoiForeseeTime;//预计花费时间
+
     private String tkoiRegionFrom;//始发地
 
     private String tkoiRegionTo;//目的地
@@ -83,19 +85,6 @@ public class TaskOperateInfo extends BaseModel implements OperationLog {
         this.tkoiState = TaskStateType.WaitAccept.getValue();
     }
 
-    public TaskOperateInfo(String truckingActId, String driverCode, String containerId, int tkoiCompany, String taskType, Date issuedTime, String regionFrom, String regionTo, String actionTncome, Integer orderType) {
-        this();
-        this.tkoiGbsTruckingActId = truckingActId;
-        this.tkoiGbsDriverCode = driverCode;
-        this.tkoiGbsContainerId = containerId;
-        this.tkoiCompany = tkoiCompany;
-        this.tkoiTaskType = Integer.parseInt(taskType);
-        this.tkoiActionTime = issuedTime;
-        this.tkoiRegionFrom = StringUtils.isEmpty(regionFrom) ? "" : regionFrom;
-        this.tkoiRegionTo = StringUtils.isEmpty(regionTo) ? "" : regionTo;
-        this.tkoiPostage = actionTncome;
-        this.tkoiOrderType = orderType;
-    }
 
     @Id
     @Column(name = "TKOI_ID", length = 19)
@@ -168,6 +157,16 @@ public class TaskOperateInfo extends BaseModel implements OperationLog {
     public void setTkoiActionTime(Date tkoiActionTime) {
         this.tkoiActionTime = tkoiActionTime;
         addValidField("tkoiActionTime");
+    }
+
+    @Column(name = "TKOI_FORESEE_TIME", scale = 12, precision = 4)
+    public Double getTkoiForeseeTime() {
+        return tkoiForeseeTime;
+    }
+
+    public void setTkoiForeseeTime(Double tkoiForeseeTime) {
+        this.tkoiForeseeTime = tkoiForeseeTime;
+        addValidField("tkoiForeseeTime");
     }
 
     @Column(name = "TKOI_REGION_FROM", length = 128)

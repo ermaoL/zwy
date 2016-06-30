@@ -22,7 +22,7 @@ public class HistTranTracking extends BaseModel {
 
     private Long histTaskId;//任务Id   TaskOperateInfo主键
 
-//    private String histGbsContainerId;//gbs箱Id
+    private String histGbsContainerId;//箱Id
 
     private String histLongitude;//经度
 
@@ -41,11 +41,11 @@ public class HistTranTracking extends BaseModel {
         this.histTime = new Date();
     }
 
-    public HistTranTracking(Long histTranId, Long histTaskId, String histLongitude, String histLatitude) {
+    public HistTranTracking(Long histTranId, Long histTaskId, String histGbsContainerId, String histLongitude, String histLatitude) {
         this();
         this.histTranId = histTranId;
         this.histTaskId = histTaskId;
-//        this.histGbsContainerId = histGbsContainerId;
+        this.histGbsContainerId = histGbsContainerId;
         this.histLongitude = histLongitude;
         this.histLatitude = histLatitude;
     }
@@ -80,6 +80,7 @@ public class HistTranTracking extends BaseModel {
 
     public void setHistTranId(Long histTranId) {
         this.histTranId = histTranId;
+        addValidField("histTranId");
     }
 
     @Column(name = "HIST_TASK_ID", length = 19)
@@ -89,18 +90,18 @@ public class HistTranTracking extends BaseModel {
 
     public void setHistTaskId(Long histTaskId) {
         this.histTaskId = histTaskId;
-        addValidField("histId");
+        addValidField("histTaskId");
     }
 
-//    @Column(name = "HIST_GBS_CONTAINER_ID", length = 19)
-//    public String getHistGbsContainerId() {
-//        return histGbsContainerId;
-//    }
-//
-//    public void setHistGbsContainerId(String histGbsContainerId) {
-//        this.histGbsContainerId = histGbsContainerId;
-//        addValidField("histGbsContainerId");
-//    }
+    @Column(name = "HIST_GBS_CONTAINER_ID", length = 19)
+    public String getHistGbsContainerId() {
+        return histGbsContainerId;
+    }
+
+    public void setHistGbsContainerId(String histGbsContainerId) {
+        this.histGbsContainerId = histGbsContainerId;
+        addValidField("histGbsContainerId");
+    }
 
     @Column(name = "HIST_LONGITUDE", length = 12)
     public String getHistLongitude() {
@@ -121,7 +122,6 @@ public class HistTranTracking extends BaseModel {
         this.histLatitude = histLatitude;
         addValidField("histLatitude");
     }
-
 
     @Column(name = "HIST_TIME")
     public Date getHistTime() {

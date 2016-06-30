@@ -43,6 +43,7 @@ public class Container extends BaseModel implements OperationLog {
     private String contReturnDepotCode;//返箱点                export,import
 
     private Integer contState;//状态                      export,import
+    //箱状态(int 类型) 15:重箱移场  25:进口放重  35:进口放空  45:进口还空  10:外提空箱  20:出口放箱  30:出口回箱  40:进码头
 
     private String contSealNo;//铅封号                         ,import
 

@@ -46,14 +46,15 @@ myApp.controller('registerCtrl', ['$scope', '$http', '$state', function($scope, 
                 url: "/trans/api/user/register",
                 data: {"userName": $scope.registerUser, "userTel": $scope.registerPhone, "userPass": $scope.registerPwd, "userPassConfirm": $scope.registerPwd, "userCompany": $('#_regCompanyName').val()},
                 success: function(data) {
-                    var data = $.parseJSON(data);
-                    if(data.success){
-                        // console.log(data.token);
-                        // sessionStorage.setItem("token", data.token);
+                    var temp = data;
+                    if (typeof data == "string") {
+                        temp = $.parseJSON(data);
+                    }
+                    if(temp.success){
+                        Dialog.alert("注册成功");
                         $state.go('login');
                     }else{
-                        // alert(status.errorMsg);
-                        Dialog.alert(data.errorMsg);
+                        Dialog.alert(temp.errorMsg);
                     }
                 }
             });

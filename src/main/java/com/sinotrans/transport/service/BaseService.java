@@ -21,4 +21,6 @@ public interface BaseService {
     QueryPortCodeResponse queryPortCode(String codeOrEnname);
 
     QueryDepotResponse queryDepot(String codeOrName);
+
+    QueryBillResponse queryBillList(QueryBillRequest billRequest);
 }

@@ -26,13 +26,13 @@ public class PositionContainerRespVo {
 
     private String twoPointTime;//最近两个坐标点的时间差，单位：秒 (2)
 
-    private String expectArriveDate;//预计到达日 例如：2016.06.15 (2)
+    private String expectArriveDate;//预计到达日 例如：2016.06.15 (2,3,4)
 
-    private String expectArriveTime;//预计到达时间 例如：14:30 (2)
+    private String expectArriveTime;//预计到达时间 例如：14:30 (2,3,4)
 
-    private String realArriveDate;//实际到达日 例如：2016.06.15 (,3)
+    private String realArriveDate;//实际到达日 例如：2016.06.15 (,3,4)
 
-    private String realArriveTime;//实际到达时间 例如 15:20 (,3)
+    private String realArriveTime;//实际到达时间 例如 15:20 (,3,4)
 
     //2
     public PositionContainerRespVo(int containerState, String containerStateDesc, String firstLongitude, String firstLatitude, String preLongitude, String preLatitude, String nextLongitude, String nextLatitude, String twoPointTime, Date expectArriveDate, SimpleDateFormat sdf2) {
@@ -58,13 +58,18 @@ public class PositionContainerRespVo {
 
     //3
     public PositionContainerRespVo(int containerState, String containerStateDesc, String firstLongitude, String firstLatitude, String nextLongitude, String nextLatitude, Date realArriveDate, Date expectArriveDate, SimpleDateFormat sdf2) {
-        this();
+        this(realArriveDate, expectArriveDate, sdf2);
         this.containerState = containerState + "";
         this.containerStateDesc = containerStateDesc;
         this.firstLongitude = firstLongitude;
         this.firstLatitude = firstLatitude;
         this.nextLongitude = nextLongitude;
         this.nextLatitude = nextLatitude;
+    }
+
+    //4
+    public PositionContainerRespVo(Date realArriveDate, Date expectArriveDate, SimpleDateFormat sdf2) {
+        this();
         if (null == realArriveDate) {
             this.realArriveDate = "";
             this.realArriveTime = "";

@@ -113,7 +113,6 @@ myApp.controller('importListCtrl', ['$scope', '$state', '$http', 'ImportListServ
 
             });
         } else {
-            // alert("请正确选择抵港时间");
             Dialog.alert("请正确选择抵港时间");
         }
 
@@ -138,9 +137,11 @@ myApp.controller('importListCtrl', ['$scope', '$state', '$http', 'ImportListServ
 
 //业务类
 myApp.factory('ImportListService', ['$http', function ($http) {
+    var timestamp = (new Date()).valueOf();
+    var url = '/trans/api/import?' + timestamp;
     var list = function (importListData) {
         return $http({
-            url:'/trans/api/import',
+            url:url,
             method:'GET',
             params: importListData,
             headers: {

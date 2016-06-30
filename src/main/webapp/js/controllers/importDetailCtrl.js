@@ -49,7 +49,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         $('[name="nice-select"] ul').hide();
     });
 
-    $('#importOrderWharf li').click(function(e){
+    $('.importOrderWharf li').click(function(e){
         var val = $.trim($(this).find('.boat-item-name').text());
         var code = $.trim($(this).find('.boat-item').text());
         $(this).parents('[name="nice-select"]').find('input').val(val);
@@ -65,7 +65,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         $(item).parents('tr').siblings('tr').css("background", "#ffffff");
         // console.log("containerId:   "+ id);
         sessionStorage.setItem("importFirstContainerId", id);
-        var url = "/trans/api/import/container/" + id + "/address";
+        var timestamp = (new Date()).valueOf();
+        var url = "/trans/api/import/container/" + id + "/address?" + timestamp;
         $http({
             url: url,
             method:'GET',
@@ -95,17 +96,16 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     var operate = sessionStorage.getItem("operate");
     var importOrderId = sessionStorage.getItem("importOrderId");
 
-    // console.log("detail:  "+importOrderId);
     var myDate = new Date();
     var _year=myDate.getYear();        //获取当前年份(2位)
     var _fullyear=myDate.getFullYear();    //获取完整的年份(4位,1970-????)
     var _month=myDate.getMonth();       //获取当前月份(0-11,0代表1月)
     var _date=myDate.getDate();        //获取当前日(1-31)
 
-
     // 判断新增还是修改，如果operate=1并且orderId有值的话，则是修改，反之新增
     if (operate == "1" && importOrderId != "") {
-        var url = "/trans/api/import/order/" + importOrderId + "/all";
+        var timestamp = (new Date()).valueOf();
+        var url = "/trans/api/import/order/" + importOrderId + "/all?" + timestamp;
 
         $http({
             url: url,
@@ -127,7 +127,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
             $scope.importDetailOrderFreeUseDay = orderVo.orderFreeUseDay;
             $scope.importDetailOrderTotalCase = orderVo.orderTotalCase;
             $scope.importDetailOrderSurplusTank = orderVo.orderSurplusTank;
-            $scope.importDetailVerifierContent = orderVo.verifierContent;
+            // $scope.importDetailVerifierContent = orderVo.verifierContent;
+            $('#importDetailVerifierContent').text(orderVo.verifierContent);
             $scope.importDetailOrderGoodOwner = orderVo.orderGoodOwner;
             $scope.importDetailRemark = orderVo.orderRemark;
             $('#_iDetailOwner').attr("ownerCode", orderVo.orderOwnerCode);
@@ -217,11 +218,6 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         }
     }
 
-    // 箱子和地址的个数超过10个，则显示滚动条
-    //$('#import-detail-first-table').css({"overflow-y": "auto","max-height":"450px","_height":"100%"});
-    //$('#import-detail-second-table').css("max-height", 450);
-    // $('#import-detail-second-table').css("overflow-y", "auto");
-
     $scope.saveImportOrder = function () {
         $('form').validate('submitValidate'); //return boolean;
         var errorHint = "";
@@ -239,24 +235,18 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         var orderSailing = $('#_detailVoyage').val();
         var orderSailingCode = $('#_detailVoyage').attr("sailCode");
         if (billNo == "" || billNo == null) {
-            // alert("提单号不能为空！");
             errorHint += "提单号不能为空！";
         } else if (totalCaseNum === "" || totalCaseNum === null) {
             errorHint += "总箱量不能为空！";
-            // alert("总箱量不能为空！");
         } else if (contact === "" || contact === null) {
             errorHint += "联系人不能为空！";
-            // alert("联系人不能为空！");
         } else if (contactPhone === "" || contactPhone === null) {
             errorHint += "联系电话不能为空！";
-            // alert("联系电话不能为空！");
         } else if (contactEmail === "" || contactEmail === null) {
             errorHint += "联系邮箱不能为空！";
-            // alert("联系邮箱不能为空！");
         }
         if (orderOwner != "" && (orderOwnerCode == ""||orderOwnerCode == undefined)) {
             errorHint += "  箱主信息错误！";
-            // $('#_iDetailOwner').parent().addClass("error");
         }
         if (orderWharf != "" && (orderWharfCode == ""||orderWharfCode == undefined)) {
             errorHint += "  码头信息错误！";
@@ -355,19 +345,6 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                 errorMsgHint(data.errorCode, data.errorMsg);
             }
         });
-        /*$.ajax({
-         type: "POST",
-         url: "/trans/api/import",
-         data: datas,
-         success: function(data) {
-         var status = $.parseJSON(data);
-         if (status.success) {
-         alert("单据主信息保存成功");
-         }else{
-         console.log(status.errorMsg);
-         }
-         }
-         });*/
     }
 
     // 保存箱子
@@ -602,6 +579,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     
     // 跳转到整票跟踪
     $scope.toTicketFollow = function () {
+        sessionStorage.setItem("followOrderId", importOrderId);
         $state.go('index.ticketFollow');
         sessionStorage.setItem("menuStatus", 2);
         sessionStorage.setItem("isImOrEx", 1);
@@ -611,7 +589,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     // 新增箱子
     $scope.addImportBox = function () {
         $scope.inserted = {
-            "index":$scope.detailData.length+1,
+            "index":"",
             "containerId":"",
             "containerOwner":"",
             "containerDrayageDepot":"",
@@ -636,7 +614,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
     // 新增某个箱子信息
     $scope.addImportBoxInfo = function () {
         $scope.inserted = {
-            "index": $scope.detailData2.length+1,
+            "index": "",
             "addressId":"",
             "addressPlace":"",
             "addressDeliveryTime":"",
@@ -661,7 +639,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         var num = $scope.importMultiAdd.numbers;
         for (var i = 0; i < num; i++) {
             $scope.inserted = {
-                "index": $scope.detailData.length+1,
+                "index": "",
                 "containerId": "",
                 "containerOwner": "",
                 "containerOwnerCode": "",
@@ -734,7 +712,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         box.each(function(){
             var delId = $(this).parent().parent().find('.importContainerId').val();
             if (delId == "") {
-                var index = $(this).parent().parent().find('.del-index').text();
+                var index = $(this).parent().parent()[0].rowIndex;
+                $scope.detailData.splice(index - 1, 1);
                 $(this).parent().parent().remove();
             } else {
                 containerIdArr.push(delId);
@@ -761,6 +740,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                 }
             });
         }
+        $('#import-select-all1').prop('checked', false);
     }
 
     $scope.delImportBoxInfo = function () {
@@ -774,6 +754,8 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
         boxInfo.each(function(){
             var delId = $(this).parent().parent().find('.importAddressId').val();
             if (delId == "") {
+                var index = $(this).parent().parent()[0].rowIndex;
+                $scope.detailData2.splice(index - 1, 1);
                 $(this).parent().parent().remove();
             } else {
                 addressIdArr.push(delId);
@@ -798,6 +780,7 @@ myApp.controller('importDetailCtrl', ['$scope', '$state', '$http', function($sco
                 }
             });
         }
+        $('#import-select-all2').prop('checked', false);
     }
 
 }]);
@@ -812,6 +795,7 @@ function RndNum(n){
 // 获取箱列表的箱主
 function getIContainerOwnerInfo(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryCrmTypeIdIsCW?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -851,6 +835,7 @@ function setImportOwnerName(item) {
 // 获取箱列表的提箱点和返箱点
 function getImportContainerAddress(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryDepot?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -899,6 +884,7 @@ function setOwnerListHide(item) {
 // 获取订单的箱主下拉列表
 function getImportOrderOwner(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryCrmTypeIdIsCW?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -909,6 +895,7 @@ function getImportOrderOwner(item) {
             if (data.success) {
 //                $scope.importOwnerList = data.crms;
                 var result = "";
+                // alert(JSON.stringify(data));
                 for (var i = 0; i < data.crms.length; i++) {
                     result += "<li onclick='setImportOrderOwner(this)'><div style='width: 150%; height: 30px;'>" +
                         "<span class='owner-code' style='display: block; width: 55px; float: left;'>" + data.crms[i].crmCode + "</span>" +
@@ -936,6 +923,7 @@ function setImportOrderOwner(item) {
 // 获取订单的码头下拉列表
 function getImportOrderWharf(item) {
     var wharf = $(item).val();
+    wharf = encodeURI(wharf);
     var url = '/trans/api/queryDepot?codeOrName='+wharf;
     $.ajax({
         url:url,
@@ -973,6 +961,7 @@ function setImportWharfItem(item) {
 // 获取订单的船名下拉列表
 function getImportOrderBoat(item) {
     var boat = $(item).val();
+    boat = encodeURI(boat);
     var url = '/trans/api/queryVessel?codeOrEnname='+boat;
     $.ajax({
         url:url,
@@ -1012,7 +1001,9 @@ function setImportBoatItem(item) {
 function getImportOrderSail(item) {
     var boat = $('#_detailBoatName').attr("boatCode");
     boat = $.trim(boat);
+    boat = encodeURI(boat);
     var sail = $(item).val();
+    sail = encodeURI(sail);
     var url = '/trans/api/queryVesselEtd?vesselCode='+boat+'&voyage='+sail;
     $.ajax({
         url:url,
@@ -1050,6 +1041,7 @@ function setImportSailItem(item) {
 // 获取批量新增的箱主列表
 function getImportMultiOrderOwner(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryCrmTypeIdIsCW?codeOrName='+owner;
     $.ajax({
         url:url,
@@ -1086,6 +1078,7 @@ function setImportMultiOrderOwner(item) {
 // 获取批量新增的提箱点和返箱点的列表
 function getImportMultiOrderDepot(item) {
     var owner = $(item).val();
+    owner = encodeURI(owner);
     var url = '/trans/api/queryDepot?codeOrName='+owner;
     $.ajax({
         url:url,

@@ -76,4 +76,10 @@ public class BaseController {
         return baseService.queryDepot(codeOrName);
     }
 
+    @RequestMapping(value = "/queryBillList", method = RequestMethod.GET)
+    @ResponseBody
+    public QueryBillResponse queryBillList(QueryBillRequest billRequest) {
+        return baseService.queryBillList(billRequest);
+    }
+
 }

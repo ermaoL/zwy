@@ -5,10 +5,7 @@ import com.sinotrans.framework.orm.model.BaseModel;
 import com.sinotrans.framework.orm.support.PagingInfo;
 import com.sinotrans.framework.service.mybatis.base.impl.MybatisManagerImpl;
 import com.sinotrans.transport.common.ErrorCode;
-import com.sinotrans.transport.common.enums.ContainerStateType;
-import com.sinotrans.transport.common.enums.DomainStatus;
-import com.sinotrans.transport.common.enums.DomainType;
-import com.sinotrans.transport.common.enums.OrderStateType;
+import com.sinotrans.transport.common.enums.*;
 import com.sinotrans.transport.common.exception.*;
 import com.sinotrans.transport.common.util.CommonUtils;
 import com.sinotrans.transport.dto.*;
@@ -43,19 +40,19 @@ public class OrderExportServiceImpl extends MybatisManagerImpl implements OrderE
     public CommonListResponse search(Long userId, OrderExportSearchRequest searchRequest) {
 
         String orderBy = "ordeId desc";//
-        PagingInfo pagingInfo = this.fetchPagingInfo(searchRequest, userId);
+        PagingInfo pagingInfo;
         List<OrderExportSearchRespVo> exportSearchVoList;
         if (StringUtils.isEmpty(searchRequest.getContainerCaseNo())) {
+            pagingInfo = this.fetchPagingInfo(searchRequest, userId, true);
             List<Order> orderList = this.myBatisDao.findByCondition(Order.class, orderBy, pagingInfo, searchRequest.fetchFilter(userId, null));
             exportSearchVoList = this.toExportVoList(orderList);
         } else {
+            pagingInfo = this.fetchPagingInfo(searchRequest, userId, false);
             List<Map<String,Object>> result = this.myBatisDao.queryByCondition("SearchExportOrderList", searchRequest.fetchCondition(), orderBy, pagingInfo, null);
             exportSearchVoList = this.mapToExportVoList(result);
         }
         return new CommonListResponse(pagingInfo, exportSearchVoList);
     }
-
-
 
     @Override
     public OrderExportAllResponse searchAll(Long userId, Long orderId) {
@@ -67,7 +64,6 @@ public class OrderExportServiceImpl extends MybatisManagerImpl implements OrderE
         OrderExportAllResponse response = this.generateAll(order, userId);
         return response;
     }
-
 
     @Override
     public OrderExportAlterResponse create(Long userId, OrderExportAlterRequest request) {
@@ -106,7 +102,6 @@ public class OrderExportServiceImpl extends MybatisManagerImpl implements OrderE
         return new OrderExportAlterResponse(orderId);
     }
 
-
     @Override
     public OrderExportAllResponse sendOrder(Long userId, Long orderId) {
 
@@ -117,10 +112,14 @@ public class OrderExportServiceImpl extends MybatisManagerImpl implements OrderE
         order.checkBelongCreator(userId, logger);
 
         List<Container> containerList = myBatisDao.findByCondition(Container.class, null, null, this.fetchContainerOrderIdFilter(orderId, null));
+        PositionTimeLog positionTimeLog;
         for (Container c : containerList) {
             c.setContState(ContainerStateType.ExportSend.getValue());
             c.setModifier(String.valueOf(userId));
             myBatisDao.update(c);
+
+            positionTimeLog = new PositionTimeLog(c.getContId(), PositionLogType.ExSet, PositionLogType.ExSet.getDesc());
+            myBatisDao.save(positionTimeLog);
         }
         order.setOrdeState(OrderStateType.Send.getValue());
         order.setModifier(String.valueOf(userId));
@@ -350,11 +349,16 @@ public class OrderExportServiceImpl extends MybatisManagerImpl implements OrderE
         return filter;
     }
 
-    private PagingInfo fetchPagingInfo(OrderExportSearchRequest searchRequest, Long userId) {
+    private PagingInfo fetchPagingInfo(OrderExportSearchRequest searchRequest, Long userId, boolean ifFind) {
         PagingInfo pagingInfo = searchRequest.fetchPagingInfo();
         if(pagingInfo != null) {
-            int counts = this.myBatisDao.getRowCountByCondition(Order.class, searchRequest.fetchFilter(userId, null));
-
+            int counts = 0;
+            if (ifFind) {
+                counts = this.myBatisDao.getRowCountByCondition(Order.class, searchRequest.fetchFilter(userId, null));
+            } else {
+                counts = this.myBatisDao.getQueryCountByCondition("SearchExportOrderList", searchRequest.fetchCondition(), null);//Order.class, searchRequest.fetchFilter(userId, null));
+            }
+//            int counts = this.myBatisDao.getRowCountByCondition(Order.class, searchRequest.fetchFilter(userId, null));
             pagingInfo.setTotalRows(counts);
         }
 
@@ -366,7 +370,6 @@ public class OrderExportServiceImpl extends MybatisManagerImpl implements OrderE
             throw new RecordNotFoundException(domain, domainId, logger);
         }
     }
-
 
     private OrderExportAllResponse generateAll(Order order, Long userId) {
 
@@ -385,7 +388,6 @@ public class OrderExportServiceImpl extends MybatisManagerImpl implements OrderE
         }
         return new OrderExportAllResponse(orderVo, containerVoList, containerId, addressVoList);
     }
-
 
     private Order compareModifyOrder(String orderBillNo, String orderWharf, String orderWharfCode, String orderShipName, String orderShipNameCode, String orderSailing, String orderSailingCode, String orderShipAgency, String orderSailingDate, String orderEnterPort, String orderEnterPortCode,
                                      String orderDestinationPort, String orderDestinationPortCode, String orderShippingCode, String orderBookingNumber, String orderTotalCase, String orderOwner, String orderOwnerCode, String orderGoodOwner, String orderGoodOwnerCode, String orderRemark, String orderConnects, String orderConnectEmail, String orderConnectPhone, Order order) {

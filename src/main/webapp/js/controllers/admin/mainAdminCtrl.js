@@ -10,6 +10,13 @@ myAdminApp.controller('mainAdminCtrl', ['$scope', '$state', '$http', function ($
     $('.aside').css("height", height - 60);
     $('.section').css("height", height - 60);
 
+    $(window).resize(function() {
+        $('#mainAdmin').css("height", height);
+        $('#home-content').css("height", height-60);
+        $('.aside').css("height", height - 60);
+        $('.section').css("height", height - 60);
+    });
+
     var url = window.location.hash;
     if (url == "#/admin/main/import/detail") {
         changeMenuType('#import-list-menu');

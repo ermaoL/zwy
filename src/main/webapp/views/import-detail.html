@@ -21,7 +21,7 @@
                     <div class="list-input-container form_control">
                         <span style="color: #ff0000; font-weight: bold; float: left;">*</span>
                         <label for="_detailLadingBillNum" class="list-label">提单号：</label>
-                        <input id="_detailLadingBillNum" tabindex="1" class="list-input required" ng-model="importDetailOrderBillNo" data-valid="isNonEmpty" data-error="   " style="width: 68%; left: 70px;" ng-keypress="enterImport($event)"/>
+                        <input id="_detailLadingBillNum" tabindex="1" class="list-input required" ng-model="importDetailOrderBillNo" data-valid="isNonEmpty" data-error="   " style="width: 68%; left: 70px;" onkeyup="this.value = this.value.toUpperCase();"/>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
@@ -110,7 +110,21 @@
                         <!--<ul class="order-ul" id="importOrderWharf" ng-show="importDetailOrderState==1||importDetailOrderState==3?true:false">
 
                         </ul>-->
-                        <ul id="importOrderWharf" ng-show="importDetailOrderState==1||importDetailOrderState==3?true:false">
+                        <ul class="importOrderWharf" ng-show="importDetailOrderState==1||importDetailOrderState==3?true:false">
+                            <li>
+                                <span class="boat-item">ZY</span>
+                                <span class="boat-item-name" style="width: 100px;">海盈码头</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">QZ</span>
+                                <span class="boat-item-name" style="width: 100px;">青洲港区</span>
+                            </li>
+                            <li>
+                                <span class="boat-item">JYG</span>
+                                <span class="boat-item-name" style="width: 100px;">福清新港</span>
+                            </li>
+                        </ul>
+                        <ul class="importOrderWharf" ng-show="false">
                             <li>
                                 <span class="boat-item">HTD</span>
                                 <span class="boat-item-name" style="width: 100px;">海天码头</span>
@@ -226,7 +240,7 @@
         </div>-->
 
         <div class="detail-first-table">
-            <div style="border: 1px solid #bfbfbf;min-width: 1030px">
+            <div style="border: 1px solid #bfbfbf;">
                 <div class="detail-second-table-top">
                     <button ng-click="addImportBox()" class="second-table-top-operate" style="left: 0;">新增</button>
                     <div class="second-table-top-divider" style="left: 69px;"></div>
@@ -236,7 +250,7 @@
                     <div class="second-table-top-divider" style="left: 209px;"></div>
                     <button class="second-table-top-operate" style="left: 210px;" ng-click="saveImportContainer()">保存</button>
                 </div>
-                <div id="import-detail-first-table" class="table-list">
+                <div id="import-detail-first-table" class="table-detail">
                     <table id="importContainerTable" class="table table-bordered table-hover container-list" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?true:false">
                         <thead style="background: #e5e5e5;">
                         <tr>
@@ -543,7 +557,7 @@
                             <div class="second-table-top-divider" style="left: 139px;"></div>
                             <button ng-click="saveImportAddress()" class="second-table-top-operate" style="left: 140px;">保存</button>
                         </div>
-                        <div id="import-detail-second-table" class="table-list">
+                        <div id="import-detail-second-table" class="table-detail">
                             <table id="importAddressTable" class="table table-bordered container-list" ng-show="importDetailOrderState==undefined||importDetailOrderState==1||importDetailOrderState==3?true:false">
                                 <thead style="background: #e5e5e5;">
                                 <tr>
@@ -731,11 +745,11 @@
                                 </div>-->
                                 <label for="_iBoxNos" class="col-lg-2 col-md-2 col-sm-2 control-label">箱号：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iBoxNos" type="text" class="form-control" ng-model="importMultiContainerCaseNo" onblur="chkcntrno(this,0);">
+                                    <input id="_iBoxNos" type="text" class="form-control" style="border: 1px solid #ccc;" ng-model="importMultiContainerCaseNo" onkeyup="this.value = this.value.toUpperCase();" onblur="chkcntrno(this,0);">
                                 </div>
                                 <label for="_iSealNums" class="col-lg-2 col-md-2 col-sm-2 control-label">铅封号：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iSealNums" type="text" class="form-control" ng-model="importMultiContainerSealNo">
+                                    <input id="_iSealNums" type="text" class="form-control" style="border: 1px solid #ccc;" onkeyup="this.value = this.value.toUpperCase();" ng-model="importMultiContainerSealNo">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -746,13 +760,13 @@
                                 -->
                                 <label for="_iBoxTypes" class="col-lg-2 col-md-2 col-sm-2 control-label">箱型：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <select id="_iBoxTypes" class="form-control" ng-model="importMultiContainerType">
+                                    <select id="_iBoxTypes" class="form-control" ng-model="importMultiContainerType" style="border: 1px solid #ccc;">
                                         <option ng-repeat="x in containerCaseType">{{x.typeCode}}</option>
                                     </select>
                                 </div>
                                 <label for="_iBoxSizes" class="col-lg-2 col-md-2 col-sm-2 control-label">尺寸：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <select id="_iBoxSizes" class="form-control" ng-model="importMultiContainerSize">
+                                    <select id="_iBoxSizes" class="form-control" ng-model="importMultiContainerSize" style="border: 1px solid #ccc;">
                                         <option ng-repeat="x in containerSize">{{x.typeCode}}</option>
                                     </select>
                                 </div>
@@ -760,14 +774,14 @@
                             <div class="form-group">
                                 <label for="_iBoxDrayages" class="col-lg-2 col-md-2 col-sm-2 control-label">提箱点：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4 nice-select" name="nice-select" style="padding-right: 30px;">
-                                    <input id="_iBoxDrayages" containerAddressCode ="" type="text" class="form-control importDepot" style="border: 1px solid #ccc;" ng-model="importMultiContainerOwner" onclick="getImportMultiOrderDepot(this)" onkeyup="getImportMultiOrderDepot(this)">
+                                    <input id="_iBoxDrayages" containerAddressCode ="" type="text" class="form-control importDepot" style="border: 1px solid #ccc;" ng-model="importMultiContainerDrayage" onclick="getImportMultiOrderDepot(this)" onkeyup="getImportMultiOrderDepot(this)">
                                     <ul class="importMultiOrderDepot" style="margin-left: 16px; margin-right: 31px; top: 35px;">
 
                                     </ul>
                                 </div>
                                 <label for="_iBoxReturns" class="col-lg-2 col-md-2 col-sm-2 control-label">返箱点：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4 nice-select" name="nice-select" style="padding-right: 30px;">
-                                    <input id="_iBoxReturns" containerAddressCode ="" type="text" class="form-control importDepot" style="border: 1px solid #ccc;" ng-model="importMultiContainerOwner" onclick="getImportMultiOrderDepot(this)" onkeyup="getImportMultiOrderDepot(this)">
+                                    <input id="_iBoxReturns" containerAddressCode ="" type="text" class="form-control importDepot" style="border: 1px solid #ccc;" ng-model="importMultiContainerReturn" onclick="getImportMultiOrderDepot(this)" onkeyup="getImportMultiOrderDepot(this)">
                                     <ul class="importMultiOrderDepot" style="margin-left: 16px; margin-right: 31px; top: 35px;">
 
                                     </ul>
@@ -776,24 +790,24 @@
                             <div class="form-group">
                                 <label for="_iProductNames" class="col-lg-2 col-md-2 col-sm-2 control-label">品名：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iProductNames" type="text" class="form-control" ng-model="importMultiContainerTradeName">
+                                    <input id="_iProductNames" type="text" class="form-control" ng-model="importMultiContainerTradeName" style="border: 1px solid #ccc;">
                                 </div>
                                 <label for="_iRoughWeight" class="col-lg-2 col-md-2 col-sm-2 control-label">货重（KG）：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iRoughWeight" type="text" class="form-control" ng-model="importMultiContainerGrossWeight">
+                                    <input id="_iRoughWeight" type="text" class="form-control" ng-model="importMultiContainerGrossWeight" style="border: 1px solid #ccc;">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="_iIsTakes" class="col-lg-2 col-md-2 col-sm-2 control-label">带电机：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <select id="_iIsTakes" class="form-control" ng-model="importMultiContainerDynamo">
+                                    <select id="_iIsTakes" class="form-control" ng-model="importMultiContainerDynamo" style="border: 1px solid #ccc;">
                                         <option value="是">是</option>
                                         <option value="否">否</option>
                                     </select>
                                 </div>
                                 <label for="_iIsMultis" class="col-lg-2 col-md-2 col-sm-2 control-label">多地卸：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <select id="_iIsMultis" class="form-control" ng-model="importMultiContainerIsMoreUnload">
+                                    <select id="_iIsMultis" class="form-control" ng-model="importMultiContainerIsMoreUnload" style="border: 1px solid #ccc;">
                                         <option value="是">是</option>
                                         <option value="否">否</option>
                                     </select>
@@ -819,7 +833,7 @@
                                 </div>-->
                                 <label for="_iNumbers" class="col-lg-2 col-md-2 col-sm-2 control-label">数量：</label>
                                 <div class="col-lg-4 col-md-4 col-sm-4" style="padding-right: 30px;">
-                                    <input id="_iNumbers" type="text" class="form-control" ng-model="importMultiAdd.numbers">
+                                    <input id="_iNumbers" type="text" class="form-control" ng-model="importMultiAdd.numbers" style="border: 1px solid #ccc;">
                                 </div>
                             </div>
                         </form>

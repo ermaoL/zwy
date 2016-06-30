@@ -31,7 +31,7 @@ public class OrderGbsSendReqVo {
 
     private Date orderDate;//出口开航/进口抵港              //PB_SHARE表 ETD
 
-    private Integer orderType;                              //PB_SHARE表 IMPORT_EXPORT
+    private Integer orderType;                              //PB_SHARE表 IMPORT_EXPORT  进口1  出口0
 
     private String orderCompanyCode;                        //BRANCH_CODE表 BRANCH_CODE
 

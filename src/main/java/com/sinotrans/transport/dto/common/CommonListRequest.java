@@ -25,9 +25,9 @@ public abstract class CommonListRequest {
         return new PagingInfo(pageSize, currentPage);
     }
 
-//    public abstract Map<String, Object> fetchCondition() throws ParseException;
+    public abstract Map<String, Object> fetchCondition();
 
-    public abstract List fetchFilter(Long userId, CompanyType companyType) throws ParseException;
+    public abstract List fetchFilter(Long userId, CompanyType companyType);
 
     public CommonListRequest() {
         super();
